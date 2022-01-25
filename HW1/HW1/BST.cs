@@ -73,7 +73,7 @@ namespace HW1
         }
 
         // Calculate how many levels in BST ***Needs Revising*** 1 2 3 should be 3 levels not 2
-        public int calcLevel()
+        public int getMinLevel()
         {
             // Takes log_2 of total nodes rounds down
             if (this.total != 0)

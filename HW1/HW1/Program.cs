@@ -34,7 +34,7 @@ namespace HW1
 
                 t.print();
                 Console.WriteLine("Total: " + t.Total);
-                Console.WriteLine("Level: " + t.calcLevel());
+                Console.WriteLine("Min Level: " + t.getMinLevel());
             }
         }
     }
