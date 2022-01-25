@@ -10,16 +10,21 @@ namespace HW1
     {
         private Node root;
         private int total;
+        private int levels;
 
         // BST constructor
         public BST()
         {
             this.root = null;
             this.total = 0;
+            this.levels = 0;
         }
 
         // Total getter and setter
         public int Total { get { return total; } set { this.total = value; } }
+
+        // Levels getter and setter
+        public int Levels { get { return levels; } set { this.levels = value; } }
 
         // Insert value into BST
         //public void insert(int val)
@@ -48,26 +53,18 @@ namespace HW1
         private Node insert(Node tree, int val)
         {
             if (tree != null)
-            {
                 if (val >= tree.Data)
-                {
                     if (tree.Right == null)
                         tree.Right = new Node(val);
                     else
                         this.insert(tree.Right, val);
-                }
                 else
-                {
                     if (tree.Left == null)
                         tree.Left = new Node(val);
                     else
                         this.insert(tree, val);
-                }
-            }
             else
-            {
                 tree = new Node(val);
-            }
 
             return tree;
         }
@@ -81,6 +78,17 @@ namespace HW1
             return 0;
         }
 
+        // Calculates number of levels
+        //public int calcLevel()
+        //{
+        //    if (this.root != null)
+        //    {
+                
+        //    }
+        //    else
+        //        return 0;
+        //}
+
         public void print() => this.print(this.root);
 
         // Print BST
@@ -90,7 +98,7 @@ namespace HW1
             {
                 if (tree.Left != null)
                     this.print(tree.Left);
-                Console.WriteLine(tree.Data + " ");
+                Console.WriteLine("Data: " + tree.Data);
                 if (tree.Right != null)
                     this.print(tree.Right);
             }

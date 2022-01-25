@@ -9,7 +9,6 @@ namespace HW1
     public class Node
     {
         private int data;
-        private int level;
         private Node left;
         private Node right;
 
@@ -17,13 +16,10 @@ namespace HW1
         public Node(int val)
         {
             this.data = val;
-            this.level = 0;
         }
 
         // Data getter and setter
         public int Data { get { return this.data; } set { this.data = value; } }
-
-        public int Level { get { return this.level; } set { this.level = value; } }
 
         public Node Left { get { return this.left; } set { this.left = value; } }
 
