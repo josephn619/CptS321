@@ -6,42 +6,99 @@ using System.Threading.Tasks;
 
 namespace HW1
 {
-    internal class BST
+    public class BST
     {
         private Node root;
         private int total;
 
+        // BST constructor
         public BST()
         {
             this.root = null;
             this.total = 0;
         }
 
+        // Total getter and setter
         public int Total { get { return total; } set { this.total = value; } }
 
-        public void insert(int val)
+        // Insert value into BST
+        //public void insert(int val)
+        //{
+        //    if (this.root != null)
+        //    {
+        //        this.root.insert(val);
+        //    }
+        //    else
+        //    {
+        //        this.root = new Node(val);
+        //    }
+
+        //    this.Total += 1;
+        //}
+
+        // calls private method insert
+        public void insert(int val) => this.insert(this.root, val);
+
+        // inserts val into BST
+        private void insert(Node tree, int val)
         {
-            if (this.root != null)
+            if (tree != null)
             {
-                this.root.insert(val);
+                if (val >= tree.Data)
+                {
+                    if (tree.Right == null)
+                        tree.Right = new Node(val);
+                    else
+                        this.insert(tree.Right, val);
+                }
+                else
+                {
+                    if (tree.Left == null)
+                        tree.Left = new Node(val);
+                    else
+                        this.insert(tree, val);
+                }
             }
             else
             {
-                this.root = new Node(val);
+                tree = new Node(val);
             }
 
             this.Total += 1;
         }
 
+        // Calculate how many levels in BST
         public int calcLevel()
         {
+            // Takes log_2 of total nodes rounds down
             return (int)Math.Floor(Math.Log(this.total, 2) + 1);
         }
 
-        public void print()
+        public void print() => this.print(this.root);
+
+        // Print BST
+        private void print(Node tree)
         {
-            if (this.root != null)
-                this.root.print();
+            if (tree != null)
+            {
+                if (tree.Left != null)
+                    this.print(tree.Left);
+                Console.WriteLine(tree.Data + " ");
+                if (tree.Right != null)
+                    this.print(tree.Right);
+            }
         }
+
+        //private void print(Node tree)
+        //{
+        //    if (tree != null)
+        //    {
+        //        if (this.left != null)
+        //            this.left.print();
+        //        Console.WriteLine(data + " ");
+        //        if (this.right != null)
+        //            this.right.print();
+        //    }
+        //}
     }
 }

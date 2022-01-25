@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HW1
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -18,9 +18,11 @@ namespace HW1
 
                 string input = Console.ReadLine();
 
+                // Exit condition
                 if (input == "")
                     break;
 
+                // Parse string into integers and insert into BST
                 foreach (var num in input.Split(' '))
                     t.insert((Convert.ToInt32(num)));
 
