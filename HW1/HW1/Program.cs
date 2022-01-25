@@ -10,6 +10,10 @@ namespace HW1
     {
         static void Main(string[] args)
         {
+            // The problem for this cohesive approach seems to be that root is being passed in through var "tree"
+            // but is not being updated (in Cpp pointers would have been involved to ensure it was updated).
+            // ->"tree" is not acting as a reference for the root<-
+
             BST t = new BST();
 
             while (true)
