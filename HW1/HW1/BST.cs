@@ -37,10 +37,15 @@ namespace HW1
         //}
 
         // calls private method insert
-        public void insert(int val) => this.insert(this.root, val);
+        public void insert(int val)
+        {
+            this.Total += 1;
+
+            this.root = this.insert(this.root, val);
+        }
 
         // inserts val into BST
-        private void insert(Node tree, int val)
+        private Node insert(Node tree, int val)
         {
             if (tree != null)
             {
@@ -64,14 +69,16 @@ namespace HW1
                 tree = new Node(val);
             }
 
-            this.Total += 1;
+            return tree;
         }
 
-        // Calculate how many levels in BST
+        // Calculate how many levels in BST ***Needs Revising*** 1 2 3 should be 3 levels not 2
         public int calcLevel()
         {
             // Takes log_2 of total nodes rounds down
-            return (int)Math.Floor(Math.Log(this.total, 2) + 1);
+            if (this.total != 0)
+                return (int)Math.Floor(Math.Log(this.total, 2) + 1);
+            return 0;
         }
 
         public void print() => this.print(this.root);

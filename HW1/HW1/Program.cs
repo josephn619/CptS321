@@ -14,6 +14,8 @@ namespace HW1
             // but is not being updated (in Cpp pointers would have been involved to ensure it was updated).
             // ->"tree" is not acting as a reference for the root<-
 
+            // calcLevel needs revising
+
             BST t = new BST();
 
             while (true)
