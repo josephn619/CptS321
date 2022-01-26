@@ -8,6 +8,7 @@ namespace HW1
 {
     public class BST
     {
+        // Member variables
         private Node root;
         private int total;
         private int calcTotal;
@@ -111,6 +112,7 @@ namespace HW1
         //        return 0;
         //}
 
+        // Public print function that calls private method
         public void print() => this.print(this.root);
 
         // Print BST
@@ -138,8 +140,10 @@ namespace HW1
         //    }
         //}
 
+        // Public count function that calls private method
         public string count() { return this.count(this.root); }
 
+        // Counts number of nodes in BST
         private string count(Node tree)
         {
             if (tree != null)
