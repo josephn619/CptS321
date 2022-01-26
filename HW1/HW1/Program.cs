@@ -37,6 +37,8 @@ namespace HW1
                 t.print();
                 // #4.1
                 Console.WriteLine("Total: " + t.count());
+                // #4.2
+                Console.WriteLine("Level: " + t.calcLevel());
                 // #4.3
                 Console.WriteLine("Min Levels: " + t.getMinLevel());
             }

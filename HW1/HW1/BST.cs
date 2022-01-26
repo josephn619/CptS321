@@ -101,16 +101,24 @@ namespace HW1
             return 0;
         }
 
-        // Calculates number of levels
-        //public int calcLevel()
-        //{
-        //    if (this.root != null)
-        //    {
+        public int calcLevel()
+        {
+            return this.calcLevel(this.root);
+        }
 
-        //    }
-        //    else
-        //        return 0;
-        //}
+        // Calculates number of levels
+        public int calcLevel(Node tree)
+        {
+            int leftHeight = 0, rightHeight = 0;
+            if (this.root == null)
+                return 0;
+            if (tree.Left != null)
+                leftHeight = this.calcLevel(tree.Left);
+            if (tree.Right != null)
+                rightHeight = this.calcLevel(tree.Right);
+
+            return Math.Max(leftHeight, rightHeight) + 1;
+        }
 
         // Public print function that calls private method
         public void print() => this.print(this.root);
