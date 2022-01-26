@@ -23,6 +23,8 @@ namespace HW1
                 // #1
                 string input = Console.ReadLine();
 
+                // string input = "1 2 3 4 5 6 7 8 9 10";
+
                 // Exit condition
                 if (input == "")
                     break;
