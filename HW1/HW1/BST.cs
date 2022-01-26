@@ -149,7 +149,11 @@ namespace HW1
         //}
 
         // Public count function that calls private method
-        public string count() { return this.count(this.root); }
+        public string count() 
+        {
+            this.CalcTotal = 0;
+            return this.count(this.root); 
+        }
 
         // Counts number of nodes in BST
         private string count(Node tree)

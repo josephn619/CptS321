@@ -18,6 +18,8 @@ namespace HW1
 
             while (true)
             {
+                Console.Clear();
+
                 Console.WriteLine("Enter integers with spaces. ");
 
                 // #1
@@ -43,6 +45,8 @@ namespace HW1
                 Console.WriteLine("Level: " + t.calcLevel());
                 // #4.3
                 Console.WriteLine("Min Levels: " + t.getMinLevel());
+
+                Console.ReadKey();
             }
         }
     }
