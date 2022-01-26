@@ -30,10 +30,11 @@ namespace HW1
 
                 // Parse string into integers and insert into BST
                 foreach (var num in input.Split(' '))
-                    t.insert((Convert.ToInt32(num)));
+                    if (Convert.ToInt32(num) < 100)
+                        t.insert((Convert.ToInt32(num)));
 
                 t.print();
-                Console.WriteLine("Total: " + t.Total);
+                Console.WriteLine("Total: " + t.count());
                 Console.WriteLine("Min Levels: " + t.getMinLevel());
             }
         }

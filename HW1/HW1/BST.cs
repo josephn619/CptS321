@@ -10,6 +10,7 @@ namespace HW1
     {
         private Node root;
         private int total;
+        private int calcTotal;
         private int levels;
 
         // BST constructor
@@ -17,14 +18,18 @@ namespace HW1
         {
             this.root = null;
             this.total = 0;
+            this.calcTotal = 0;
             this.levels = 0;
         }
 
-        // Total getter and setter
-        public int Total { get { return total; } set { this.total = value; } }
+        // total getter and setter
+        public int Total { get { return this.total; } set { this.total = value; } }
 
-        // Levels getter and setter
-        public int Levels { get { return levels; } set { this.levels = value; } }
+        // calcTotal getter and setter
+        public int CalcTotal { get { return this.calcTotal; } set { this.calcTotal = value; } }
+
+        // levels getter and setter
+        public int Levels { get { return this.levels; } set { this.levels = value; } }
 
         // Insert value into BST
         //public void insert(int val)
@@ -41,12 +46,29 @@ namespace HW1
         //    this.Total += 1;
         //}
 
+        // Finds if val in BST
+        public bool Find(int val)
+        {
+            Node cur = this.root;
+            while (cur != null)
+                if (cur.Data == val)
+                    return true;
+                else if (cur.Data < val)
+                    cur = cur.Right;
+                else
+                    cur = cur.Left;
+            return false;
+        }
+
         // calls private method insert
         public void insert(int val)
         {
-            this.Total += 1;
+            if (!this.Find(val))
+            {
+                this.Total += 1;
 
-            this.root = this.insert(this.root, val);
+                this.root = this.insert(this.root, val);
+            }
         }
 
         // inserts val into BST
@@ -60,9 +82,9 @@ namespace HW1
                         this.insert(tree.Right, val);
                 else
                     if (tree.Left == null)
-                        tree.Left = new Node(val);
-                    else
-                        this.insert(tree, val);
+                    tree.Left = new Node(val);
+                else
+                    this.insert(tree, val);
             else
                 tree = new Node(val);
 
@@ -83,7 +105,7 @@ namespace HW1
         //{
         //    if (this.root != null)
         //    {
-                
+
         //    }
         //    else
         //        return 0;
@@ -115,5 +137,23 @@ namespace HW1
         //            this.right.print();
         //    }
         //}
+
+        public string count() { return this.count(this.root); }
+
+        private string count(Node tree)
+        {
+            if (tree != null)
+            {
+                if (tree.Left != null)
+                    this.count(tree.Left);
+                this.CalcTotal += 1;
+                if (tree.Right != null)
+                    this.count(tree.Right);
+            }
+
+            if (this.CalcTotal == this.Total)
+                return this.CalcTotal.ToString();
+            return "";
+        }
     }
 }
