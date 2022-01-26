@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace HW1
 {
+    // Class definition for BST
     public class BST
     {
         // Member variables
@@ -61,7 +62,7 @@ namespace HW1
             return false;
         }
 
-        // calls private method insert
+        // calls private method insert()
         public void insert(int val)
         {
             if (!this.Find(val))
@@ -101,6 +102,7 @@ namespace HW1
             return 0;
         }
 
+        // Calls private method calcLevel()
         public int calcLevel()
         {
             return this.calcLevel(this.root);
@@ -167,6 +169,7 @@ namespace HW1
                     this.count(tree.Right);
             }
 
+            // Check if total is correct with actual number
             if (this.CalcTotal == this.Total)
                 return this.CalcTotal.ToString();
             return "";

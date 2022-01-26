@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace HW1
 {
+    // Class definition for Node
     public class Node
     {
+        // Member variables
         private int data;
         private Node left;
         private Node right;
@@ -21,8 +23,10 @@ namespace HW1
         // Data getter and setter
         public int Data { get { return this.data; } set { this.data = value; } }
 
+        // Left ptr getter and setter
         public Node Left { get { return this.left; } set { this.left = value; } }
 
+        // Right ptr getter and setter
         public Node Right { get { return this.right; } set { this.right = value; } }
 
         //public void insert(int val)

@@ -14,10 +14,12 @@ namespace HW1
             // but is not being updated (in Cpp pointers would have been involved to ensure it was updated).
             // ->"tree" is not acting as a reference for the root<- **RESOLVED**
 
+            // Initializes t as new BST
             BST t = new BST();
 
             while (true)
             {
+                // Clears console
                 Console.Clear();
 
                 Console.WriteLine("Enter integers with spaces. ");
@@ -46,6 +48,7 @@ namespace HW1
                 // #4.3
                 Console.WriteLine("Min Levels: " + t.getMinLevel());
 
+                // Waits for user input to continue
                 Console.ReadKey();
             }
         }
