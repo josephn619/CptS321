@@ -36,7 +36,7 @@ namespace HW1
                 // #2
                 // Parse string into integers and insert into BST
                 foreach (var num in input.Split(' '))
-                    if (Convert.ToInt32(num) < 100)
+                    if (Convert.ToInt32(num) <= 100)
                         t.insert((Convert.ToInt32(num)));
 
                 // #3

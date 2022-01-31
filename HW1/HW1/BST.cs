@@ -84,9 +84,9 @@ namespace HW1
                         this.insert(tree.Right, val);
                 else
                     if (tree.Left == null)
-                    tree.Left = new Node(val);
-                else
-                    this.insert(tree, val);
+                        tree.Left = new Node(val);
+                    else
+                        this.insert(tree.Left, val);
             else
                 tree = new Node(val);
 
