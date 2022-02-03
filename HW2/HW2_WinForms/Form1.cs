@@ -16,5 +16,10 @@ namespace HW2_WinForms
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
