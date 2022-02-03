@@ -32,28 +32,34 @@ namespace HW2_WinForms
             // 1)Fix text in TextBox
             // 2)Fix test cases
             // 3)Maybe add more tests
+            // Initializes list and random var r
             List<int> myList = new List<int>(10000);
             Random r = new Random();
 
+            // Inserts elements into with random numbers in range(0,20000)
             for (int i = 0; i < myList.Capacity; i++)
             {
                 myList.Add(r.Next(0, 20000));
             }
 
+            // Calculates unique numbers using the 3 given methods
             int uniqueViaHashSet = MyDistinct.MyDistinct.HashSet(myList);
 
             int uniqueViaLowMemory = MyDistinct.MyDistinct.LowMemory(myList);
 
             int uniqueViaListSort = MyDistinct.MyDistinct.ListSort(myList);
 
+            // Formulates results for the 3 given methods in a text string
             string textHashSet = "1. HashSet method returned " + uniqueViaHashSet.ToString() + " distinct integers at O(n) time complexity with O(n) storage complexity. The reason for this is when the HashSet is initialized, it goes through the entire input list one time (size n). Due to the creation of our HashSet, we now have a dynamically allocated container that stores distinct contents from our input list. ";
 
             string textLowMemory = "2. LowMemory method returned " + uniqueViaLowMemory.ToString() + " distinct integers at O(n^2) time complexity with O(1) storage complexity. This is because there are no dynamically allocated containers used to store distinct integers. To account for that, the function goes through the list once forward, and then n times backwards (in order to find the last occurence of an integer. ";
 
             string textListSort = "3. ListSort method returned " + uniqueViaListSort.ToString() + " distinct integers at O(nlogn) + O(n) (best case) or O(n^2) + O(n) (worst case) time complexity with O(1) storage complexity. This is because we have to sort to list initially, then we go through the resulting list to find distinct integers.";
 
+            // Concatenates all prior strings
             string myText = textHashSet + textLowMemory + textListSort;
 
+            // Assigns TextBox text field to our new message
             this.TextBox.Text = myText;
         }
 

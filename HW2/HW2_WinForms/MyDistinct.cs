@@ -22,6 +22,7 @@ namespace HW2_WinForms.MyDistinct
         /// <returns>distinctIntegers.</returns>
         public static int HashSet(List<int> targetList)
         {
+            // HashSet is filled with only unique numbers, so my initial approach was unnecessary
             HashSet<int> hashList = new HashSet<int>(targetList);
 
             return hashList.Count();
@@ -78,6 +79,7 @@ namespace HW2_WinForms.MyDistinct
 
             targetList.Sort();
 
+            // Can't start at i = 0, because that will end up out of range
             for (int i = 1; i < targetList.Count(); i++)
             {
                 if (targetList[i] != targetList[i - 1])
