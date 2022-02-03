@@ -53,8 +53,11 @@ namespace HW2_WinForms.MyDistinct
         {
             int unique = 0;
 
-            for (int i = 0; i < targetList.Count; i++)
+            for (int i = 0; i < targetList.Count(); i++)
             {
+                // FindLastIndex takes Predicate<T> as parameter and finds last index of instance
+                // This is a lambda function. The x == targetList[i] says if the test element is equal to our current element
+                // The last == i essentially says if the last index is our current index, then there are no duplicates
                 if (targetList.FindLastIndex(x => x == targetList[i]) == i)
                 {
                     unique++;
@@ -71,14 +74,9 @@ namespace HW2_WinForms.MyDistinct
         /// <returns>distinctIntegers.</returns>
         public static int ListSort(List<int> targetList)
         {
-            int unique = 0;
+            int unique = 1; // the reason for this is no matter that case, our method will always be 1 short
 
             targetList.Sort();
-
-            if (targetList.ElementAt(0) == targetList.ElementAt(1) || targetList.ElementAt(targetList.Count() - 2) == targetList.ElementAt(targetList.Count() - 1))
-            {
-                unique++;
-            }
 
             for (int i = 1; i < targetList.Count(); i++)
             {
@@ -90,6 +88,5 @@ namespace HW2_WinForms.MyDistinct
 
             return unique;
         }
-
     }
 }

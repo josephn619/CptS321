@@ -47,7 +47,7 @@ namespace HW2_WinForms.MyDistinct.Tests
         [TestCase(new[] { 20000, 20000, 19999 }, ExpectedResult = 2)]
         public int TestHashSetEdgeMax(int[] testArray)
         {
-            List<int> testList = new List<int>(2);
+            List<int> testList = new List<int>(3);
             foreach (var num in testArray)
             {
                 testList.Add(num);
@@ -116,7 +116,7 @@ namespace HW2_WinForms.MyDistinct.Tests
         [TestCase(new[] { 20000, 20000, 19999 }, ExpectedResult = 2)]
         public int TestLowMemoryEdgeMax(int[] testArray)
         {
-            List<int> testList = new List<int>(2);
+            List<int> testList = new List<int>(3);
             foreach (var num in testArray)
             {
                 testList.Add(num);
@@ -185,7 +185,7 @@ namespace HW2_WinForms.MyDistinct.Tests
         [TestCase(new[] { 20000, 20000, 19999 }, ExpectedResult = 2)]
         public int TestListSortEdgeMax(int[] testArray)
         {
-            List<int> testList = new List<int>(2);
+            List<int> testList = new List<int>(3);
             foreach (var num in testArray)
             {
                 testList.Add(num);
