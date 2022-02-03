@@ -29,6 +29,9 @@ namespace HW2_WinForms
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // 1)Fix text in TextBox
+            // 2)Fix test cases
+            // 3)Maybe add more tests
             List<int> myList = new List<int>(10000);
             Random r = new Random();
 
