@@ -30,5 +30,15 @@ namespace HW2_WinForms
         private void Form1_Load(object sender, EventArgs e)
         {
         }
+
+        /// <summary>
+        /// Updates TextBox with corresponding code.
+        /// </summary>
+        /// <param name="sender">sender.</param>
+        /// <param name="e">e.</param>
+        private void TextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
