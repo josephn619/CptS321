@@ -161,12 +161,12 @@ namespace HW2_WinForms.MyDistinct.Tests
         }
 
         /// <summary>
-        /// Tests BuiltInsort method through normal case.
+        /// Tests ListSort method through normal case.
         /// </summary>
         /// <param name="testArray">testArray.</param>
         /// <returns>Assertions.</returns>
         [TestCase(new[] { 1, 1, 2, 3 }, ExpectedResult = 3)]
-        public int TestBuiltInSortNormal(int[] testArray)
+        public int TestListSortNormal(int[] testArray)
         {
             List<int> testList = new List<int>(4);
             foreach (var num in testArray)
@@ -174,16 +174,16 @@ namespace HW2_WinForms.MyDistinct.Tests
                 testList.Add(num);
             }
 
-            return MyDistinct.BuiltInSort(testList);
+            return MyDistinct.ListSort(testList);
         }
 
         /// <summary>
-        /// Tests BuiltInsort method through max edge case.
+        /// Tests ListInsert method through max edge case.
         /// </summary>
         /// <param name="testArray">testArray.</param>
         /// <returns>Assertions.</returns>
         [TestCase(new[] { 20000, 20000, 19999 }, ExpectedResult = 2)]
-        public int TestBuiltInSortEdgeMax(int[] testArray)
+        public int TestListSortEdgeMax(int[] testArray)
         {
             List<int> testList = new List<int>(2);
             foreach (var num in testArray)
@@ -191,16 +191,16 @@ namespace HW2_WinForms.MyDistinct.Tests
                 testList.Add(num);
             }
 
-            return MyDistinct.BuiltInSort(testList);
+            return MyDistinct.ListSort(testList);
         }
 
         /// <summary>
-        /// Tests BuiltInSort method through min edge case.
+        /// Tests ListSort method through min edge case.
         /// </summary>
         /// <param name="testArray">testArray.</param>
         /// <returns>Assertions.</returns>
         [TestCase(new[] { 0, 0, 1 }, ExpectedResult = 2)]
-        public int TestBuiltInSortEdgeMin(int[] testArray)
+        public int TestListSortEdgeMin(int[] testArray)
         {
             List<int> testList = new List<int>(3);
             foreach (var num in testArray)
@@ -208,25 +208,25 @@ namespace HW2_WinForms.MyDistinct.Tests
                 testList.Add(num);
             }
 
-            return MyDistinct.BuiltInSort(testList);
+            return MyDistinct.ListSort(testList);
         }
 
         /// <summary>
-        /// Tests BuiltInSort method through max exception case.
+        /// Tests ListSort method through max exception case.
         /// </summary>
         [Test]
-        public void TestBuiltInSortExceptionMax()
+        public void TestListSortExceptionMax()
         {
-            Assert.Throws<System.OverflowException>(() => MyDistinct.BuiltInSort(new List<int> { int.MaxValue, int.MaxValue }));
+            Assert.Throws<System.OverflowException>(() => MyDistinct.ListSort(new List<int> { int.MaxValue, int.MaxValue }));
         }
 
         /// <summary>
-        /// Tests BuiltInSort method through min exception case.
+        /// Tests ListSort method through min exception case.
         /// </summary>
         [Test]
-        public void TestBuiltInSortExceptionMin()
+        public void TestListSortExceptionMin()
         {
-            Assert.Throws<System.OverflowException>(() => MyDistinct.BuiltInSort(new List<int> { int.MinValue, int.MinValue }));
+            Assert.Throws<System.OverflowException>(() => MyDistinct.ListSort(new List<int> { int.MinValue, int.MinValue }));
         }
     }
 }

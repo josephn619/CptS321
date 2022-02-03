@@ -38,7 +38,6 @@ namespace HW2_WinForms
         /// <param name="e">e.</param>
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-
         }
     }
 }
