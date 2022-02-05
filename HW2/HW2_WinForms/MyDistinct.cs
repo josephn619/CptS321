@@ -46,13 +46,13 @@ namespace HW2_WinForms.MyDistinct
         }
 
         /// <summary>
-        /// Calculates distinct integers with O(1) storage complexity
+        /// Calculates distinct integers with O(1) storage complexity.
         /// </summary>
         /// <param name="targetList">targetList.</param>
         /// <returns>distinctIntegers.</returns>
         public static int LowMemory(List<int> targetList)
         {
-            int unique = 0;
+            int unique = 0; // unique integers in list
 
             for (int i = 0; i < targetList.Count(); i++)
             {
@@ -75,7 +75,7 @@ namespace HW2_WinForms.MyDistinct
         /// <returns>distinctIntegers.</returns>
         public static int ListSort(List<int> targetList)
         {
-            int unique = 1; // the reason for this is no matter that case, our method will always be 1 short
+            int unique = 1; // ListSort will always be 1 off since it starts at i=1, therefor unique starts at 1
 
             targetList.Sort();
 

@@ -1,19 +1,22 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace HW2_WinForms
+﻿namespace HW2_WinForms
 {
-    internal static class Program
+    using System;
+    using System.Windows.Forms;
+
+    /// <summary>
+    /// Calls Main() which runs application.
+    /// </summary>
+    public static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new MyForm());
         }
     }
 }
