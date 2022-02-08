@@ -18,6 +18,9 @@ namespace HW3_WinForms
     public class FibonacciTextReader : TextReader
     {
         private int numLines;
+        private int counter;
+        private BigInteger first;
+        private BigInteger second;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FibonacciTextReader"/> class.
@@ -26,6 +29,9 @@ namespace HW3_WinForms
         public FibonacciTextReader(int maxNumLines)
         {
             this.numLines = maxNumLines;
+            this.counter = 0;
+            this.first = 0;
+            this.second = 0;
         }
 
         /// <summary>
@@ -34,7 +40,24 @@ namespace HW3_WinForms
         /// <returns>next num as a string.</returns>
         public override string ReadLine()
         {
-            return " ";
+            BigInteger cur;
+            if (this.counter == 0)
+            {
+                this.counter++;
+                return "0";
+            }
+            else if (this.counter == 1)
+            {
+                this.counter++;
+                return "1";
+            }
+            else
+            {
+                cur = this.first + this.second;
+                this.first = this.second;
+                this.second = cur;
+                return cur.ToString();
+            }
         }
 
         /// <summary>
