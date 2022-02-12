@@ -42,11 +42,11 @@
             // TextBox
             // 
             this.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TextBox.Location = new System.Drawing.Point(0, 28);
+            this.TextBox.Location = new System.Drawing.Point(0, 30);
             this.TextBox.Multiline = true;
             this.TextBox.Name = "TextBox";
             this.TextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.TextBox.Size = new System.Drawing.Size(800, 422);
+            this.TextBox.Size = new System.Drawing.Size(800, 420);
             this.TextBox.TabIndex = 0;
             // 
             // menuStrip1
@@ -56,7 +56,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(800, 30);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 

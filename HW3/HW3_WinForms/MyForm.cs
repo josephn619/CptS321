@@ -46,10 +46,12 @@ namespace HW3_WinForms
         private void LoadFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Opens file from computer file system
-            OpenFileDialog loadFileInstance = new OpenFileDialog();
-            loadFileInstance.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
-            loadFileInstance.FilterIndex = 2;
-            loadFileInstance.RestoreDirectory = true;
+            OpenFileDialog loadFileInstance = new OpenFileDialog
+            {
+                Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+            };
             if (loadFileInstance.ShowDialog() == DialogResult.OK)
             {
                 // Gets text and loads to textbox
@@ -91,10 +93,12 @@ namespace HW3_WinForms
         private void SaveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Opens file to save to from computer file system
-            SaveFileDialog saveFileInstance = new SaveFileDialog();
-            saveFileInstance.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
-            saveFileInstance.FilterIndex = 2;
-            saveFileInstance.RestoreDirectory = true;
+            SaveFileDialog saveFileInstance = new SaveFileDialog
+            {
+                Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+            };
             if (saveFileInstance.ShowDialog() == DialogResult.OK)
             {
                 // Gets text and writes to file.

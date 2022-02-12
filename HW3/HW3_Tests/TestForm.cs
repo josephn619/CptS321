@@ -34,7 +34,7 @@ namespace HW3_WinForms.Tests
         [Test]
         public void TestLoadFibonacciNormal()
         {
-            FibonacciTextReader fib = new FibonacciTextReader(3);
+            FibonacciTextReader fib = new (3);
             string testResult = fib.ReadToEnd();
 
             string expectedResult = "1: 0\r\n2: 1\r\n3: 1\r\n";
@@ -48,7 +48,7 @@ namespace HW3_WinForms.Tests
         [Test]
         public void TestLoadFibonacciEdgeMin()
         {
-            FibonacciTextReader fib = new FibonacciTextReader(0);
+            FibonacciTextReader fib = new (0);
             string testResult = fib.ReadToEnd();
 
             Assert.AreEqual(null, testResult);
@@ -60,7 +60,7 @@ namespace HW3_WinForms.Tests
         [Test]
         public void TestLoadFibonacciException()
         {
-            FibonacciTextReader fib = new FibonacciTextReader(-1);
+            FibonacciTextReader fib = new (-1);
             Assert.Throws<System.ArgumentOutOfRangeException>(() => fib.ReadToEnd());
         }
     }

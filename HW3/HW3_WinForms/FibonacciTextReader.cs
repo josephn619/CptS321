@@ -17,7 +17,7 @@ namespace HW3_WinForms
     /// </summary>
     public class FibonacciTextReader : TextReader
     {
-        private int numLines;
+        private readonly int numLines;
         private int index;
         private BigInteger first;
         private BigInteger second;
