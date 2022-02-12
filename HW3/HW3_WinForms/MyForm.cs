@@ -34,6 +34,7 @@ namespace HW3_WinForms
 
         private void LoadText(TextReader r)
         {
+            // Loads text into text box
             this.TextBox.Text = r.ReadToEnd();
             r.Dispose();
         }
