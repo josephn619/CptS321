@@ -5,7 +5,14 @@
 namespace HW3_WinForms.Tests
 {
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using NUnit.Framework;
 
     /// <summary>
@@ -44,9 +51,7 @@ namespace HW3_WinForms.Tests
             FibonacciTextReader fib = new FibonacciTextReader(0);
             string testResult = fib.ReadToEnd();
 
-            string expectedResult = " ";
-
-            Assert.AreEqual(expectedResult, testResult);
+            Assert.AreEqual(null, testResult);
         }
 
         /// <summary>

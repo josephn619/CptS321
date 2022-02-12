@@ -39,18 +39,20 @@ namespace HW3_WinForms
         }
 
         /// <summary>
-        /// Loads from selected file.
+        /// Loads from selected file in file system.
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>
         private void LoadFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Opens file from computer file system
             OpenFileDialog loadFileInstance = new OpenFileDialog();
             loadFileInstance.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
             loadFileInstance.FilterIndex = 2;
             loadFileInstance.RestoreDirectory = true;
             if (loadFileInstance.ShowDialog() == DialogResult.OK)
             {
+                // Gets text and loads to textbox
                 StreamReader readStreamInstance = new StreamReader(loadFileInstance.FileName);
                 this.LoadText(readStreamInstance);
                 readStreamInstance.Close();
@@ -64,6 +66,7 @@ namespace HW3_WinForms
         /// <param name="e">e.</param>
         private void LoadFirst50FibonacciToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // New fib instance
             FibonacciTextReader newFibSequence = new FibonacciTextReader(50);
             this.LoadText(newFibSequence);
         }
@@ -75,23 +78,26 @@ namespace HW3_WinForms
         /// <param name="e">e.</param>
         private void LoadFirst100FibonacciToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // New fib instance
             FibonacciTextReader newFibSequence = new FibonacciTextReader(100);
             this.LoadText(newFibSequence);
         }
 
         /// <summary>
-        /// Saves file to output file.
+        /// Saves file to output file in file system.
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>
         private void SaveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Opens file to save to from computer file system
             SaveFileDialog saveFileInstance = new SaveFileDialog();
             saveFileInstance.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
             saveFileInstance.FilterIndex = 2;
             saveFileInstance.RestoreDirectory = true;
             if (saveFileInstance.ShowDialog() == DialogResult.OK)
             {
+                // Gets text and writes to file.
                 string fileName = saveFileInstance.FileName;
                 StreamWriter writeStreamInstance = new StreamWriter(File.Create(fileName));
                 writeStreamInstance.Write(this.TextBox.Text);

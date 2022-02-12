@@ -41,16 +41,22 @@ namespace HW3_WinForms
         public override string ReadLine()
         {
             BigInteger cur;
+
+            // Base Case index = 0
             if (this.index == 0)
             {
                 this.index++;
                 return "0";
             }
+
+            // Base Case index = 1
             else if (this.index == 1)
             {
                 this.index++;
                 return "1";
             }
+
+            // Computes cur through prior 2 numbers
             else
             {
                 // no need to increment index anymore
@@ -69,10 +75,13 @@ namespace HW3_WinForms
         {
             StringBuilder fibSequence = new StringBuilder();
 
+            // Out of range error checking
             if (this.numLines < 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
+
+            // Input size is 0
             else if (this.numLines == 0)
             {
                 fibSequence.Append(" ");
@@ -83,9 +92,12 @@ namespace HW3_WinForms
                 {
                     fibSequence.Append(i + 1).Append(": ").AppendLine(this.ReadLine());
                 }
+
+                // String Builder to String
+                return fibSequence.ToString();
             }
 
-            return fibSequence.ToString();
+            return null;
         }
     }
 }
