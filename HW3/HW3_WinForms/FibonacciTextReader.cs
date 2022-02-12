@@ -67,7 +67,14 @@ namespace HW3_WinForms
         /// <returns>entire fibonacci sequence.</returns>
         public override string ReadToEnd()
         {
-            return " ";
+            StringBuilder fibSequence = new StringBuilder();
+
+            for (int i = 0; i < this.numLines; i++)
+            {
+                fibSequence.Append(i + 1).Append(": ").AppendLine(this.ReadLine());
+            }
+
+            return fibSequence.ToString();
         }
 
     }
