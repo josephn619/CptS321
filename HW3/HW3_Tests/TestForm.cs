@@ -5,6 +5,7 @@
 namespace HW3_WinForms.Tests
 {
     using System;
+    using System.Text;
     using NUnit.Framework;
 
     /// <summary>
@@ -20,28 +21,44 @@ namespace HW3_WinForms.Tests
         {
         }
 
+        /// <summary>
+        /// Tests Load Ability of FibonacciTextReader.
+        /// </summary>
         [Test]
-        public void TestLoadFile()
+        public void TestLoadFibonacciNormal()
         {
+            FibonacciTextReader fib = new FibonacciTextReader(3);
+            StringBuilder testResult = new StringBuilder();
+            testResult.Append(fib.ReadToEnd());
 
+            string expectedResult = "1: 0\r\n2: 1\r\n3: 1\r\n";
+
+            Assert.AreEqual(expectedResult, testResult);
         }
 
+        /// <summary>
+        /// Tests edge case where no elements are added.
+        /// </summary>
         [Test]
-        public void TestLoadFromFile()
+        public void TestLoadFibonacciEdgeMin()
         {
+            FibonacciTextReader fib = new FibonacciTextReader(0);
+            StringBuilder testResult = new StringBuilder();
+            testResult.Append(fib.ReadToEnd());
 
+            string expectedResult = " ";
+
+            Assert.AreEqual(expectedResult, testResult);
         }
 
+        /// <summary>
+        /// Tests -1 exception case for Fibbonaci Text Reader.
+        /// </summary>
         [Test]
-        public void TestLoadFibonacciFirstHalf()
+        public void TestLoadFibonacciException()
         {
-
-        }
-
-        [Test]
-        public void TestLoadFibonacciAll()
-        {
-
+            FibonacciTextReader fib = new FibonacciTextReader(-1);
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => fib.ReadToEnd());
         }
     }
 }

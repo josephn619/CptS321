@@ -18,7 +18,7 @@ namespace HW3_WinForms
     public class FibonacciTextReader : TextReader
     {
         private int numLines;
-        private int counter;
+        private int index;
         private BigInteger first;
         private BigInteger second;
 
@@ -29,7 +29,7 @@ namespace HW3_WinForms
         public FibonacciTextReader(int maxNumLines)
         {
             this.numLines = maxNumLines;
-            this.counter = 0;
+            this.index = 0;
             this.first = 0;
             this.second = 0;
         }
@@ -41,18 +41,19 @@ namespace HW3_WinForms
         public override string ReadLine()
         {
             BigInteger cur;
-            if (this.counter == 0)
+            if (this.index == 0)
             {
-                this.counter++;
+                this.index++;
                 return "0";
             }
-            else if (this.counter == 1)
+            else if (this.index == 1)
             {
-                this.counter++;
+                this.index++;
                 return "1";
             }
             else
             {
+                // no need to increment index anymore
                 cur = this.first + this.second;
                 this.first = this.second;
                 this.second = cur;

@@ -33,7 +33,7 @@ namespace HW3_WinForms
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>
-        public void LoadFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
@@ -43,7 +43,7 @@ namespace HW3_WinForms
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>
-        public void LoadFirst50FibonacciToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadFirst50FibonacciToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
@@ -53,7 +53,7 @@ namespace HW3_WinForms
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>
-        public void LoadFirst100FibonacciToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadFirst100FibonacciToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
@@ -63,7 +63,7 @@ namespace HW3_WinForms
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>
-        public void SaveToFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
