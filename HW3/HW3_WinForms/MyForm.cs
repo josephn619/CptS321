@@ -28,6 +28,16 @@ namespace HW3_WinForms
             this.InitializeComponent();
         }
 
+        private void MyForm_Load(object sender, EventArgs e)
+        {
+        }
+
+        private void LoadText(TextReader r)
+        {
+            this.TextBox.Text = r.ReadToEnd();
+            r.Dispose();
+        }
+
         /// <summary>
         /// Loads from selected file.
         /// </summary>
@@ -35,7 +45,16 @@ namespace HW3_WinForms
         /// <param name="e">e.</param>
         private void LoadFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            OpenFileDialog loadFileInstance = new OpenFileDialog();
+            loadFileInstance.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
+            loadFileInstance.FilterIndex = 2;
+            loadFileInstance.RestoreDirectory = true;
+            if (loadFileInstance.ShowDialog() == DialogResult.OK)
+            {
+                StreamReader readStreamInstance = new StreamReader(loadFileInstance.FileName);
+                this.LoadText(readStreamInstance);
+                readStreamInstance.Close();
+            }
         }
 
         /// <summary>
@@ -45,7 +64,8 @@ namespace HW3_WinForms
         /// <param name="e">e.</param>
         private void LoadFirst50FibonacciToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FibonacciTextReader newFibSequence = new FibonacciTextReader(50);
+            this.LoadText(newFibSequence);
         }
 
         /// <summary>
@@ -55,7 +75,8 @@ namespace HW3_WinForms
         /// <param name="e">e.</param>
         private void LoadFirst100FibonacciToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FibonacciTextReader newFibSequence = new FibonacciTextReader(100);
+            this.LoadText(newFibSequence);
         }
 
         /// <summary>
@@ -65,17 +86,17 @@ namespace HW3_WinForms
         /// <param name="e">e.</param>
         private void SaveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void MyForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LoadFile(TextReader r)
-        {
-
+            SaveFileDialog saveFileInstance = new SaveFileDialog();
+            saveFileInstance.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
+            saveFileInstance.FilterIndex = 2;
+            saveFileInstance.RestoreDirectory = true;
+            if (saveFileInstance.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = saveFileInstance.FileName;
+                StreamWriter writeStreamInstance = new StreamWriter(File.Create(fileName));
+                writeStreamInstance.Write(this.TextBox.Text);
+                writeStreamInstance.Dispose();
+            }
         }
     }
 }

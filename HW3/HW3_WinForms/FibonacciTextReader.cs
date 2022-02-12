@@ -87,6 +87,5 @@ namespace HW3_WinForms
 
             return fibSequence.ToString();
         }
-
     }
 }
