@@ -28,8 +28,7 @@ namespace HW3_WinForms.Tests
         public void TestLoadFibonacciNormal()
         {
             FibonacciTextReader fib = new FibonacciTextReader(3);
-            StringBuilder testResult = new StringBuilder();
-            testResult.Append(fib.ReadToEnd());
+            string testResult = fib.ReadToEnd();
 
             string expectedResult = "1: 0\r\n2: 1\r\n3: 1\r\n";
 
@@ -43,8 +42,7 @@ namespace HW3_WinForms.Tests
         public void TestLoadFibonacciEdgeMin()
         {
             FibonacciTextReader fib = new FibonacciTextReader(0);
-            StringBuilder testResult = new StringBuilder();
-            testResult.Append(fib.ReadToEnd());
+            string testResult = fib.ReadToEnd();
 
             string expectedResult = " ";
 

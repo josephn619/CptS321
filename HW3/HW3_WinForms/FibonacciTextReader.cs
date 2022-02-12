@@ -31,7 +31,7 @@ namespace HW3_WinForms
             this.numLines = maxNumLines;
             this.index = 0;
             this.first = 0;
-            this.second = 0;
+            this.second = 1;
         }
 
         /// <summary>
@@ -69,9 +69,20 @@ namespace HW3_WinForms
         {
             StringBuilder fibSequence = new StringBuilder();
 
-            for (int i = 0; i < this.numLines; i++)
+            if (this.numLines < 0)
             {
-                fibSequence.Append(i + 1).Append(": ").AppendLine(this.ReadLine());
+                throw new ArgumentOutOfRangeException();
+            }
+            else if (this.numLines == 0)
+            {
+                fibSequence.Append(" ");
+            }
+            else
+            {
+                for (int i = 0; i < this.numLines; i++)
+                {
+                    fibSequence.Append(i + 1).Append(": ").AppendLine(this.ReadLine());
+                }
             }
 
             return fibSequence.ToString();
