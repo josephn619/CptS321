@@ -6,6 +6,7 @@ namespace SpreadsheetEngine
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -13,11 +14,12 @@ namespace SpreadsheetEngine
     /// <summary>
     /// Cell class for spreadsheet application.
     /// </summary>
-    public abstract class Cell
+    public abstract class Cell : INotifyPropertyChanged
     {
         private readonly int rowIndex;
         private readonly int colIndex;
         private string text;
+        private int val;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Cell"/> class.
@@ -28,7 +30,14 @@ namespace SpreadsheetEngine
         {
             this.rowIndex = row;
             this.colIndex = col;
+            this.text = string.Empty;
+            this.val = 0;
         }
+
+        /// <summary>
+        /// Event for property changed.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
         /// <summary>
         /// Gets rowIndex.
@@ -47,11 +56,45 @@ namespace SpreadsheetEngine
         }
 
         /// <summary>
-        /// Gets text.
+        /// Gets or sets text.
         /// </summary>
         public string Text
         {
-            get { return this.text; }
+            get
+            {
+                return this.text;
+            }
+
+            set
+            {
+                if (this.text != value)
+                {
+                    this.text = value;
+
+                    this.PropertyChanged(this, new PropertyChangedEventArgs("Text"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets val.
+        /// </summary>
+        public int Val
+        {
+            get
+            {
+                return this.val;
+            }
+
+            protected internal set
+            {
+                if (this.val != value)
+                {
+                    this.val = value;
+
+                    this.PropertyChanged(this, new PropertyChangedEventArgs("Val"));
+                }
+            }
         }
     }
 }
