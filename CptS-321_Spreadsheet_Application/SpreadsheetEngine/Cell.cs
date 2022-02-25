@@ -44,7 +44,10 @@ namespace SpreadsheetEngine
         /// </summary>
         public int RowIndex
         {
-            get { return this.rowIndex; }
+            get
+            {
+                return this.rowIndex;
+            }
         }
 
         /// <summary>
@@ -52,7 +55,10 @@ namespace SpreadsheetEngine
         /// </summary>
         public int ColIndex
         {
-            get { return this.colIndex; }
+            get
+            {
+                return this.colIndex;
+            }
         }
 
         /// <summary>
