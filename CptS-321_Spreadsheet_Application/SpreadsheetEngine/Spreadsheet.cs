@@ -36,7 +36,7 @@ namespace SpreadsheetEngine
                 for (int j = 0; j < this.nCols; j++)
                 {
                     this.cells[i, j] = new NewCell(i, j);
-                    this.cells[i, j].PropertyChanged += this.SpreadsheetPropertyChanged;
+                    this.cells[i, j].PropertyChanged += this.Spreadsheet_CellPropertyChanged;
                 }
             }
         }
@@ -84,10 +84,20 @@ namespace SpreadsheetEngine
             return null;
         }
 
-        private void SpreadsheetPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void Spreadsheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Text")
             {
+                if (((Cell)sender).Text[0] == '=')
+                {
+                    int col = ((Cell)sender).Text[1] - 65;
+                    int row = Convert.ToInt32(((Cell)sender).Text.Substring(2)) - 1;
+                    ((Cell)sender).Val = this.cells[row, col].Val;
+                }
+                else
+                {
+                    ((Cell)sender).Val = ((Cell)sender).Text;
+                }
             }
 
             this.CellPropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(e.PropertyName));

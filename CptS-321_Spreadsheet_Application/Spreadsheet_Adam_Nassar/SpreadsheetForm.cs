@@ -13,12 +13,15 @@ namespace Spreadsheet_Adam_Nassar
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using SpreadsheetEngine;
 
     /// <summary>
     /// Basic Form Class.
     /// </summary>
     public partial class SpreadsheetForm : Form
     {
+        private Spreadsheet mySpreadsheet = new Spreadsheet(50, 26);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpreadsheetForm"/> class.
         /// </summary>

@@ -19,7 +19,7 @@ namespace SpreadsheetEngine
         private readonly int rowIndex;
         private readonly int colIndex;
         private string text;
-        private int val;
+        private string val;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Cell"/> class.
@@ -31,7 +31,7 @@ namespace SpreadsheetEngine
             this.rowIndex = row;
             this.colIndex = col;
             this.text = string.Empty;
-            this.val = 0;
+            this.val = String.Empty;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace SpreadsheetEngine
         /// <summary>
         /// Gets or sets val.
         /// </summary>
-        public int Val
+        public string Val
         {
             get
             {
