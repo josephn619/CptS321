@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spreadsheet_Adam_Nassar", "Spreadsheet_Adam_Nassar\Spreadsheet_Adam_Nassar.csproj", "{F015341D-2ED8-48D9-8E7C-8A22A85D32A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spreadsheet_Tests", "Spreadsheet_Tests\Spreadsheet_Tests.csproj", "{0C73F2FC-E6C8-475A-A2A9-F1179C2ACE83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spreadsheet_Tests", "Spreadsheet_Tests\Spreadsheet_Tests.csproj", "{0C73F2FC-E6C8-475A-A2A9-F1179C2ACE83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetEngine", "SpreadsheetEngine\SpreadsheetEngine.csproj", "{6E546CFF-CBB1-420E-B708-56BDBA43238D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0C73F2FC-E6C8-475A-A2A9-F1179C2ACE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C73F2FC-E6C8-475A-A2A9-F1179C2ACE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C73F2FC-E6C8-475A-A2A9-F1179C2ACE83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E546CFF-CBB1-420E-B708-56BDBA43238D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E546CFF-CBB1-420E-B708-56BDBA43238D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E546CFF-CBB1-420E-B708-56BDBA43238D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E546CFF-CBB1-420E-B708-56BDBA43238D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
