@@ -16,8 +16,8 @@ namespace SpreadsheetEngine
     /// </summary>
     public class Spreadsheet
     {
-        private int nRows;
-        private int nCols;
+        private readonly int nRows;
+        private readonly int nCols;
         private Cell[,] cells;
 
         /// <summary>
@@ -88,10 +88,11 @@ namespace SpreadsheetEngine
         {
             if (e.PropertyName == "Text")
             {
-                if (((Cell)sender).Text[0] == '=')
+                if (((Cell)sender).Text.StartsWith("="))
                 {
-                    int col = ((Cell)sender).Text[1] - 65;
-                    int row = Convert.ToInt32(((Cell)sender).Text.Substring(2)) - 1;
+                    string formula = ((Cell)sender).Text.Substring(1);
+                    int col = Convert.ToInt32(formula[0]) - 'A';
+                    int row = Convert.ToInt32(formula.Substring(1)) - 1;
                     ((Cell)sender).Val = this.cells[row, col].Val;
                 }
                 else
@@ -100,7 +101,7 @@ namespace SpreadsheetEngine
                 }
             }
 
-            this.CellPropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(e.PropertyName));
+            this.CellPropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Refresh"));
         }
     }
 }

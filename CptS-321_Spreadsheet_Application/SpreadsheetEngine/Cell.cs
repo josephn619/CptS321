@@ -31,7 +31,7 @@ namespace SpreadsheetEngine
             this.rowIndex = row;
             this.colIndex = col;
             this.text = string.Empty;
-            this.val = String.Empty;
+            this.val = string.Empty;
         }
 
         /// <summary>

@@ -20,13 +20,15 @@ namespace Spreadsheet_Adam_Nassar
     /// </summary>
     public partial class SpreadsheetForm : Form
     {
-        private Spreadsheet mySpreadsheet = new Spreadsheet(50, 26);
+        private Spreadsheet mySpreadsheet;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpreadsheetForm"/> class.
         /// </summary>
         public SpreadsheetForm()
         {
+            this.mySpreadsheet = new Spreadsheet(50, 26);
+
             this.InitializeComponent();
         }
 
@@ -48,6 +50,26 @@ namespace Spreadsheet_Adam_Nassar
             {
                 this.DataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
             }
+        }
+
+        private void Refresh_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Refresh")
+            {
+                Cell refreshCell = (Cell)sender;
+
+                if (refreshCell != null)
+                {
+                    int row = refreshCell.RowIndex;
+                    int col = refreshCell.ColIndex;
+
+                    this.DataGridView.Rows[row].Cells[col].Value = refreshCell.Val;
+                }
+            }
+        }
+
+        private void Demo_Button_Click(object sender, EventArgs e)
+        {
         }
     }
 }
