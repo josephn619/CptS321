@@ -2,7 +2,7 @@
 // Copyright (c) Adam Nassar 11588762. All rights reserved.
 // </copyright>
 
-namespace SpreadsheetEngine
+namespace Cpts321
 {
     using System;
     using System.Collections.Generic;

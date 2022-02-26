@@ -2,7 +2,7 @@
 // Copyright (c) Adam Nassar 11588762. All rights reserved.
 // </copyright>
 
-namespace SpreadsheetEngine
+namespace Cpts321
 {
     using System;
     using System.Collections.Generic;
@@ -36,6 +36,8 @@ namespace SpreadsheetEngine
                 for (int j = 0; j < this.nCols; j++)
                 {
                     this.cells[i, j] = new NewCell(i, j);
+                    this.cells[i, j].Text = string.Empty;
+
                     this.cells[i, j].PropertyChanged += this.Spreadsheet_CellPropertyChanged;
                 }
             }
@@ -88,11 +90,11 @@ namespace SpreadsheetEngine
         {
             if (e.PropertyName == "Text")
             {
-                if (((Cell)sender).Text.StartsWith("="))
+                if (((Cell)sender).Text[0] == '=')
                 {
-                    string formula = ((Cell)sender).Text.Substring(1);
-                    int col = Convert.ToInt32(formula[0]) - 'A';
-                    int row = Convert.ToInt32(formula.Substring(1)) - 1;
+                    string formula = ((Cell)sender).Text.Substring(0);
+                    int col = Convert.ToInt32(formula[1]) - 'A';
+                    int row = Convert.ToInt32(formula.Substring(2)) - 1;
                     ((Cell)sender).Val = this.cells[row, col].Val;
                 }
                 else

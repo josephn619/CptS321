@@ -13,23 +13,24 @@ namespace Spreadsheet_Adam_Nassar
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Forms;
-    using SpreadsheetEngine;
 
     /// <summary>
     /// Basic Form Class.
     /// </summary>
     public partial class SpreadsheetForm : Form
     {
-        private Spreadsheet mySpreadsheet;
+        private Cpts321.Spreadsheet mySpreadsheet;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpreadsheetForm"/> class.
         /// </summary>
         public SpreadsheetForm()
         {
-            this.mySpreadsheet = new Spreadsheet(50, 26);
+            this.mySpreadsheet = new Cpts321.Spreadsheet(50, 26);
 
             this.InitializeComponent();
+
+            this.mySpreadsheet.CellPropertyChanged += this.Refresh_PropertyChanged;
         }
 
         private void SpreadsheetForm_Load(object sender, EventArgs e)
@@ -56,7 +57,7 @@ namespace Spreadsheet_Adam_Nassar
         {
             if (e.PropertyName == "Refresh")
             {
-                Cell refreshCell = (Cell)sender;
+                Cpts321.Cell refreshCell = (Cpts321.Cell)sender;
 
                 if (refreshCell != null)
                 {
@@ -70,6 +71,32 @@ namespace Spreadsheet_Adam_Nassar
 
         private void Demo_Button_Click(object sender, EventArgs e)
         {
+            Random randomCell = new Random();
+
+            for (int i = 0; i < 50; i++)
+            {
+                int col = randomCell.Next(1, 26);
+                int row = randomCell.Next(1, 50);
+
+                Cpts321.Cell initCell = this.mySpreadsheet.GetCell(row, col);
+                initCell.Text = "Random Placement";
+            }
+
+            for (int i = 0; i < 50; i++)
+            {
+                this.NamePlacement(i, 1, "This is cell B");
+            }
+
+            for (int i = 0; i < 50; i++)
+            {
+                this.NamePlacement(i, 0, "=B");
+            }
+        }
+
+        private void NamePlacement(int rowNumber, int col, string message)
+        {
+            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(rowNumber, col);
+            initCell.Text = "This is cell B" + (rowNumber + 1);
         }
     }
 }

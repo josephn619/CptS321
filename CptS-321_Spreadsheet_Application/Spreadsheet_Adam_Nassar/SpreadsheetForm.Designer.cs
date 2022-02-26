@@ -38,17 +38,16 @@
             this.DataGridView.AllowUserToAddRows = false;
             this.DataGridView.AllowUserToDeleteRows = false;
             this.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataGridView.Location = new System.Drawing.Point(0, 0);
             this.DataGridView.Name = "DataGridView";
             this.DataGridView.RowHeadersWidth = 51;
             this.DataGridView.RowTemplate.Height = 24;
-            this.DataGridView.Size = new System.Drawing.Size(800, 444);
+            this.DataGridView.Size = new System.Drawing.Size(1333, 421);
             this.DataGridView.TabIndex = 0;
             // 
             // Demo_Button
             // 
-            this.Demo_Button.Location = new System.Drawing.Point(172, 200);
+            this.Demo_Button.Location = new System.Drawing.Point(447, 446);
             this.Demo_Button.Name = "Demo_Button";
             this.Demo_Button.Size = new System.Drawing.Size(436, 52);
             this.Demo_Button.TabIndex = 1;
@@ -60,7 +59,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 444);
+            this.ClientSize = new System.Drawing.Size(1333, 533);
             this.Controls.Add(this.Demo_Button);
             this.Controls.Add(this.DataGridView);
             this.Name = "SpreadsheetForm";
