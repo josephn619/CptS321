@@ -1,4 +1,4 @@
-// <copyright file="Tests.cs" company="Adam Nassar 11588762">
+// <copyright file="HW4Tests.cs" company="Adam Nassar 11588762">
 // Copyright (c) Adam Nassar 11588762. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace Spreadsheet_Adam_Nassar.Tests
     /// Basic Test Class for Tests.
     /// </summary>
     [TestFixture]
-    public class Tests
+    public class HW4Tests
     {
         private Cpts321.Spreadsheet testSpreadsheet = new Cpts321.Spreadsheet(2, 2);
 

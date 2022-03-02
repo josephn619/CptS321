@@ -13,11 +13,9 @@ namespace Cpts321
     /// <summary>
     /// Class for binary operators.
     /// </summary>
-    public class BinaryOperator : Node
+    public abstract class BinaryOperator : Node
     {
         private char op;
-        private Node left;
-        private Node right;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryOperator"/> class.
@@ -26,8 +24,8 @@ namespace Cpts321
         public BinaryOperator(char newOperator)
         {
             this.op = newOperator;
-            this.left = null;
-            this.right = null;
+            this.Left = null;
+            this.Right = null;
         }
 
         /// <summary>
