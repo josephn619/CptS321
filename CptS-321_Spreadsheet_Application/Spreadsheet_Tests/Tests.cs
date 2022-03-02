@@ -26,7 +26,6 @@ namespace Spreadsheet_Adam_Nassar.Tests
             Assert.AreEqual(this.testSpreadsheet.GetCell(1, 1).Text, "This is a test");
         }
 
-
         /// <summary>
         /// Test row number.
         /// </summary>
@@ -45,6 +44,5 @@ namespace Spreadsheet_Adam_Nassar.Tests
         {
             Assert.AreEqual(this.testSpreadsheet.ColCount, 2);
         }
-
     }
 }

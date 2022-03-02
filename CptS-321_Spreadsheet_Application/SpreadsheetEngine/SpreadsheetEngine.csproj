@@ -41,10 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinaryOperator.cs" />
     <Compile Include="Cell.cs" />
+    <Compile Include="Constant.cs" />
+    <Compile Include="ExpressionTree.cs" />
     <Compile Include="NewCell.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spreadsheet.cs" />
+    <Compile Include="Variable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

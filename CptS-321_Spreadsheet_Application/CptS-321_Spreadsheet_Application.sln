@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spreadsheet_Tests", "Spread
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetEngine", "SpreadsheetEngine\SpreadsheetEngine.csproj", "{6E546CFF-CBB1-420E-B708-56BDBA43238D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpTreeConsole", "ExpTreeConsole\ExpTreeConsole.csproj", "{5C44F205-495F-4892-8320-7D65EC1AB4BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6E546CFF-CBB1-420E-B708-56BDBA43238D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E546CFF-CBB1-420E-B708-56BDBA43238D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E546CFF-CBB1-420E-B708-56BDBA43238D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C44F205-495F-4892-8320-7D65EC1AB4BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C44F205-495F-4892-8320-7D65EC1AB4BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C44F205-495F-4892-8320-7D65EC1AB4BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C44F205-495F-4892-8320-7D65EC1AB4BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
