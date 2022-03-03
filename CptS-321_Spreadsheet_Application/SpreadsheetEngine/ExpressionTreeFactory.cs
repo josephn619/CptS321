@@ -32,9 +32,9 @@ namespace Cpts321
                     return new Multiply();
                 case '/':
                     return new Divide();
+                default:
+                    throw new NotSupportedException();
             }
-
-            return null;
         }
     }
 }

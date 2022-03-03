@@ -26,7 +26,7 @@ namespace Cpts321
         /// <param name="expression">expression.</param>
         public ExpressionTree(string expression)
         {
-            // this.root = this.Compile(expression);
+            this.root = this.Compile(expression);
             this.expression = expression;
         }
 
@@ -43,8 +43,7 @@ namespace Cpts321
             set
             {
                 this.expression = value;
-
-                // this.root = this.Compile(value);
+                this.root = this.Compile(value);
             }
         }
 
@@ -69,12 +68,14 @@ namespace Cpts321
 
         private double Evaluate(Node newNode)
         {
+            // Checks if Constant type.
             Constant testConst = newNode as Constant;
             if (testConst != null)
             {
                 return testConst.Value;
             }
 
+            // Checks if Var type.
             Variable testVar = newNode as Variable;
             if (testVar != null)
             {
@@ -89,10 +90,68 @@ namespace Cpts321
                 }
             }
 
+            // Checks if BinaryOperator type.
             BinaryOperator testOp = newNode as BinaryOperator;
             if (testOp != null)
             {
                 return testOp.Evaluate(this.Evaluate(testOp.Left), this.Evaluate(testOp.Right));
+            }
+
+            throw new NotSupportedException();
+        }
+
+        private Node Compile(string expression)
+        {
+            // Checks if empty.
+            if (string.IsNullOrEmpty(expression))
+            {
+                return null;
+            }
+
+            // Recursive implementation that compiles expression string.
+            Node newNode = this.GetNode(expression);
+            if (newNode != null)
+            {
+                return newNode;
+            }
+
+            return null;
+        }
+
+        private Node GetNode(string expression)
+        {
+            char[] operators = { '+', '-', '*', '/' };
+
+            // Looks for operators in given expression string and then compiles left and right subtrings.
+            foreach (char op in operators)
+            {
+                for (int expressionIndex = expression.Length - 1; expressionIndex >= 0; expressionIndex--)
+                {
+                    if (expression[expressionIndex] == op)
+                    {
+                        BinaryOperator o = ExpressionTreeFactory.Create(expression[expressionIndex]);
+                        o.Left = this.Compile(expression.Substring(0, expressionIndex));
+                        o.Right = this.Compile(expression.Substring(expressionIndex + 1));
+                        return o;
+                    }
+                }
+            }
+
+            // If expression is constant and returns as such, otherwise expression is var.
+            double number = 0;
+            if (double.TryParse(expression, out number))
+            {
+                return new Constant()
+                {
+                    Value = number,
+                };
+            }
+            else
+            {
+                return new Variable()
+                {
+                    Var = expression,
+                };
             }
 
             throw new NotSupportedException();

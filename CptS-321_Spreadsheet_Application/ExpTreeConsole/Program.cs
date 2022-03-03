@@ -57,9 +57,10 @@ namespace ExpTreeConsole
                         mainExpTree.SetVariable(name, int.Parse(value));
                         break;
                     case 3:
-                        // Console.WriteLine("Result: " + mainExpTree.Evaluate());
+                        Console.WriteLine("Result: " + mainExpTree.Evaluate());
                         break;
                     case 4:
+                        Console.WriteLine("Done");
                         Environment.Exit(1);
                         break;
                 }

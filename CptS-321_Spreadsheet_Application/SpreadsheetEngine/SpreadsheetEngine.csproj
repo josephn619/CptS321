@@ -47,6 +47,7 @@
     <Compile Include="Constant.cs" />
     <Compile Include="Divide.cs" />
     <Compile Include="ExpressionTree.cs" />
+    <Compile Include="ExpressionTreeFactory.cs" />
     <Compile Include="Multiply.cs" />
     <Compile Include="NewCell.cs" />
     <Compile Include="Node.cs" />
