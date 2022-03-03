@@ -53,5 +53,45 @@ namespace Cpts321
         {
             this.variableDict.Add(variableName, variableValue);
         }
+
+        /// <summary>
+        /// Calls private Evaluate.
+        /// </summary>
+        /// <returns>Evaluted Root.</returns>
+        public double Evaluate()
+        {
+            return this.Evaluate(this.root);
+        }
+
+        private double Evaluate(Node newNode)
+        {
+            Constant testConst = newNode as Constant;
+            if (testConst != null)
+            {
+                return testConst.Value;
+            }
+
+            Variable testVar = newNode as Variable;
+            if (testVar != null)
+            {
+                double number;
+                if (this.variableDict.TryGetValue(testVar.Var, out number))
+                {
+                    return number;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+            BinaryOperator testOp = newNode as BinaryOperator;
+            if (testOp != null)
+            {
+                return testOp.Evaluate(this.Evaluate(testOp.Left), this.Evaluate(testOp.Right));
+            }
+
+            throw new NotSupportedException();
+        }
     }
 }
