@@ -29,7 +29,7 @@ namespace ExpTreeConsole
                 int option = 0;
                 do
                 {
-                    Console.WriteLine("Menu: Current Expression = " + mainExpTree.Expression + "\n1. Enter a new expression. \n2. Set a variable value. \n3. Evaluate Tree. \n4. Quit. \nEnter Option: ");
+                    Console.WriteLine("-=+=-=+=-Menu-=+=-=+=- \nCurrent Expression is " + mainExpTree.Expression + "\n1. Enter a new expression. \n2. Set a variable value. \n3. Evaluate Tree. \n4. Quit. \nEnter Option: ");
                     try
                     {
                         // You could also do as if statement (if appoach found in case 2)
@@ -48,6 +48,8 @@ namespace ExpTreeConsole
                     }
                 }
                 while (option < 1 || option > 4);
+
+                Console.Clear();
 
                 switch (option)
                 {
@@ -74,13 +76,17 @@ namespace ExpTreeConsole
 
                         break;
                     case 3:
-                        Console.WriteLine("Result: " + mainExpTree.Evaluate());
+                        Console.WriteLine("Current Expression is " + mainExpTree.Expression + "\n" + "Result: " + mainExpTree.Evaluate());
                         break;
                     case 4:
                         Console.WriteLine("Done");
                         Environment.Exit(1);
                         break;
                 }
+
+                Console.WriteLine("Press any key.");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
     }
