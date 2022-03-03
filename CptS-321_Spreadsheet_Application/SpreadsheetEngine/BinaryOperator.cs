@@ -53,5 +53,13 @@ namespace Cpts321
         /// Gets or sets right.
         /// </summary>
         public Node Right { get; set; }
+
+        /// <summary>
+        /// Abstract Evaluate method.
+        /// </summary>
+        /// <param name="left">left.</param>
+        /// <param name="right">right.</param>
+        /// <returns>Evaluated expression.</returns>
+        public abstract double Evaluate(double left, double right);
     }
 }
