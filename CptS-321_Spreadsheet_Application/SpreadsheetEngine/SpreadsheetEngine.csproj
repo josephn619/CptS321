@@ -41,14 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Add.cs" />
     <Compile Include="BinaryOperator.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Constant.cs" />
+    <Compile Include="Divide.cs" />
     <Compile Include="ExpressionTree.cs" />
+    <Compile Include="Multiply.cs" />
     <Compile Include="NewCell.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spreadsheet.cs" />
+    <Compile Include="Subtract.cs" />
     <Compile Include="Variable.cs" />
   </ItemGroup>
   <ItemGroup>

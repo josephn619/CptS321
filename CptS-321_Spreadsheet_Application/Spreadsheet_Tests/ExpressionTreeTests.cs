@@ -22,7 +22,7 @@ namespace Spreadsheet_Adam_Nassar.Tests
         public double TestEvaluateNormalCases(string expression)
         {
             Cpts321.ExpressionTree testTree = new Cpts321.ExpressionTree(expression);
-            return 0.0;
+            return testTree.Evaluate();
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace Spreadsheet_Adam_Nassar.Tests
         [Test]
         public void TestInfinity()
         {
-            // string maxValue = double.MaxValue.ToString("F",CultureInfo.InvariantCulture);
-            // double result = new Cpts321.ExpressionTree($"{maxValue}+{maxValue}").Evaluate();
-            // Assert.True(double.IsInfinity(result));
+            string maxValue = double.MaxValue.ToString("F", CultureInfo.InvariantCulture);
+            double result = new Cpts321.ExpressionTree($"{maxValue}+{maxValue}").Evaluate();
+            Assert.True(double.IsInfinity(result));
         }
     }
 }

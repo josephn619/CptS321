@@ -11,7 +11,7 @@ namespace Cpts321
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Class for Multiply
+    /// Class for Multiply.
     /// </summary>
     public class Multiply : BinaryOperator
     {

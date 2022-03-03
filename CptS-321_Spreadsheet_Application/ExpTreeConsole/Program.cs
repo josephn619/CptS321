@@ -47,7 +47,7 @@ namespace ExpTreeConsole
                     case 1:
                         Console.WriteLine("Enter a new expression.");
                         string expression = Console.ReadLine();
-                        mainExpTree = new ExpressionTree(expression);
+                        mainExpTree.Expression = expression;
                         break;
                     case 2:
                         Console.WriteLine("Enter name of variable.");

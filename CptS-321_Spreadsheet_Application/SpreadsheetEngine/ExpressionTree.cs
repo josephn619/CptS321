@@ -17,6 +17,7 @@ namespace Cpts321
     {
         private string expression;
         private Node root;
+
         private Dictionary<string, double> variableDict = new Dictionary<string, double>();
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace Cpts321
         /// <param name="expression">expression.</param>
         public ExpressionTree(string expression)
         {
+            // this.root = this.Compile(expression);
             this.expression = expression;
         }
 
@@ -41,6 +43,8 @@ namespace Cpts321
             set
             {
                 this.expression = value;
+
+                // this.root = this.Compile(value);
             }
         }
 
