@@ -68,36 +68,42 @@ namespace Cpts321
 
         private double Evaluate(Node newNode)
         {
-            // Checks if Constant type.
-            Constant testConst = newNode as Constant;
-            if (testConst != null)
+            try
             {
-                return testConst.Value;
-            }
-
-            // Checks if Var type.
-            Variable testVar = newNode as Variable;
-            if (testVar != null)
-            {
-                double number;
-                if (this.variableDict.TryGetValue(testVar.Var, out number))
+                // Checks if Constant type.
+                if (newNode is Constant testConst)
                 {
-                    return number;
+                    return testConst.Value;
                 }
-                else
+
+                // Checks if Var type.
+                if (newNode is Variable testVar)
                 {
-                    return 0;
+                    if (this.variableDict.TryGetValue(testVar.Var, out double number))
+                    {
+                        return number;
+                    }
+                    else
+                    {
+                        return 0;
+
+                        // throw new NotImplementedException();
+                    }
                 }
-            }
 
-            // Checks if BinaryOperator type.
-            BinaryOperator testOp = newNode as BinaryOperator;
-            if (testOp != null)
+                // Checks if BinaryOperator type.
+                if (newNode is BinaryOperator testOp)
+                {
+                    return testOp.Evaluate(this.Evaluate(testOp.Left), this.Evaluate(testOp.Right));
+                }
+
+                throw new NotImplementedException();
+            }
+            catch (Exception e)
             {
-                return testOp.Evaluate(this.Evaluate(testOp.Left), this.Evaluate(testOp.Right));
+                Console.WriteLine(e.Message);
+                return -1;
             }
-
-            throw new NotSupportedException();
         }
 
         private Node Compile(string expression)
@@ -125,7 +131,8 @@ namespace Cpts321
             // Looks for operators in given expression string and then compiles left and right subtrings.
             foreach (char op in operators)
             {
-                for (int expressionIndex = expression.Length - 1; expressionIndex >= 0; expressionIndex--)
+                // Could also start at end and decrement as an alternative.
+                for (int expressionIndex = 0; expressionIndex < expression.Length - 1; expressionIndex++)
                 {
                     if (expression[expressionIndex] == op)
                     {
@@ -138,8 +145,7 @@ namespace Cpts321
             }
 
             // If expression is constant and returns as such, otherwise expression is var.
-            double number = 0;
-            if (double.TryParse(expression, out number))
+            if (double.TryParse(expression, out double number))
             {
                 return new Constant()
                 {

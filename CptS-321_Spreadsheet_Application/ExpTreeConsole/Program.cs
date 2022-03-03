@@ -32,12 +32,19 @@ namespace ExpTreeConsole
                     Console.WriteLine("Menu: Current Expression = " + mainExpTree.Expression + "\n1. Enter a new expression. \n2. Set a variable value. \n3. Evaluate Tree. \n4. Quit. \nEnter Option: ");
                     try
                     {
+                        // You could also do as if statement (if appoach found in case 2)
                         string response = Console.ReadLine();
                         option = int.Parse(response);
                     }
                     catch (Exception e)
                     {
+                        // Exception that response is invalid.
                         Console.WriteLine(e.Message);
+                    }
+
+                    if (option < 1 || option > 4)
+                    {
+                        Console.WriteLine("Enter one of the given options.");
                     }
                 }
                 while (option < 1 || option > 4);
@@ -54,7 +61,17 @@ namespace ExpTreeConsole
                         string name = Console.ReadLine();
                         Console.WriteLine("Enter value of variable.");
                         string value = Console.ReadLine();
-                        mainExpTree.SetVariable(name, int.Parse(value));
+
+                        // Can also do try{ } catch(){ } approach. Can be found in the do{ } while().
+                        if (double.TryParse(value, out double number))
+                        {
+                            mainExpTree.SetVariable(name, number);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Not added to dictionary: Value is not an number!");
+                        }
+
                         break;
                     case 3:
                         Console.WriteLine("Result: " + mainExpTree.Evaluate());
