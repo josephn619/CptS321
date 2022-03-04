@@ -47,5 +47,16 @@ namespace Spreadsheet_Adam_Nassar.Tests
             double result = new Cpts321.ExpressionTree($"{maxValue}+{maxValue}").Evaluate();
             Assert.True(double.IsInfinity(result));
         }
+
+        /// <summary>
+        /// Tests Negative Infinity cases.
+        /// </summary>
+        [Test]
+        public void TestNegativeInfinity()
+        {
+            string minValue = double.MinValue.ToString("F", CultureInfo.InvariantCulture);
+            double result = new Cpts321.ExpressionTree($"{minValue}+{minValue}").Evaluate();
+            Assert.True(double.IsNegativeInfinity(result));
+        }
     }
 }

@@ -85,6 +85,8 @@ namespace Cpts321
                     }
                     else
                     {
+                        Console.WriteLine("Variable " + testVar.Var + " doesn't exist.");
+
                         return 0;
 
                         // throw new NotImplementedException();
@@ -164,6 +166,8 @@ namespace Cpts321
                     Var = expression,
                 };
             }
+
+            throw new NotSupportedException();
         }
     }
 }
