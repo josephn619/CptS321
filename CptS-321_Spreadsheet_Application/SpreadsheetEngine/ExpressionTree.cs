@@ -118,12 +118,8 @@ namespace Cpts321
 
             // Recursive implementation that compiles expression string.
             Node newNode = this.GetNode(expression);
-            if (newNode != null)
-            {
-                return newNode;
-            }
 
-            return null;
+            return newNode;
         }
 
         private Node GetNode(string expression)
@@ -143,10 +139,10 @@ namespace Cpts321
                 {
                     if (expression[expressionIndex] == op)
                     {
-                        BinaryOperator o = ExpressionTreeFactory.Create(expression[expressionIndex]);
-                        o.Left = this.Compile(expression.Substring(0, expressionIndex));
-                        o.Right = this.Compile(expression.Substring(expressionIndex + 1));
-                        return o;
+                        BinaryOperator newOp = ExpressionTreeFactory.Create(expression[expressionIndex]);
+                        newOp.Left = this.Compile(expression.Substring(0, expressionIndex));
+                        newOp.Right = this.Compile(expression.Substring(expressionIndex + 1));
+                        return newOp;
                     }
                 }
             }

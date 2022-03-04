@@ -29,6 +29,7 @@ namespace ExpTreeConsole
                 int option = 0;
                 do
                 {
+                    Console.Clear();
                     Console.WriteLine("-=+=-=+=-Menu-=+=-=+=- \nCurrent Expression is " + mainExpTree.Expression + "\n1. Enter a new expression. \n2. Set a variable value. \n3. Evaluate Tree. \n4. Quit. \nEnter Option: ");
                     try
                     {
@@ -39,12 +40,8 @@ namespace ExpTreeConsole
                     catch (Exception e)
                     {
                         // Exception that response is invalid.
-                        Console.WriteLine(e.Message);
-                    }
-
-                    if (option < 1 || option > 4)
-                    {
-                        Console.WriteLine("Enter one of the given options.");
+                        Console.WriteLine(e.Message + "\n" + "Press any key.");
+                        Console.ReadKey();
                     }
                 }
                 while (option < 1 || option > 4);
@@ -86,7 +83,6 @@ namespace ExpTreeConsole
 
                 Console.WriteLine("Press any key.");
                 Console.ReadKey();
-                Console.Clear();
             }
         }
     }
