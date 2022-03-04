@@ -128,6 +128,11 @@ namespace Cpts321
         {
             char[] operators = { '+', '-', '*', '/' };
 
+            if (expression.Contains("%") || expression.Contains("^"))
+            {
+                throw new NotSupportedException();
+            }
+
             // Looks for operators in given expression string and then compiles left and right subtrings.
             foreach (char op in operators)
             {
@@ -159,8 +164,6 @@ namespace Cpts321
                     Var = expression,
                 };
             }
-
-            throw new NotSupportedException();
         }
     }
 }

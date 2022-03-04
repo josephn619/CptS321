@@ -29,9 +29,12 @@ namespace Spreadsheet_Adam_Nassar.Tests
         /// Tests if operator is considered unsupported.
         /// </summary>
         /// <param name="expression">expression.</param>
+        [TestCase("4%2")]
         public void TestUnsupportedOperatorExpression(string expression)
         {
-            Assert.That(() => new Cpts321.ExpressionTree(expression), Throws.TypeOf<System.Exception>());
+            Assert.Throws<System.NotSupportedException>(() => new Cpts321.ExpressionTree(expression));
+
+            // Assert.That(() => new Cpts321.ExpressionTree(expression), Throws.TypeOf<System.NotSupportedException>());
         }
 
         /// <summary>
