@@ -127,6 +127,7 @@ namespace Cpts321
             // Could also start at end and decrement as an alternative.
             for (int expressionIndex = 0; expressionIndex < expression.Length - 1; expressionIndex++)
             {
+                // Checks if element is valid operator.
                 if (ExpressionTreeFactory.IsValid(expression[expressionIndex]))
                 {
                     BinaryOperator newOp = ExpressionTreeFactory.Create(expression[expressionIndex]);
