@@ -124,26 +124,15 @@ namespace Cpts321
 
         private Node GetNode(string expression)
         {
-            char[] operators = { '+', '-', '*', '/' };
-
-            if (expression.Contains("%") || expression.Contains("^"))
+            // Could also start at end and decrement as an alternative.
+            for (int expressionIndex = 0; expressionIndex < expression.Length - 1; expressionIndex++)
             {
-                throw new NotSupportedException();
-            }
-
-            // Looks for operators in given expression string and then compiles left and right subtrings.
-            foreach (char op in operators)
-            {
-                // Could also start at end and decrement as an alternative.
-                for (int expressionIndex = 0; expressionIndex < expression.Length - 1; expressionIndex++)
+                if (ExpressionTreeFactory.IsValid(expression[expressionIndex]))
                 {
-                    if (expression[expressionIndex] == op)
-                    {
-                        BinaryOperator newOp = ExpressionTreeFactory.Create(expression[expressionIndex]);
-                        newOp.Left = this.Compile(expression.Substring(0, expressionIndex));
-                        newOp.Right = this.Compile(expression.Substring(expressionIndex + 1));
-                        return newOp;
-                    }
+                    BinaryOperator newOp = ExpressionTreeFactory.Create(expression[expressionIndex]);
+                    newOp.Left = this.Compile(expression.Substring(0, expressionIndex));
+                    newOp.Right = this.Compile(expression.Substring(expressionIndex + 1));
+                    return newOp;
                 }
             }
 

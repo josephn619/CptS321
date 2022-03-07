@@ -21,9 +21,11 @@ namespace Cpts321
         /// Initializes a new instance of the <see cref="BinaryOperator"/> class.
         /// </summary>
         /// <param name="newOperator">newOperator.</param>
-        public BinaryOperator(char newOperator)
+        /// <param name="precedence">precedence.</param>
+        public BinaryOperator(char newOperator, int precedence)
         {
             this.op = newOperator;
+            this.Precedence = precedence;
             this.Left = null;
             this.Right = null;
         }
@@ -43,6 +45,11 @@ namespace Cpts321
                 this.op = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets precedence.
+        /// </summary>
+        public int Precedence { get; set; }
 
         /// <summary>
         /// Gets or sets left.

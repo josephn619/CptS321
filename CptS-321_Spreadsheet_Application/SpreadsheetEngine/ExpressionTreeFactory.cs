@@ -36,5 +36,31 @@ namespace Cpts321
                     throw new NotSupportedException();
             }
         }
+
+        /// <summary>
+        /// Checks if op is valid.
+        /// </summary>
+        /// <param name="op">op.</param>
+        /// <returns>boolean.</returns>
+        public static bool IsValid(char op)
+        {
+            switch (op)
+            {
+                case '+':
+                    return true;
+                case '-':
+                    return true;
+                case '*':
+                    return true;
+                case '/':
+                    return true;
+                case '%':
+                    throw new NotSupportedException();
+                case '^':
+                    throw new NotSupportedException();
+            }
+
+            return false;
+        }
     }
 }
