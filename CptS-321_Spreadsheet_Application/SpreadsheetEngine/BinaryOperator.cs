@@ -16,14 +16,17 @@ namespace Cpts321
     public abstract class BinaryOperator : Node
     {
         private char op;
+        private int precedence;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryOperator"/> class.
         /// </summary>
         /// <param name="newOperator">newOperator.</param>
-        public BinaryOperator(char newOperator)
+        /// <param name="precedence">precedence.</param>
+        public BinaryOperator(char newOperator, int precedence)
         {
             this.op = newOperator;
+            this.precedence = precedence;
             this.Left = null;
             this.Right = null;
         }

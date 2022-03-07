@@ -19,7 +19,7 @@ namespace Cpts321
         /// Initializes a new instance of the <see cref="Multiply"/> class.
         /// </summary>
         public Multiply()
-            : base('*')
+            : base('*', 6)
         {
         }
 
