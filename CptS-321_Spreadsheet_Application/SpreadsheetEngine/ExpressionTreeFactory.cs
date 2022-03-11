@@ -38,13 +38,13 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Checks if op is valid.
+        /// Checks if index of expression is valid operator.
         /// </summary>
-        /// <param name="op">op.</param>
+        /// <param name="index">index.</param>
         /// <returns>boolean.</returns>
-        public static bool IsValid(char op)
+        public static bool IsOperator(char index)
         {
-            switch (op)
+            switch (index)
             {
                 case '+':
                     return true;
@@ -61,6 +61,58 @@ namespace Cpts321
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets precedence for op.
+        /// </summary>
+        /// <param name="op">op.</param>
+        /// <returns>precedence.</returns>
+        public static int GetPrecedence(char op)
+        {
+            switch (op)
+            {
+                case '+':
+                    return 7;
+                case '-':
+                    return 7;
+                case '*':
+                    return 6;
+                case '/':
+                    return 6;
+                case '(':
+                    return 5;
+                case ')':
+                    return 5;
+            }
+
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Gets associativity for op.
+        /// </summary>
+        /// <param name="op">op.</param>
+        /// <returns>type of associativity.</returns>
+        public static char GetAssociativity(char op)
+        {
+            switch (op)
+            {
+                case '+':
+                    return 'l';
+                case '-':
+                    return 'l';
+                case '*':
+                    return 'l';
+                case '/':
+                    return 'l';
+                case '(':
+                    return 'n';
+                case ')':
+                    return 'n';
+            }
+
+            throw new NotSupportedException();
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Cpts321
     /// </summary>
     public class ExpressionTree
     {
+        private static Stack<char> opStack = new Stack<char>();
+
         private string expression;
         private Node root;
 
@@ -122,13 +124,68 @@ namespace Cpts321
             return newNode;
         }
 
+        private string ConvertToPostFix(string expression)
+        {
+            string postfix = string.Empty;
+
+            foreach (char character in expression)
+            {
+                if (character == '(')
+                {
+                    // 2
+                    opStack.Push(character);
+                }
+                else if (character == ')')
+                {
+                    // 3
+                    char pop = opStack.Pop();
+
+                    while (pop != '(')
+                    {
+                        postfix += pop;
+                        pop = opStack.Pop();
+                    }
+                }
+                else if (ExpressionTreeFactory.IsOperator(character))
+                {
+                    if (opStack.Count == 0 || character == '(')
+                    {
+                        // 4
+                        opStack.Push(character);
+                    }
+                    else if (ExpressionTreeFactory.GetPrecedence(character) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()))
+                    {
+                        // 5
+                        opStack.Push(character);
+                    }
+                    else
+                    {
+                        // 6
+                        while (ExpressionTreeFactory.GetPrecedence(character) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()))
+                        {
+                            opStack.Pop();
+                        }
+
+                        opStack.Push(character);
+                    }
+                }
+                else
+                {
+                    // 1
+                    postfix += character;
+                }
+            }
+
+            return postfix;
+        }
+
         private Node GetNode(string expression)
         {
             // Could also start at end and decrement as an alternative.
             for (int expressionIndex = 0; expressionIndex < expression.Length - 1; expressionIndex++)
             {
                 // Checks if element is valid operator.
-                if (ExpressionTreeFactory.IsValid(expression[expressionIndex]))
+                if (ExpressionTreeFactory.IsOperator(expression[expressionIndex]))
                 {
                     BinaryOperator newOp = ExpressionTreeFactory.Create(expression[expressionIndex]);
                     newOp.Left = this.Compile(expression.Substring(0, expressionIndex));
