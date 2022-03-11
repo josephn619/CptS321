@@ -153,7 +153,7 @@ namespace Cpts321
                         // 4
                         opStack.Push(character);
                     }
-                    else if (ExpressionTreeFactory.GetPrecedence(character) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()))
+                    else if (ExpressionTreeFactory.GetPrecedence(character) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(opStack.Peek()) == 'r')
                     {
                         // 5
                         opStack.Push(character);
@@ -161,7 +161,7 @@ namespace Cpts321
                     else
                     {
                         // 6
-                        while (ExpressionTreeFactory.GetPrecedence(character) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()))
+                        while (ExpressionTreeFactory.GetPrecedence(character) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(opStack.Peek()) == 'l')
                         {
                             opStack.Pop();
                         }

@@ -17,16 +17,19 @@ namespace Cpts321
     {
         private char op;
         private int precedence;
+        private char associativity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryOperator"/> class.
         /// </summary>
         /// <param name="newOperator">newOperator.</param>
         /// <param name="precedence">precedence.</param>
-        public BinaryOperator(char newOperator, int precedence)
+        /// <param name="associativity">associativity.</param>
+        public BinaryOperator(char newOperator, int precedence, char associativity)
         {
             this.op = newOperator;
             this.precedence = precedence;
+            this.associativity = associativity;
             this.Left = null;
             this.Right = null;
         }
