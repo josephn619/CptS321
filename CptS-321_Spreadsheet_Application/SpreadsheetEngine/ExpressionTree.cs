@@ -15,7 +15,7 @@ namespace Cpts321
     /// </summary>
     public class ExpressionTree
     {
-        private static Stack<char> opStack = new Stack<char>();
+        private static Stack<string> opStack = new Stack<string>();
         private static Stack<Node> exprStack = new Stack<Node>();
 
         private string expression;
@@ -67,65 +67,86 @@ namespace Cpts321
         /// <returns>postfix expression.</returns>
         public string ConvertToPostFix(string expression)
         {
-            string postfix = string.Empty;
+            List<string> elements = new List<string>(expression.Length);
+            int start = 0, expressionIndex = 0;
 
-            char pop = '\0';
-
-            foreach (char character in expression)
+            for (; expressionIndex < expression.Length; expressionIndex++)
             {
-                if (character == '(')
+                if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
+                {
+                    elements.Add(expression.Substring(start, expressionIndex - start));
+                    elements.Add(expression[expressionIndex].ToString());
+                    start = expressionIndex + 1;
+                }
+            }
+
+            // Case that expression doesn't end with parenthesis
+            if (!ExpressionTreeFactory.IsOperator(expression[expressionIndex - 1].ToString()))
+            {
+                elements.Add(expression.Substring(start, expressionIndex - start));
+            }
+
+            // Removes additional whitespace
+            elements = elements.Where(s => !string.IsNullOrEmpty(s)).ToList();
+
+            string postfix = string.Empty;
+            string pop = string.Empty;
+
+            foreach (string elem in elements)
+            {
+                if (elem == "(")
                 {
                     // 2
-                    opStack.Push(character);
+                    opStack.Push(elem);
                 }
-                else if (character == ')')
+                else if (elem == ")")
                 {
                     // 3
                     pop = opStack.Pop();
 
-                    while (pop != '(')
+                    while (pop != "(")
                     {
                         // Adding to string and exprStack.
                         postfix += pop;
-                        exprStack.Push(this.GetNode(pop.ToString()));
+                        exprStack.Push(this.GetNode(pop));
                         pop = opStack.Pop();
                     }
                 }
-                else if (ExpressionTreeFactory.IsOperator(character.ToString()))
+                else if (ExpressionTreeFactory.IsOperator(elem))
                 {
-                    if (opStack.Count == 0 || opStack.Peek() == '(')
+                    if (opStack.Count == 0 || opStack.Peek() == "(")
                     {
                         // 4
-                        opStack.Push(character);
+                        opStack.Push(elem);
                     }
-                    else if (ExpressionTreeFactory.GetPrecedence(character.ToString()) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek().ToString()) && ExpressionTreeFactory.GetAssociativity(character.ToString()) == 'r')
+                    else if (ExpressionTreeFactory.GetPrecedence(elem) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(elem) == 'r')
                     {
                         // 5
-                        opStack.Push(character);
+                        opStack.Push(elem);
                     }
                     else
                     {
                         // 6
                         try
                         {
-                            while (ExpressionTreeFactory.GetPrecedence(character.ToString()) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek().ToString()) && ExpressionTreeFactory.GetAssociativity(character.ToString()) == 'l')
+                            while (ExpressionTreeFactory.GetPrecedence(elem) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(elem) == 'l')
                             {
                                 pop = opStack.Pop();
                             }
                         }
                         catch (Exception)
                         {
-                            opStack.Push(character);
+                            opStack.Push(elem);
                             postfix += pop;
-                            exprStack.Push(this.GetNode(pop.ToString()));
+                            exprStack.Push(this.GetNode(pop));
                         }
                     }
                 }
                 else
                 {
                     // 1
-                    postfix += character;
-                    exprStack.Push(this.GetNode(character.ToString()));
+                    postfix += elem;
+                    exprStack.Push(this.GetNode(elem));
                 }
             }
 
@@ -137,7 +158,7 @@ namespace Cpts321
                 try
                 {
                     postfix += pop;
-                    exprStack.Push(this.GetNode(pop.ToString()));
+                    exprStack.Push(this.GetNode(pop));
                     pop = opStack.Pop();
                 }
                 catch (Exception)

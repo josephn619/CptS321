@@ -18,7 +18,7 @@ namespace Spreadsheet_Adam_Nassar.Tests
         /// </summary>
         /// <param name="expression">expression.</param>
         /// <returns>Evaluated expression.</returns>
-        [TestCase("(5+10)*2", ExpectedResult = 17)]
+        [TestCase("(5+10)*2", ExpectedResult = 30)]
         [TestCase("3+5", ExpectedResult = 8)]
         public double TestEvaluateNormalCases(string expression)
         {
@@ -47,17 +47,6 @@ namespace Spreadsheet_Adam_Nassar.Tests
             string maxValue = double.MaxValue.ToString("F", CultureInfo.InvariantCulture);
             double result = new Cpts321.ExpressionTree($"{maxValue}+{maxValue}").Evaluate();
             Assert.True(double.IsInfinity(result));
-        }
-
-        /// <summary>
-        /// Tests Negative Infinity cases.
-        /// </summary>
-        [Test]
-        public void TestNegativeInfinity()
-        {
-            string minValue = double.MinValue.ToString("F", CultureInfo.InvariantCulture);
-            double result = new Cpts321.ExpressionTree($"{minValue}-{minValue}").Evaluate();
-            Assert.True(double.IsNegativeInfinity(result));
         }
 
         /// <summary>

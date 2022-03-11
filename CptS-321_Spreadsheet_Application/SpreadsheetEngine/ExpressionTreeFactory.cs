@@ -54,6 +54,10 @@ namespace Cpts321
                     return true;
                 case "/":
                     return true;
+                case "(":
+                    return true;
+                case ")":
+                    return true;
                 case "%":
                     throw new NotSupportedException();
                 case "^":
