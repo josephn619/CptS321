@@ -19,6 +19,7 @@ namespace Spreadsheet_Adam_Nassar.Tests
         /// <param name="expression">expression.</param>
         /// <returns>Evaluated expression.</returns>
         [TestCase("(5+10)*2", ExpectedResult = 30)]
+        [TestCase("2*(5+10)", ExpectedResult = 30)]
         [TestCase("3+5", ExpectedResult = 8)]
         public double TestEvaluateNormalCases(string expression)
         {

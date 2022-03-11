@@ -75,8 +75,13 @@ namespace Cpts321
             {
                 if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
                 {
+                    // Adds substring before op
                     elements.Add(expression.Substring(start, expressionIndex - start));
+
+                    // Adds op
                     elements.Add(expression[expressionIndex].ToString());
+
+                    // Sets new start to index after op
                     start = expressionIndex + 1;
                 }
             }
@@ -93,6 +98,7 @@ namespace Cpts321
             string postfix = string.Empty;
             string pop = string.Empty;
 
+            // Goes through each string in list
             foreach (string elem in elements)
             {
                 if (elem == "(")
