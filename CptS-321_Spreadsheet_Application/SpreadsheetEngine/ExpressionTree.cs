@@ -16,6 +16,7 @@ namespace Cpts321
     public class ExpressionTree
     {
         private static Stack<char> opStack = new Stack<char>();
+        private static Stack<Node> exprStack = new Stack<Node>();
 
         private string expression;
         private Node root;
@@ -44,8 +45,8 @@ namespace Cpts321
 
             set
             {
-                this.expression = value;
                 this.root = this.Compile(value);
+                this.expression = value;
             }
         }
 
@@ -64,13 +65,13 @@ namespace Cpts321
         /// </summary>
         /// <param name="expression">expression.</param>
         /// <returns>postfix expression.</returns>
-        public string ConvertToPostFix()
+        public string ConvertToPostFix(string expression)
         {
             string postfix = string.Empty;
 
             char pop = '\0';
 
-            foreach (char character in this.expression)
+            foreach (char character in expression)
             {
                 if (character == '(')
                 {
@@ -85,6 +86,7 @@ namespace Cpts321
                     while (pop != '(')
                     {
                         postfix += pop;
+                        postfix += " ";
                         pop = opStack.Pop();
                     }
                 }
@@ -114,6 +116,7 @@ namespace Cpts321
                         {
                             opStack.Push(character);
                             postfix += pop;
+                            postfix += " ";
                         }
                     }
                 }
@@ -121,6 +124,7 @@ namespace Cpts321
                 {
                     // 1
                     postfix += character;
+                    postfix += " ";
                 }
             }
 
@@ -132,6 +136,7 @@ namespace Cpts321
                 try
                 {
                     postfix += pop;
+                    postfix += " ";
                     pop = opStack.Pop();
                 }
                 catch (Exception)
@@ -141,6 +146,14 @@ namespace Cpts321
             }
 
             return postfix;
+        }
+
+        /// <summary>
+        /// Converts postfix expression into stack.
+        /// </summary>
+        public void StringToStack()
+        {
+            this.ConvertToPostFix(this.Expression);
         }
 
         /// <summary>
@@ -203,6 +216,7 @@ namespace Cpts321
             }
 
             // Recursive implementation that compiles expression string.
+            // Node newNode = this.GetNode(this.ConvertToPostFix(expression));
             Node newNode = this.GetNode(expression);
 
             return newNode;

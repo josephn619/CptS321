@@ -64,13 +64,14 @@ namespace Spreadsheet_Adam_Nassar.Tests
         /// </summary>
         /// <param name="expression">expression.</param>
         /// <returns>postfix expression.</returns>
-        [TestCase("10+12", ExpectedResult = "1012+")]
-        [TestCase("a+b*c", ExpectedResult = "abc*+")]
-        [TestCase("a*(b+c*d)+e", ExpectedResult = "abcd*+*e+")]
+        [TestCase("a*b/(c-d)", ExpectedResult = "a b c d - / * ")]
+        [TestCase("10+12", ExpectedResult = "1 0 1 2 + ")]
+        [TestCase("a+b*c", ExpectedResult = "a b c * + ")]
+        [TestCase("a*(b+c*d)+e", ExpectedResult = "a b c d * + * e + ")]
         public string TestInfixToPostfix(string expression)
         {
             Cpts321.ExpressionTree testTree = new Cpts321.ExpressionTree(expression);
-            return testTree.ConvertToPostFix();
+            return testTree.ConvertToPostFix(expression);
         }
     }
 }
