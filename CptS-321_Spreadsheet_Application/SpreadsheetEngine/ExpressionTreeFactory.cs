@@ -103,9 +103,9 @@ namespace Cpts321
                 case '-':
                     return 'l';
                 case '*':
-                    return 'l';
+                    return 'r';
                 case '/':
-                    return 'l';
+                    return 'r';
                 case '(':
                     return 'n';
                 case ')':

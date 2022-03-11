@@ -68,6 +68,8 @@ namespace Cpts321
         {
             string postfix = string.Empty;
 
+            char pop = '\0';
+
             foreach (char character in this.expression)
             {
                 if (character == '(')
@@ -78,7 +80,7 @@ namespace Cpts321
                 else if (character == ')')
                 {
                     // 3
-                    char pop = opStack.Pop();
+                    pop = opStack.Pop();
 
                     while (pop != '(')
                     {
@@ -88,12 +90,12 @@ namespace Cpts321
                 }
                 else if (ExpressionTreeFactory.IsOperator(character))
                 {
-                    if (opStack.Count == 0 || character == '(')
+                    if (opStack.Count == 0 || opStack.Peek() == '(')
                     {
                         // 4
                         opStack.Push(character);
                     }
-                    else if (ExpressionTreeFactory.GetPrecedence(character) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(opStack.Peek()) == 'r')
+                    else if (ExpressionTreeFactory.GetPrecedence(character) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(character) == 'r')
                     {
                         // 5
                         opStack.Push(character);
@@ -101,18 +103,40 @@ namespace Cpts321
                     else
                     {
                         // 6
-                        while (ExpressionTreeFactory.GetPrecedence(character) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(opStack.Peek()) == 'l')
+                        try
                         {
-                            opStack.Pop();
+                            while (ExpressionTreeFactory.GetPrecedence(character) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(character) == 'l')
+                            {
+                                pop = opStack.Pop();
+                            }
                         }
-
-                        opStack.Push(character);
+                        catch (Exception)
+                        {
+                            opStack.Push(character);
+                            postfix += pop;
+                        }
                     }
                 }
                 else
                 {
                     // 1
                     postfix += character;
+                }
+            }
+
+            // 7
+            pop = opStack.Pop();
+
+            while (true)
+            {
+                try
+                {
+                    postfix += pop;
+                    pop = opStack.Pop();
+                }
+                catch (Exception)
+                {
+                    break;
                 }
             }
 
