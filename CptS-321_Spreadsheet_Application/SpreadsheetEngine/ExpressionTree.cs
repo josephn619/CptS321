@@ -60,6 +60,66 @@ namespace Cpts321
         }
 
         /// <summary>
+        /// Converts expression to postfix.
+        /// </summary>
+        /// <param name="expression">expression.</param>
+        /// <returns>postfix expression.</returns>
+        public string ConvertToPostFix()
+        {
+            string postfix = string.Empty;
+
+            foreach (char character in this.expression)
+            {
+                if (character == '(')
+                {
+                    // 2
+                    opStack.Push(character);
+                }
+                else if (character == ')')
+                {
+                    // 3
+                    char pop = opStack.Pop();
+
+                    while (pop != '(')
+                    {
+                        postfix += pop;
+                        pop = opStack.Pop();
+                    }
+                }
+                else if (ExpressionTreeFactory.IsOperator(character))
+                {
+                    if (opStack.Count == 0 || character == '(')
+                    {
+                        // 4
+                        opStack.Push(character);
+                    }
+                    else if (ExpressionTreeFactory.GetPrecedence(character) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(opStack.Peek()) == 'r')
+                    {
+                        // 5
+                        opStack.Push(character);
+                    }
+                    else
+                    {
+                        // 6
+                        while (ExpressionTreeFactory.GetPrecedence(character) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(opStack.Peek()) == 'l')
+                        {
+                            opStack.Pop();
+                        }
+
+                        opStack.Push(character);
+                    }
+                }
+                else
+                {
+                    // 1
+                    postfix += character;
+                }
+            }
+
+            return postfix;
+        }
+
+        /// <summary>
         /// Calls private Evaluate.
         /// </summary>
         /// <returns>Evaluted Root.</returns>
@@ -122,61 +182,6 @@ namespace Cpts321
             Node newNode = this.GetNode(expression);
 
             return newNode;
-        }
-
-        private string ConvertToPostFix(string expression)
-        {
-            string postfix = string.Empty;
-
-            foreach (char character in expression)
-            {
-                if (character == '(')
-                {
-                    // 2
-                    opStack.Push(character);
-                }
-                else if (character == ')')
-                {
-                    // 3
-                    char pop = opStack.Pop();
-
-                    while (pop != '(')
-                    {
-                        postfix += pop;
-                        pop = opStack.Pop();
-                    }
-                }
-                else if (ExpressionTreeFactory.IsOperator(character))
-                {
-                    if (opStack.Count == 0 || character == '(')
-                    {
-                        // 4
-                        opStack.Push(character);
-                    }
-                    else if (ExpressionTreeFactory.GetPrecedence(character) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(opStack.Peek()) == 'r')
-                    {
-                        // 5
-                        opStack.Push(character);
-                    }
-                    else
-                    {
-                        // 6
-                        while (ExpressionTreeFactory.GetPrecedence(character) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(opStack.Peek()) == 'l')
-                        {
-                            opStack.Pop();
-                        }
-
-                        opStack.Push(character);
-                    }
-                }
-                else
-                {
-                    // 1
-                    postfix += character;
-                }
-            }
-
-            return postfix;
         }
 
         private Node GetNode(string expression)

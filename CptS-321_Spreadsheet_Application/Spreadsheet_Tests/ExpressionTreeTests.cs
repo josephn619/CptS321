@@ -55,8 +55,20 @@ namespace Spreadsheet_Adam_Nassar.Tests
         public void TestNegativeInfinity()
         {
             string minValue = double.MinValue.ToString("F", CultureInfo.InvariantCulture);
-            double result = new Cpts321.ExpressionTree($"{minValue}+{minValue}").Evaluate();
+            double result = new Cpts321.ExpressionTree($"{minValue}-{minValue}").Evaluate();
             Assert.True(double.IsNegativeInfinity(result));
+        }
+
+        /// <summary>
+        /// Converts infix string to postfix.
+        /// </summary>
+        /// <param name="expression">expression.</param>
+        /// <returns>postfix expression.</returns>
+        [TestCase("a+b", ExpectedResult = "ab+")]
+        public string TestInfixToPostfix(string expression)
+        {
+            Cpts321.ExpressionTree testTree = new Cpts321.ExpressionTree(expression);
+            return testTree.ConvertToPostFix();
         }
     }
 }
