@@ -20,17 +20,17 @@ namespace Cpts321
         /// </summary>
         /// <param name="op">Key.</param>
         /// <returns>Returns operation.</returns>
-        public static BinaryOperator Create(char op)
+        public static BinaryOperator Create(string op)
         {
             switch (op)
             {
-                case '+':
+                case "+":
                     return new Add();
-                case '-':
+                case "-":
                     return new Subtract();
-                case '*':
+                case "*":
                     return new Multiply();
-                case '/':
+                case "/":
                     return new Divide();
                 default:
                     throw new NotSupportedException();
@@ -42,21 +42,21 @@ namespace Cpts321
         /// </summary>
         /// <param name="index">index.</param>
         /// <returns>boolean.</returns>
-        public static bool IsOperator(char index)
+        public static bool IsOperator(string index)
         {
             switch (index)
             {
-                case '+':
+                case "+":
                     return true;
-                case '-':
+                case "-":
                     return true;
-                case '*':
+                case "*":
                     return true;
-                case '/':
+                case "/":
                     return true;
-                case '%':
+                case "%":
                     throw new NotSupportedException();
-                case '^':
+                case "^":
                     throw new NotSupportedException();
             }
 
@@ -68,21 +68,21 @@ namespace Cpts321
         /// </summary>
         /// <param name="op">op.</param>
         /// <returns>precedence.</returns>
-        public static int GetPrecedence(char op)
+        public static int GetPrecedence(string op)
         {
             switch (op)
             {
-                case '+':
+                case "+":
                     return 7;
-                case '-':
+                case "-":
                     return 7;
-                case '*':
+                case "*":
                     return 6;
-                case '/':
+                case "/":
                     return 6;
-                case '(':
+                case "(":
                     return 5;
-                case ')':
+                case ")":
                     return 5;
             }
 
@@ -94,21 +94,21 @@ namespace Cpts321
         /// </summary>
         /// <param name="op">op.</param>
         /// <returns>type of associativity.</returns>
-        public static char GetAssociativity(char op)
+        public static char GetAssociativity(string op)
         {
             switch (op)
             {
-                case '+':
+                case "+":
                     return 'l';
-                case '-':
+                case "-":
                     return 'l';
-                case '*':
+                case "*":
                     return 'r';
-                case '/':
+                case "/":
                     return 'r';
-                case '(':
+                case "(":
                     return 'n';
-                case ')':
+                case ")":
                     return 'n';
             }
 

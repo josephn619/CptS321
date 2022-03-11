@@ -85,19 +85,20 @@ namespace Cpts321
 
                     while (pop != '(')
                     {
+                        // Adding to string and exprStack.
                         postfix += pop;
-                        postfix += " ";
+                        exprStack.Push(this.GetNode(pop.ToString()));
                         pop = opStack.Pop();
                     }
                 }
-                else if (ExpressionTreeFactory.IsOperator(character))
+                else if (ExpressionTreeFactory.IsOperator(character.ToString()))
                 {
                     if (opStack.Count == 0 || opStack.Peek() == '(')
                     {
                         // 4
                         opStack.Push(character);
                     }
-                    else if (ExpressionTreeFactory.GetPrecedence(character) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(character) == 'r')
+                    else if (ExpressionTreeFactory.GetPrecedence(character.ToString()) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek().ToString()) && ExpressionTreeFactory.GetAssociativity(character.ToString()) == 'r')
                     {
                         // 5
                         opStack.Push(character);
@@ -107,7 +108,7 @@ namespace Cpts321
                         // 6
                         try
                         {
-                            while (ExpressionTreeFactory.GetPrecedence(character) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(character) == 'l')
+                            while (ExpressionTreeFactory.GetPrecedence(character.ToString()) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek().ToString()) && ExpressionTreeFactory.GetAssociativity(character.ToString()) == 'l')
                             {
                                 pop = opStack.Pop();
                             }
@@ -116,7 +117,7 @@ namespace Cpts321
                         {
                             opStack.Push(character);
                             postfix += pop;
-                            postfix += " ";
+                            exprStack.Push(this.GetNode(pop.ToString()));
                         }
                     }
                 }
@@ -124,7 +125,7 @@ namespace Cpts321
                 {
                     // 1
                     postfix += character;
-                    postfix += " ";
+                    exprStack.Push(this.GetNode(character.ToString()));
                 }
             }
 
@@ -136,7 +137,7 @@ namespace Cpts321
                 try
                 {
                     postfix += pop;
-                    postfix += " ";
+                    exprStack.Push(this.GetNode(pop.ToString()));
                     pop = opStack.Pop();
                 }
                 catch (Exception)
@@ -146,14 +147,6 @@ namespace Cpts321
             }
 
             return postfix;
-        }
-
-        /// <summary>
-        /// Converts postfix expression into stack.
-        /// </summary>
-        public void StringToStack()
-        {
-            this.ConvertToPostFix(this.Expression);
         }
 
         /// <summary>
@@ -215,30 +208,21 @@ namespace Cpts321
                 return null;
             }
 
-            // Recursive implementation that compiles expression string.
-            // Node newNode = this.GetNode(this.ConvertToPostFix(expression));
-            Node newNode = this.GetNode(expression);
+            string postfix = this.ConvertToPostFix(expression);
+
+            // Converts to postfix with spaces, then fills exprStack and removes spaces
+            Node newNode = this.CompileUsingExprStack();
 
             return newNode;
         }
 
         private Node GetNode(string expression)
         {
-            // Could also start at end and decrement as an alternative.
-            for (int expressionIndex = 0; expressionIndex < expression.Length - 1; expressionIndex++)
+            if (ExpressionTreeFactory.IsOperator(expression))
             {
-                // Checks if element is valid operator.
-                if (ExpressionTreeFactory.IsOperator(expression[expressionIndex]))
-                {
-                    BinaryOperator newOp = ExpressionTreeFactory.Create(expression[expressionIndex]);
-                    newOp.Left = this.Compile(expression.Substring(0, expressionIndex));
-                    newOp.Right = this.Compile(expression.Substring(expressionIndex + 1));
-                    return newOp;
-                }
+                return ExpressionTreeFactory.Create(expression);
             }
-
-            // If expression is constant and returns as such, otherwise expression is var.
-            if (double.TryParse(expression, out double number))
+            else if (double.TryParse(expression, out double number))
             {
                 return new Constant()
                 {
@@ -254,6 +238,47 @@ namespace Cpts321
             }
 
             throw new NotSupportedException();
+        }
+
+        private Node CompileUsingExprStack()
+        {
+            Stack<Node> reverse = new Stack<Node>();
+            while (exprStack.Count > 0)
+            {
+                reverse.Push(exprStack.Pop());
+            }
+
+            Stack<Node> result = new Stack<Node>();
+            Node newNode;
+
+            while (reverse.Count > 0)
+            {
+                newNode = reverse.Pop();
+
+                if (newNode is Constant newConst)
+                {
+                    result.Push(newConst);
+                }
+
+                if (newNode is Variable newVar)
+                {
+                    result.Push(newVar);
+                }
+
+                if (newNode is BinaryOperator newOp)
+                {
+                    if (newOp != null)
+                    {
+                        // Current problem
+                        newOp.Right = result.Pop();
+                        newOp.Left = result.Pop();
+
+                        result.Push(newOp);
+                    }
+                }
+            }
+
+            return result.Pop();
         }
     }
 }
