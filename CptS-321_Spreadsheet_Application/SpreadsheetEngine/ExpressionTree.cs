@@ -70,6 +70,7 @@ namespace Cpts321
             List<string> elements = new List<string>(expression.Length);
             int start = 0, expressionIndex = 0;
 
+            // Converts string to list of strings to ensure 10 is not read as 1 0
             for (; expressionIndex < expression.Length; expressionIndex++)
             {
                 if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
@@ -96,12 +97,12 @@ namespace Cpts321
             {
                 if (elem == "(")
                 {
-                    // 2
+                    // Rule 2
                     opStack.Push(elem);
                 }
                 else if (elem == ")")
                 {
-                    // 3
+                    // Rule 3
                     pop = opStack.Pop();
 
                     while (pop != "(")
@@ -116,17 +117,17 @@ namespace Cpts321
                 {
                     if (opStack.Count == 0 || opStack.Peek() == "(")
                     {
-                        // 4
+                        // Rule 4
                         opStack.Push(elem);
                     }
                     else if (ExpressionTreeFactory.GetPrecedence(elem) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(elem) == 'r')
                     {
-                        // 5
+                        // Rule 5
                         opStack.Push(elem);
                     }
                     else
                     {
-                        // 6
+                        // Rule 6
                         try
                         {
                             while (ExpressionTreeFactory.GetPrecedence(elem) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(elem) == 'l')
@@ -144,13 +145,13 @@ namespace Cpts321
                 }
                 else
                 {
-                    // 1
+                    // Rule 1
                     postfix += elem;
                     exprStack.Push(this.GetNode(elem));
                 }
             }
 
-            // 7
+            // Rule 7
             pop = opStack.Pop();
 
             while (true)
@@ -167,6 +168,7 @@ namespace Cpts321
                 }
             }
 
+            // returns string for testcase purposes
             return postfix;
         }
 
@@ -229,6 +231,7 @@ namespace Cpts321
                 return null;
             }
 
+            // postfix has no practical use
             string postfix = this.ConvertToPostFix(expression);
 
             // Converts to postfix with spaces, then fills exprStack and removes spaces
@@ -264,6 +267,8 @@ namespace Cpts321
         private Node CompileUsingExprStack()
         {
             Stack<Node> reverse = new Stack<Node>();
+
+            // Reverses stack
             while (exprStack.Count > 0)
             {
                 reverse.Push(exprStack.Pop());
@@ -272,6 +277,7 @@ namespace Cpts321
             Stack<Node> result = new Stack<Node>();
             Node newNode;
 
+            // goes through reverse exprStack and returns cur root
             while (reverse.Count > 0)
             {
                 newNode = reverse.Pop();
