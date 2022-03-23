@@ -4,7 +4,10 @@
 
 namespace Spreadsheet_Adam_Nassar.Tests
 {
+    using System;
     using System.Globalization;
+    using System.Reflection;
+    using Cpts321;
     using NUnit.Framework;
 
     /// <summary>
@@ -13,6 +16,8 @@ namespace Spreadsheet_Adam_Nassar.Tests
     [TestFixture]
     public class ExpressionTreeTests
     {
+        private ExpressionTree objectUnderTest = new (string.Empty);
+
         /// <summary>
         /// Test Evaluate method w/ normal cases.
         /// </summary>
@@ -23,7 +28,7 @@ namespace Spreadsheet_Adam_Nassar.Tests
         [TestCase("3+5", ExpectedResult = 8)]
         public double TestEvaluateNormalCases(string expression)
         {
-            Cpts321.ExpressionTree testTree = new Cpts321.ExpressionTree(expression);
+            ExpressionTree testTree = new (expression);
             return testTree.Evaluate();
         }
 
@@ -34,7 +39,7 @@ namespace Spreadsheet_Adam_Nassar.Tests
         [TestCase("4%2")]
         public void TestUnsupportedOperatorExpression(string expression)
         {
-            Assert.Throws<System.NotSupportedException>(() => new Cpts321.ExpressionTree(expression));
+            Assert.Throws<NotSupportedException>(() => new ExpressionTree(expression));
 
             // Assert.That(() => new Cpts321.ExpressionTree(expression), Throws.TypeOf<System.NotSupportedException>());
         }
@@ -46,7 +51,7 @@ namespace Spreadsheet_Adam_Nassar.Tests
         public void TestInfinity()
         {
             string maxValue = double.MaxValue.ToString("F", CultureInfo.InvariantCulture);
-            double result = new Cpts321.ExpressionTree($"{maxValue}+{maxValue}").Evaluate();
+            double result = new ExpressionTree($"{maxValue}+{maxValue}").Evaluate();
             Assert.True(double.IsInfinity(result));
         }
 
@@ -61,8 +66,31 @@ namespace Spreadsheet_Adam_Nassar.Tests
         [TestCase("a*(b+c*d)+e", ExpectedResult = "abcd*+*e+")]
         public string TestInfixToPostfix(string expression)
         {
-            Cpts321.ExpressionTree testTree = new Cpts321.ExpressionTree(expression);
-            return testTree.ConvertToPostFix(expression);
+            MethodInfo methodInfo = this.GetMethod("ConvertToPostFix", new Type[] { typeof(string) });
+
+            if (methodInfo.Invoke(this.objectUnderTest, new object[] { expression }) == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            // As far as I have found, there is no way to remove this warning (without supressing)
+            return methodInfo.Invoke(this.objectUnderTest, new object[] { expression }).ToString();
+        }
+
+        private MethodInfo GetMethod(string methodName, Type[] parameterTypes)
+        {
+            if (string.IsNullOrWhiteSpace(methodName))
+            {
+                throw new ArgumentNullException("methodName cannot be null or whitespace");
+            }
+
+            var method = this.objectUnderTest.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance, null, parameterTypes, null);
+            if (method == null)
+            {
+                throw new ArgumentNullException(string.Format("{0} method not found", methodName));
+            }
+
+            return method;
         }
     }
 }

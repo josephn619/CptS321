@@ -61,134 +61,18 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Converts expression to postfix.
-        /// </summary>
-        /// <param name="expression">expression.</param>
-        /// <returns>postfix expression.</returns>
-        public string ConvertToPostFix(string expression)
-        {
-            List<string> elements = new List<string>(expression.Length);
-            int start = 0, expressionIndex = 0;
-
-            // Converts string to list of strings to ensure 10 is not read as 1 0
-            for (; expressionIndex < expression.Length; expressionIndex++)
-            {
-                if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
-                {
-                    // Adds substring before op
-                    elements.Add(expression.Substring(start, expressionIndex - start));
-
-                    // Adds op
-                    elements.Add(expression[expressionIndex].ToString());
-
-                    // Sets new start to index after op
-                    start = expressionIndex + 1;
-                }
-            }
-
-            // Case that expression doesn't end with parenthesis
-            if (!ExpressionTreeFactory.IsOperator(expression[expressionIndex - 1].ToString()))
-            {
-                elements.Add(expression.Substring(start, expressionIndex - start));
-            }
-
-            // Removes additional whitespace
-            elements = elements.Where(s => !string.IsNullOrEmpty(s)).ToList();
-
-            string postfix = string.Empty;
-            string pop = string.Empty;
-
-            // Goes through each string in list
-            foreach (string elem in elements)
-            {
-                if (elem == "(")
-                {
-                    // Rule 2
-                    opStack.Push(elem);
-                }
-                else if (elem == ")")
-                {
-                    // Rule 3
-                    pop = opStack.Pop();
-
-                    while (pop != "(")
-                    {
-                        // Adding to string and exprStack.
-                        postfix += pop;
-                        exprStack.Push(this.GetNode(pop));
-                        pop = opStack.Pop();
-                    }
-                }
-                else if (ExpressionTreeFactory.IsOperator(elem))
-                {
-                    if (opStack.Count == 0 || opStack.Peek() == "(")
-                    {
-                        // Rule 4
-                        opStack.Push(elem);
-                    }
-                    else if (ExpressionTreeFactory.GetPrecedence(elem) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(elem) == 'r')
-                    {
-                        // Rule 5
-                        opStack.Push(elem);
-                    }
-                    else
-                    {
-                        // Rule 6
-                        try
-                        {
-                            while (ExpressionTreeFactory.GetPrecedence(elem) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(elem) == 'l')
-                            {
-                                pop = opStack.Pop();
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            opStack.Push(elem);
-                            postfix += pop;
-                            exprStack.Push(this.GetNode(pop));
-                        }
-                    }
-                }
-                else
-                {
-                    // Rule 1
-                    postfix += elem;
-                    exprStack.Push(this.GetNode(elem));
-                }
-            }
-
-            // Rule 7
-            pop = opStack.Pop();
-
-            while (true)
-            {
-                try
-                {
-                    postfix += pop;
-                    exprStack.Push(this.GetNode(pop));
-                    pop = opStack.Pop();
-                }
-                catch (Exception)
-                {
-                    break;
-                }
-            }
-
-            // returns string for testcase purposes
-            return postfix;
-        }
-
-        /// <summary>
         /// Calls private Evaluate.
         /// </summary>
         /// <returns>Evaluted Root.</returns>
         public double Evaluate()
         {
+            // Called from program.cs in ExpTreeConsole
             return this.Evaluate(this.root);
         }
 
         private double Evaluate(Node newNode)
         {
+            // Called by public evaluate method
             try
             {
                 // Checks if Constant type.
@@ -231,6 +115,8 @@ namespace Cpts321
 
         private Node Compile(string expression)
         {
+            // Called by constructor and setter
+
             // Checks if empty.
             if (string.IsNullOrEmpty(expression))
             {
@@ -246,8 +132,128 @@ namespace Cpts321
             return newNode;
         }
 
+        private string ConvertToPostFix(string expression)
+        {
+            // Called from compile - Converts expression to postfix and creats exprStack.
+            List<string> elements = new List<string>(expression.Length);
+            int start = 0, expressionIndex = 0;
+
+            // Converts string to list of strings to ensure 10 is not read as 1 0
+            for (; expressionIndex < expression.Length; expressionIndex++)
+            {
+                if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
+                {
+                    // Adds substring before op
+                    elements.Add(expression.Substring(start, expressionIndex - start));
+
+                    // Adds op
+                    elements.Add(expression[expressionIndex].ToString());
+
+                    // Sets new start to index after op
+                    start = expressionIndex + 1;
+                }
+            }
+
+            // Case that expression doesn't end with operator
+            if (!ExpressionTreeFactory.IsOperator(expression[expressionIndex - 1].ToString()))
+            {
+                elements.Add(expression.Substring(start, expressionIndex - start));
+            }
+
+            // Removes additional whitespace
+            elements = elements.Where(s => !string.IsNullOrEmpty(s)).ToList();
+
+            string postfix = string.Empty;
+            string pop = string.Empty;
+
+            // Goes through each string in list (shunting alg)
+            foreach (string elem in elements)
+            {
+                if (elem == "(")
+                {
+                    // Rule 2
+                    opStack.Push(elem);
+                }
+                else if (elem == ")")
+                {
+                    // Rule 3
+                    pop = opStack.Pop();
+
+                    while (pop != "(")
+                    {
+                        // Adding to string and exprStack.
+                        postfix += pop;
+                        exprStack.Push(this.GetNode(pop));
+
+                        pop = opStack.Pop();
+                    }
+                }
+                else if (ExpressionTreeFactory.IsOperator(elem))
+                {
+                    if (opStack.Count == 0 || opStack.Peek() == "(")
+                    {
+                        // Rule 4
+                        opStack.Push(elem);
+                    }
+                    else if (ExpressionTreeFactory.GetPrecedence(elem) <= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(elem) == 'r')
+                    {
+                        // Rule 5
+                        opStack.Push(elem);
+                    }
+                    else
+                    {
+                        // Rule 6
+                        try
+                        {
+                            while (ExpressionTreeFactory.GetPrecedence(elem) >= ExpressionTreeFactory.GetPrecedence(opStack.Peek()) && ExpressionTreeFactory.GetAssociativity(elem) == 'l')
+                            {
+                                pop = opStack.Pop();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            opStack.Push(elem);
+
+                            postfix += pop;
+                            exprStack.Push(this.GetNode(pop));
+                        }
+                    }
+                }
+                else
+                {
+                    // Rule 1
+                    postfix += elem;
+                    exprStack.Push(this.GetNode(elem));
+                }
+            }
+
+            // Rule 7
+            pop = opStack.Pop();
+
+            while (true)
+            {
+                try
+                {
+                    postfix += pop;
+                    exprStack.Push(this.GetNode(pop));
+
+                    pop = opStack.Pop();
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+            }
+
+            // returns string for testcase purposes
+            return postfix;
+        }
+
         private Node GetNode(string expression)
         {
+            // Called by ConvertToPostfix
+
+            // Checks if op.
             if (ExpressionTreeFactory.IsOperator(expression))
             {
                 return ExpressionTreeFactory.Create(expression);
@@ -272,6 +278,7 @@ namespace Cpts321
 
         private Node CompileUsingExprStack()
         {
+            // Called by compile
             Stack<Node> reverse = new Stack<Node>();
 
             // Reverses stack
