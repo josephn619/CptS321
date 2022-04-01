@@ -93,10 +93,30 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        private void NamePlacement(int rowNumber, int col, string message)
+        private void NamePlacement(int row, int col, string message)
         {
-            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(rowNumber, col);
-            initCell.Text = "This is cell B" + (rowNumber + 1);
+            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(row, col);
+            initCell.Text = message + (row + 1);
+        }
+
+        private void DGV_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(e.RowIndex, e.ColumnIndex);
+
+            if (initCell != null)
+            {
+                this.DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = initCell.Text;
+            }
+        }
+
+        private void DGV_CellEndEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(e.RowIndex, e.ColumnIndex);
+
+            if (this.DataGridView != null)
+            {
+                this.DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = initCell.Val;
+            }
         }
     }
 }
