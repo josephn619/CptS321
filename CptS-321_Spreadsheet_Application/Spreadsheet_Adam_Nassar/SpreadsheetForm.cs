@@ -31,6 +31,10 @@ namespace Spreadsheet_Adam_Nassar
             this.InitializeComponent();
 
             this.mySpreadsheet.CellPropertyChanged += this.Refresh_PropertyChanged;
+
+            this.DataGridView.CellBeginEdit += this.DGV_CellBeginEdit;
+
+            this.DataGridView.CellEndEdit += this.DGV_CellEndEdit;
         }
 
         private void SpreadsheetForm_Load(object sender, EventArgs e)
@@ -109,12 +113,21 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        private void DGV_CellEndEdit(object sender, DataGridViewCellCancelEventArgs e)
+        private void DGV_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             Cpts321.Cell initCell = this.mySpreadsheet.GetCell(e.RowIndex, e.ColumnIndex);
 
-            if (this.DataGridView != null)
+            if (initCell != null)
             {
+                try
+                {
+                    initCell.Text = this.DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                }
+                catch
+                {
+                    initCell.Text = string.Empty;
+                }
+
                 this.DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = initCell.Val;
             }
         }
