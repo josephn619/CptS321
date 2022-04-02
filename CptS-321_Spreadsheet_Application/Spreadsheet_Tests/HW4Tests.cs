@@ -39,10 +39,21 @@ namespace Spreadsheet_Adam_Nassar.Tests
         /// test col number.
         /// </summary>
         [Test]
-
         public void TestColumnCount()
         {
             Assert.AreEqual(this.testSpreadsheet.ColCount, 2);
+        }
+
+        /// <summary>
+        /// Tests expression tree functionality
+        /// </summary>
+        [Test]
+        public void TestExpr()
+        {
+            this.testSpreadsheet.GetCell(1, 0).Text = "=10";
+            this.testSpreadsheet.GetCell(1, 1).Text = "=A1";
+
+            Assert.AreEqual(this.testSpreadsheet.GetCell(1, 1).Val, 0.ToString());
         }
     }
 }
