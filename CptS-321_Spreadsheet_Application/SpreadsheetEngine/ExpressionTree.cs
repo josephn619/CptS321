@@ -57,7 +57,14 @@ namespace Cpts321
         /// <param name="variableValue">variableValue.</param>
         public void SetVariable(string variableName, double variableValue)
         {
-            this.variableDict.Add(variableName, variableValue);
+            if (this.variableDict.TryGetValue(variableName, out double number))
+            {
+                this.variableDict[variableName] = variableValue;
+            }
+            else
+            {
+                this.variableDict.Add(variableName, variableValue);
+            }
         }
 
         /// <summary>

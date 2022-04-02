@@ -128,19 +128,22 @@ namespace Cpts321
             {
                 if (cell.Text[0] == '=')
                 {
+                    // Case where cell already has expression
                     if (cell.ExpTree.Expression != string.Empty)
                     {
-                        List<string> old = cell.ExpTree.GetExprList(cell.ExpTree.Expression);
+                        List<string> oldNames = cell.ExpTree.GetExprList(cell.ExpTree.Expression);
 
                         // Filter operators
-                        old = old.Where(s => !ExpressionTreeFactory.IsOperator(s)).ToList();
+                        oldNames = oldNames.Where(s => !ExpressionTreeFactory.IsOperator(s)).ToList();
 
                         // Filters numbers
-                        old = old.Where(s => !double.TryParse(s, out double num)).ToList();
-                        foreach (string name in old)
+                        oldNames = oldNames.Where(s => !double.TryParse(s, out double num)).ToList();
+
+                        foreach (string name in oldNames)
                         {
                             Cell refCell = this.GetCell(name);
 
+                            // Unsubscribe
                             if (refCell != null)
                             {
                                 refCell.PropertyChanged -= cell.CellPropertyChanged;
@@ -166,6 +169,7 @@ namespace Cpts321
 
                         Cell refCell = this.GetCell(variable);
 
+                        // Subscribe
                         if (refCell != null)
                         {
                             refCell.PropertyChanged += cell.CellPropertyChanged;
