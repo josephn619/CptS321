@@ -73,36 +73,6 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        private void Demo_Button_Click(object sender, EventArgs e)
-        {
-            Random randomCell = new Random();
-
-            for (int i = 0; i < 50; i++)
-            {
-                int col = randomCell.Next(1, 26);
-                int row = randomCell.Next(1, 50);
-
-                Cpts321.Cell initCell = this.mySpreadsheet.GetCell(row, col);
-                initCell.Text = "Random Placement";
-            }
-
-            for (int i = 0; i < 50; i++)
-            {
-                this.NamePlacement(i, 1, "This is cell B");
-            }
-
-            for (int i = 0; i < 50; i++)
-            {
-                this.NamePlacement(i, 0, "=B");
-            }
-        }
-
-        private void NamePlacement(int row, int col, string message)
-        {
-            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(row, col);
-            initCell.Text = message + (row + 1);
-        }
-
         private void DGV_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             Cpts321.Cell initCell = this.mySpreadsheet.GetCell(e.RowIndex, e.ColumnIndex);
@@ -130,6 +100,35 @@ namespace Spreadsheet_Adam_Nassar
 
                 this.DataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = initCell.Val;
             }
+        }
+
+        private void Demo_Button_Click(object sender, EventArgs e)
+        {
+            Random randomCell = new Random();
+
+            for (int i = 0; i < 50; i++)
+            {
+                int col = randomCell.Next(1, 26);
+                int row = randomCell.Next(1, 50);
+
+                this.NamePlacement(row, col, "Random Placement");
+            }
+
+            for (int i = 0; i < 50; i++)
+            {
+                this.NamePlacement(i, 1, "This is cell B");
+            }
+
+            for (int i = 0; i < 50; i++)
+            {
+                this.NamePlacement(i, 0, "=B");
+            }
+        }
+
+        private void NamePlacement(int row, int col, string message)
+        {
+            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(row, col);
+            initCell.Text = message + (row + 1);
         }
     }
 }

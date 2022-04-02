@@ -86,16 +86,51 @@ namespace Cpts321
             return null;
         }
 
+        /// <summary>
+        /// Gets value given variableName.
+        /// </summary>
+        /// <param name="variableName">variableName.</param>
+        /// <returns>value.</returns>
+        public string GetValue(string variableName)
+        {
+            int col = Convert.ToInt32(variableName[1]) - 'A';
+            int row = Convert.ToInt32(variableName.Substring(2)) - 1;
+
+            return this.cells[row, col].Val;
+        }
+
         private void Spreadsheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            Cell cell = (Cell)sender;
+            int row = cell.RowIndex;
+            int col = cell.ColIndex;
+
             if (e.PropertyName == "Text")
             {
-                if (((Cell)sender).Text[0] == '=')
+                if (cell.Text[0] == '=')
                 {
-                    string formula = ((Cell)sender).Text.Substring(0);
-                    int col = Convert.ToInt32(formula[1]) - 'A';
-                    int row = Convert.ToInt32(formula.Substring(2)) - 1;
-                    ((Cell)sender).Val = this.cells[row, col].Val;
+                    string formula = cell.Text.Substring(0);
+
+                    cell.ExpTree.Expression = formula;
+
+                    List<string> names = cell.ExpTree.GetVariableNames();
+
+                    foreach (string variable in names)
+                    {
+                        string value_as_string = this.GetValue(variable);
+
+                        if (double.TryParse(value_as_string, out double value))
+                        {
+                            cell.ExpTree.SetVariable(variable, value);
+                            this.cells[row, col].Val = cell.ExpTree.Evaluate().ToString();
+                        }
+                        else
+                        {
+                            this.cells[row, col].Val = value_as_string;
+                        }
+
+                        cell.ExpTree.SetVariable(variable, value);
+                    }
                 }
                 else
                 {

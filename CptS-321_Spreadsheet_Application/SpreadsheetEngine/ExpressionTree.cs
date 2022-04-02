@@ -61,6 +61,17 @@ namespace Cpts321
         }
 
         /// <summary>
+        /// Gets variable names in given string.
+        /// </summary>
+        /// <returns>List of available variables names.</returns>
+        public List<string> GetVariableNames()
+        {
+            List<string> names = new List<string>();
+
+            return names;
+        }
+
+        /// <summary>
         /// Calls private Evaluate.
         /// </summary>
         /// <returns>Evaluted Root.</returns>
@@ -92,7 +103,7 @@ namespace Cpts321
                     {
                         Console.WriteLine("Variable " + testVar.Var + " doesn't exist.");
 
-                        return 0;
+                        throw new ArgumentNullException();
 
                         // throw new NotImplementedException();
                     }

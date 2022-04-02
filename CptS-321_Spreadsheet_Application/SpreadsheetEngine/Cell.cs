@@ -21,6 +21,8 @@ namespace Cpts321
         private string text;
         private string val;
 
+        private ExpressionTree expTree;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Cell"/> class.
         /// </summary>
@@ -28,6 +30,8 @@ namespace Cpts321
         /// <param name="col">col.</param>
         public Cell(int row, int col)
         {
+            this.expTree = new ExpressionTree(string.Empty);
+
             this.rowIndex = row;
             this.colIndex = col;
             this.text = string.Empty;
@@ -100,6 +104,17 @@ namespace Cpts321
 
                     this.PropertyChanged(this, new PropertyChangedEventArgs("Val"));
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets expTree.
+        /// </summary>
+        public ExpressionTree ExpTree
+        {
+            get
+            {
+                return this.expTree;
             }
         }
     }
