@@ -93,8 +93,8 @@ namespace Cpts321
         /// <returns>value.</returns>
         public string GetValue(string variableName)
         {
-            int col = Convert.ToInt32(variableName[1]) - 'A';
-            int row = Convert.ToInt32(variableName.Substring(2)) - 1;
+            int col = Convert.ToInt32(variableName[0]) - 'A';
+            int row = Convert.ToInt32(variableName.Substring(1)) - 1;
 
             return this.cells[row, col].Val;
         }
@@ -109,11 +109,11 @@ namespace Cpts321
             {
                 if (cell.Text[0] == '=')
                 {
-                    string formula = cell.Text.Substring(0);
+                    string formula = cell.Text.Substring(1);
 
                     cell.ExpTree.Expression = formula;
 
-                    List<string> names = cell.ExpTree.GetVariableNames();
+                    List<string> names = cell.ExpTree.GetVariableNames(formula);
 
                     foreach (string variable in names)
                     {
@@ -128,13 +128,13 @@ namespace Cpts321
                         {
                             this.cells[row, col].Val = value_as_string;
                         }
-
-                        cell.ExpTree.SetVariable(variable, value);
                     }
+
+                    cell.Val = this.cells[row, col].Val;
                 }
                 else
                 {
-                    ((Cell)sender).Val = ((Cell)sender).Text;
+                    cell.Val = cell.Text;
                 }
             }
 

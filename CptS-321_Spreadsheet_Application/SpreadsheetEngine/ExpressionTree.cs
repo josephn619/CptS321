@@ -63,10 +63,38 @@ namespace Cpts321
         /// <summary>
         /// Gets variable names in given string.
         /// </summary>
+        /// <param name="expression">expression.</param>
         /// <returns>List of available variables names.</returns>
-        public List<string> GetVariableNames()
+        public List<string> GetVariableNames(string expression)
         {
             List<string> names = new List<string>();
+
+            int start = 0, expressionIndex = 0;
+
+            // Converts string to list of strings to ensure 10 is not read as 1 0
+            for (; expressionIndex < expression.Length; expressionIndex++)
+            {
+                if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
+                {
+                    // Adds substring before op
+                    names.Add(expression.Substring(start, expressionIndex - start));
+
+                    // Adds op
+                    names.Add(expression[expressionIndex].ToString());
+
+                    // Sets new start to index after op
+                    start = expressionIndex + 1;
+                }
+            }
+
+            // Case that expression doesn't end with operator
+            if (!ExpressionTreeFactory.IsOperator(expression[expressionIndex - 1].ToString()))
+            {
+                names.Add(expression.Substring(start, expressionIndex - start));
+            }
+
+            // Removes additional whitespace
+            names = names.Where(s => !string.IsNullOrEmpty(s)).ToList();
 
             return names;
         }
@@ -146,33 +174,7 @@ namespace Cpts321
         private string ConvertToPostFix(string expression)
         {
             // Called from compile - Converts expression to postfix and creats exprStack.
-            List<string> elements = new List<string>(expression.Length);
-            int start = 0, expressionIndex = 0;
-
-            // Converts string to list of strings to ensure 10 is not read as 1 0
-            for (; expressionIndex < expression.Length; expressionIndex++)
-            {
-                if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
-                {
-                    // Adds substring before op
-                    elements.Add(expression.Substring(start, expressionIndex - start));
-
-                    // Adds op
-                    elements.Add(expression[expressionIndex].ToString());
-
-                    // Sets new start to index after op
-                    start = expressionIndex + 1;
-                }
-            }
-
-            // Case that expression doesn't end with operator
-            if (!ExpressionTreeFactory.IsOperator(expression[expressionIndex - 1].ToString()))
-            {
-                elements.Add(expression.Substring(start, expressionIndex - start));
-            }
-
-            // Removes additional whitespace
-            elements = elements.Where(s => !string.IsNullOrEmpty(s)).ToList();
+            List<string> elements = this.GetVariableNames(expression);
 
             string postfix = string.Empty;
             string pop = string.Empty;
@@ -239,7 +241,14 @@ namespace Cpts321
             }
 
             // Rule 7
-            pop = opStack.Pop();
+            try
+            {
+                pop = opStack.Pop();
+            }
+            catch
+            {
+                // no operators ever used
+            }
 
             while (true)
             {
