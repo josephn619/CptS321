@@ -128,6 +128,26 @@ namespace Cpts321
             {
                 if (cell.Text[0] == '=')
                 {
+                    if (cell.ExpTree.Expression != string.Empty)
+                    {
+                        List<string> old = cell.ExpTree.GetExprList(cell.ExpTree.Expression);
+
+                        // Filter operators
+                        old = old.Where(s => !ExpressionTreeFactory.IsOperator(s)).ToList();
+
+                        // Filters numbers
+                        old = old.Where(s => !double.TryParse(s, out double num)).ToList();
+                        foreach (string name in old)
+                        {
+                            Cell refCell = this.GetCell(name);
+
+                            if (refCell != null)
+                            {
+                                refCell.PropertyChanged -= cell.CellPropertyChanged;
+                            }
+                        }
+                    }
+
                     string formula = cell.Text.Substring(1);
 
                     cell.ExpTree.Expression = formula;
@@ -143,6 +163,13 @@ namespace Cpts321
                     foreach (string variable in names)
                     {
                         cell.ExpTree.SetVariable(variable, this.GetValue(variable));
+
+                        Cell refCell = this.GetCell(variable);
+
+                        if (refCell != null)
+                        {
+                            refCell.PropertyChanged += cell.CellPropertyChanged;
+                        }
                     }
 
                     this.cells[row, col].Val = cell.ExpTree.Evaluate().ToString();

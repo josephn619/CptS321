@@ -250,18 +250,22 @@ namespace Cpts321
                 // no operators ever used
             }
 
-            while (true)
+            // Stack was double pushing when just 1 element was involved
+            if (exprStack.Count > 1)
             {
-                try
+                while (true)
                 {
-                    postfix += pop;
-                    exprStack.Push(this.GetNode(pop));
+                    try
+                    {
+                        postfix += pop;
+                        exprStack.Push(this.GetNode(pop));
 
-                    pop = opStack.Pop();
-                }
-                catch (Exception)
-                {
-                    break;
+                        pop = opStack.Pop();
+                    }
+                    catch (Exception)
+                    {
+                        break;
+                    }
                 }
             }
 
