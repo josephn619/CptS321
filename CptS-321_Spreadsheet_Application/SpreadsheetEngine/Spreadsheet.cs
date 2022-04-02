@@ -118,6 +118,40 @@ namespace Cpts321
             return num;
         }
 
+        private void GetNames(Cell cell, string expression, bool subscribe)
+        {
+            List<string> names = cell.ExpTree.GetExprList(expression);
+
+            // Filter operators
+            names = names.Where(s => !ExpressionTreeFactory.IsOperator(s)).ToList();
+
+            // Filters numbers
+            names = names.Where(s => !double.TryParse(s, out double num)).ToList();
+
+            foreach (string variable in names)
+            {
+                if (subscribe)
+                {
+                    cell.ExpTree.SetVariable(variable, this.GetValue(variable));
+                }
+
+                Cell refCell = this.GetCell(variable);
+
+                if (refCell != null)
+                {
+                    // Sub or unsub
+                    if (subscribe)
+                    {
+                        refCell.PropertyChanged += cell.CellPropertyChanged;
+                    }
+                    else
+                    {
+                        refCell.PropertyChanged -= cell.CellPropertyChanged;
+                    }
+                }
+            }
+        }
+
         private void Spreadsheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Cell cell = (Cell)sender;
@@ -128,53 +162,15 @@ namespace Cpts321
             {
                 if (cell.Text[0] == '=')
                 {
-                    // Case where cell already has expression
+                    // Cell already has expression (unsub)
                     if (cell.ExpTree.Expression != string.Empty)
                     {
-                        List<string> oldNames = cell.ExpTree.GetExprList(cell.ExpTree.Expression);
-
-                        // Filter operators
-                        oldNames = oldNames.Where(s => !ExpressionTreeFactory.IsOperator(s)).ToList();
-
-                        // Filters numbers
-                        oldNames = oldNames.Where(s => !double.TryParse(s, out double num)).ToList();
-
-                        foreach (string name in oldNames)
-                        {
-                            Cell refCell = this.GetCell(name);
-
-                            // Unsubscribe
-                            if (refCell != null)
-                            {
-                                refCell.PropertyChanged -= cell.CellPropertyChanged;
-                            }
-                        }
+                        this.GetNames(cell, cell.ExpTree.Expression, false);
                     }
 
                     string formula = cell.Text.Substring(1);
-
                     cell.ExpTree.Expression = formula;
-
-                    List<string> names = cell.ExpTree.GetExprList(formula);
-
-                    // Filter operators
-                    names = names.Where(s => !ExpressionTreeFactory.IsOperator(s)).ToList();
-
-                    // Filters numbers
-                    names = names.Where(s => !double.TryParse(s, out double num)).ToList();
-
-                    foreach (string variable in names)
-                    {
-                        cell.ExpTree.SetVariable(variable, this.GetValue(variable));
-
-                        Cell refCell = this.GetCell(variable);
-
-                        // Subscribe
-                        if (refCell != null)
-                        {
-                            refCell.PropertyChanged += cell.CellPropertyChanged;
-                        }
-                    }
+                    this.GetNames(cell, formula, true);
 
                     this.cells[row, col].Val = cell.ExpTree.Evaluate().ToString();
                     cell.Val = this.cells[row, col].Val;
