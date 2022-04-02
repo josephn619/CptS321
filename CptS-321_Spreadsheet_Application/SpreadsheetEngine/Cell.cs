@@ -117,5 +117,15 @@ namespace Cpts321
                 return this.expTree;
             }
         }
+
+        /// <summary>
+        /// Raises PropertyChanged event
+        /// </summary>
+        /// <param name="sender">sender.</param>
+        /// <param name="e">e.</param>
+        public void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e.PropertyName));
+        }
     }
 }

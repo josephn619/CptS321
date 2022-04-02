@@ -87,6 +87,23 @@ namespace Cpts321
         }
 
         /// <summary>
+        /// Gets cell from specified name.
+        /// </summary>
+        /// <param name="name">row.</param>
+        /// <returns>Cell.</returns>
+        public Cell GetCell(string name)
+        {
+            if (int.TryParse(name.Substring(1), out int row))
+            {
+                int col = Convert.ToInt32(name[0]) -'A';
+                return this.GetCell(row- 1, col);
+            }
+
+            return null;
+        }
+
+
+        /// <summary>
         /// Gets value given variableName.
         /// </summary>
         /// <param name="variableName">variableName.</param>
