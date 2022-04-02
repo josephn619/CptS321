@@ -91,12 +91,14 @@ namespace Cpts321
         /// </summary>
         /// <param name="variableName">variableName.</param>
         /// <returns>value.</returns>
-        public string GetValue(string variableName)
+        public double GetValue(string variableName)
         {
             int col = Convert.ToInt32(variableName[0]) - 'A';
             int row = Convert.ToInt32(variableName.Substring(1)) - 1;
 
-            return this.cells[row, col].Val;
+            double.TryParse(this.cells[row, col].Val, out double num);
+
+            return num;
         }
 
         private void Spreadsheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -113,23 +115,20 @@ namespace Cpts321
 
                     cell.ExpTree.Expression = formula;
 
-                    List<string> names = cell.ExpTree.GetVariableNames(formula);
+                    List<string> names = cell.ExpTree.GetExprList(formula);
+
+                    // Filter operators
+                    names = names.Where(s => !ExpressionTreeFactory.IsOperator(s)).ToList();
+
+                    // Filters numbers
+                    names = names.Where(s => !double.TryParse(s, out double num)).ToList();
 
                     foreach (string variable in names)
                     {
-                        string value_as_string = this.GetValue(variable);
-
-                        if (double.TryParse(value_as_string, out double value))
-                        {
-                            cell.ExpTree.SetVariable(variable, value);
-                            this.cells[row, col].Val = cell.ExpTree.Evaluate().ToString();
-                        }
-                        else
-                        {
-                            this.cells[row, col].Val = value_as_string;
-                        }
+                        cell.ExpTree.SetVariable(variable, this.GetValue(variable));
                     }
 
+                    this.cells[row, col].Val = cell.ExpTree.Evaluate().ToString();
                     cell.Val = this.cells[row, col].Val;
                 }
                 else

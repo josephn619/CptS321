@@ -15,8 +15,6 @@ namespace Cpts321
     /// </summary>
     public class ExpressionTreeFactory
     {
-        public static Dictionary<string, Type> operators = new Dictionary<string, Type>();
-
         /// <summary>
         /// Creates and returns operater.
         /// </summary>

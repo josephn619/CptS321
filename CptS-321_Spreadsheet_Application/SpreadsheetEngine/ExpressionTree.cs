@@ -65,7 +65,7 @@ namespace Cpts321
         /// </summary>
         /// <param name="expression">expression.</param>
         /// <returns>List of available variables names.</returns>
-        public List<string> GetVariableNames(string expression)
+        public List<string> GetExprList(string expression)
         {
             List<string> names = new List<string>();
 
@@ -174,7 +174,7 @@ namespace Cpts321
         private string ConvertToPostFix(string expression)
         {
             // Called from compile - Converts expression to postfix and creats exprStack.
-            List<string> elements = this.GetVariableNames(expression);
+            List<string> elements = this.GetExprList(expression);
 
             string postfix = string.Empty;
             string pop = string.Empty;
