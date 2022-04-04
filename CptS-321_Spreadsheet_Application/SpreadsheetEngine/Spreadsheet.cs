@@ -118,7 +118,7 @@ namespace Cpts321
             return num;
         }
 
-        private void GetNames(Cell cell, string expression, bool subscribe)
+        private void SubOrUnsubToNames(Cell cell, string expression, bool subscribe)
         {
             List<string> names = cell.ExpTree.GetExprList(expression);
 
@@ -154,30 +154,30 @@ namespace Cpts321
 
         private void Spreadsheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Cell cell = (Cell)sender;
-            int row = cell.RowIndex;
-            int col = cell.ColIndex;
-
             if (e.PropertyName == "Text")
             {
-                if (cell.Text[0] == '=')
+                Cell senderCell = (Cell)sender;
+
+                if (senderCell.Text.StartsWith("="))
                 {
-                    // Cell already has expression (unsub)
-                    if (cell.ExpTree.Expression != string.Empty)
+                    int row = senderCell.RowIndex;
+                    int col = senderCell.ColIndex;
+
+                    // Cell already has expression (unsubscribe)
+                    if (senderCell.ExpTree.Expression != string.Empty)
                     {
-                        this.GetNames(cell, cell.ExpTree.Expression, false);
+                        this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, false);
                     }
 
-                    string formula = cell.Text.Substring(1);
-                    cell.ExpTree.Expression = formula;
-                    this.GetNames(cell, formula, true);
+                    senderCell.ExpTree.Expression = senderCell.Text.Substring(1);
+                    this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, true);
 
-                    this.cells[row, col].Val = cell.ExpTree.Evaluate().ToString();
-                    cell.Val = this.cells[row, col].Val;
+                    this.cells[row, col].Val = senderCell.ExpTree.Evaluate().ToString();
+                    senderCell.Val = this.cells[row, col].Val = senderCell.ExpTree.Evaluate().ToString();
                 }
                 else
                 {
-                    cell.Val = cell.Text;
+                    senderCell.Val = senderCell.Text;
                 }
             }
 

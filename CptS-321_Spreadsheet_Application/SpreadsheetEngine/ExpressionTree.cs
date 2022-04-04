@@ -68,7 +68,7 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Gets variable names in given string.
+        /// Gets all nodes in given string.
         /// </summary>
         /// <param name="expression">expression.</param>
         /// <returns>List of available variables names.</returns>
@@ -172,7 +172,6 @@ namespace Cpts321
             // postfix has no practical use
             string postfix = this.ConvertToPostFix(expression);
 
-            // Converts to postfix with spaces, then fills exprStack and removes spaces
             Node newNode = this.CompileUsingExprStack();
 
             return newNode;
@@ -180,7 +179,7 @@ namespace Cpts321
 
         private string ConvertToPostFix(string expression)
         {
-            // Called from compile - Converts expression to postfix and creats exprStack.
+            // Called from compile - Converts expression to postfix and fills static member exprStack.
             List<string> elements = this.GetExprList(expression);
 
             string postfix = string.Empty;
