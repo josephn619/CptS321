@@ -95,13 +95,12 @@ namespace Cpts321
         {
             if (int.TryParse(name.Substring(1), out int row))
             {
-                int col = Convert.ToInt32(name[0]) -'A';
+                int col = Convert.ToInt32(name[0]) - 'A';
                 return this.GetCell(row- 1, col);
             }
 
             return null;
         }
-
 
         /// <summary>
         /// Gets value given variableName.
@@ -118,21 +117,29 @@ namespace Cpts321
             return num;
         }
 
-        private void SubOrUnsubToNames(Cell cell, string expression, bool subscribe)
+        private List<string> GetVariables(Cell senderCell, string expression)
         {
-            List<string> names = cell.ExpTree.GetExprList(expression);
+            // Gets list of operators, numbers, and variables
+            List<string> names = senderCell.ExpTree.GetExprList(expression);
 
-            // Filter operators
+            // Filters out operators
             names = names.Where(s => !ExpressionTreeFactory.IsOperator(s)).ToList();
 
-            // Filters numbers
+            // Filters out variables
             names = names.Where(s => !double.TryParse(s, out double num)).ToList();
+
+            return names;
+        }
+
+        private void SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe)
+        {
+            List<string> names = this.GetVariables(senderCell, expression);
 
             foreach (string variable in names)
             {
                 if (subscribe)
                 {
-                    cell.ExpTree.SetVariable(variable, this.GetValue(variable));
+                    senderCell.ExpTree.SetVariable(variable, this.GetValue(variable));
                 }
 
                 Cell refCell = this.GetCell(variable);
@@ -142,11 +149,11 @@ namespace Cpts321
                     // Sub or unsub
                     if (subscribe)
                     {
-                        refCell.PropertyChanged += cell.CellPropertyChanged;
+                        refCell.PropertyChanged += senderCell.CellPropertyChanged;
                     }
                     else
                     {
-                        refCell.PropertyChanged -= cell.CellPropertyChanged;
+                        refCell.PropertyChanged -= senderCell.CellPropertyChanged;
                     }
                 }
             }
@@ -169,10 +176,8 @@ namespace Cpts321
                         this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, false);
                     }
 
-                    senderCell.ExpTree.Expression = senderCell.Text.Substring(1);
-                    this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, true);
+                    this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true);
 
-                    this.cells[row, col].Val = senderCell.ExpTree.Evaluate().ToString();
                     senderCell.Val = this.cells[row, col].Val = senderCell.ExpTree.Evaluate().ToString();
                 }
                 else

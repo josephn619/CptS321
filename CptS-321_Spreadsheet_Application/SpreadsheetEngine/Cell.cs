@@ -119,7 +119,7 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Raises PropertyChanged event
+        /// Raises PropertyChanged event.
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>

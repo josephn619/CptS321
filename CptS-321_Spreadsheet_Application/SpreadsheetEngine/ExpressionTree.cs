@@ -112,7 +112,7 @@ namespace Cpts321
         /// <returns>Evaluted Root.</returns>
         public double Evaluate()
         {
-            // Called from program.cs in ExpTreeConsole
+            // Called from program.cs in ExpTreeConsole & from spreadsheet.cs in Spreadsheet_Adam_Nassar
             return this.Evaluate(this.root);
         }
 
@@ -339,7 +339,6 @@ namespace Cpts321
                 {
                     if (newOp != null)
                     {
-                        // Current problem
                         newOp.Right = result.Pop();
                         newOp.Left = result.Pop();
 
