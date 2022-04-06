@@ -68,7 +68,7 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Gets all nodes in given string.
+        /// Called from ConvertToPostFix & GetVariables in Spreadsheet.cs - Gets all nodes in given string.
         /// </summary>
         /// <param name="expression">expression.</param>
         /// <returns>List of available variables names.</returns>
@@ -78,7 +78,7 @@ namespace Cpts321
 
             int start = 0, expressionIndex = 0;
 
-            // Converts string to list of strings to ensure 10 is not read as 1 0
+            // Converts string to list of strings to ensure elements read correctly - 10 instead of 1 0
             for (; expressionIndex < expression.Length; expressionIndex++)
             {
                 if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
@@ -107,18 +107,17 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Calls private Evaluate.
+        /// Called from program.cs in ExpTreeConsole & from spreadsheet.cs in Spreadsheet_Adam_Nassar - calls private Evaluate.
         /// </summary>
         /// <returns>Evaluted Root.</returns>
         public double Evaluate()
         {
-            // Called from program.cs in ExpTreeConsole & from spreadsheet.cs in Spreadsheet_Adam_Nassar
             return this.Evaluate(this.root);
         }
 
+        // Called by public evaluate method - Evaluates given expression tree.
         private double Evaluate(Node newNode)
         {
-            // Called by public evaluate method
             try
             {
                 // Checks if Constant type.
@@ -159,27 +158,24 @@ namespace Cpts321
             }
         }
 
+        // Called by constructor and setter - Converts to PostFix and then builds expression tree.
         private Node Compile(string expression)
         {
-            // Called by constructor and setter
-
             // Checks if empty.
-            if (string.IsNullOrEmpty(expression))
+            if (!string.IsNullOrEmpty(expression))
             {
-                return null;
+                // postfix has no practical use
+                string postfix = this.ConvertToPostFix(expression);
+
+                return this.CompileUsingExprStack();
             }
 
-            // postfix has no practical use
-            string postfix = this.ConvertToPostFix(expression);
-
-            Node newNode = this.CompileUsingExprStack();
-
-            return newNode;
+            return null;
         }
 
+        // Called from compile - Converts expression to postfix and fills static member exprStack.
         private string ConvertToPostFix(string expression)
         {
-            // Called from compile - Converts expression to postfix and fills static member exprStack.
             List<string> elements = this.GetExprList(expression);
 
             string postfix = string.Empty;
@@ -246,7 +242,7 @@ namespace Cpts321
                 }
             }
 
-            // Rule 7
+            // Rule 7 (the remaining code)
             try
             {
                 pop = opStack.Pop();
@@ -279,10 +275,9 @@ namespace Cpts321
             return postfix;
         }
 
+        // Called by ConvertToPostfix - Converts string to one of the 3 types of nodes given a string
         private Node GetNode(string expression)
         {
-            // Called by ConvertToPostfix
-
             // Checks if op.
             if (ExpressionTreeFactory.IsOperator(expression))
             {
@@ -306,12 +301,12 @@ namespace Cpts321
             throw new NotSupportedException();
         }
 
+        // Called by compile - Builds expression tree
         private Node CompileUsingExprStack()
         {
-            // Called by compile
             Stack<Node> reverse = new Stack<Node>();
 
-            // Reverses stack
+            // Reverses stack (stack LIFO, so operators would be compiled first, which we don't want)
             while (exprStack.Count > 0)
             {
                 reverse.Push(exprStack.Pop());
@@ -320,7 +315,7 @@ namespace Cpts321
             Stack<Node> result = new Stack<Node>();
             Node newNode;
 
-            // goes through reverse exprStack and returns cur root
+            // Goes through reverse exprStack and returns current root
             while (reverse.Count > 0)
             {
                 newNode = reverse.Pop();

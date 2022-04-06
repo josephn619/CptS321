@@ -61,14 +61,14 @@ namespace Spreadsheet_Adam_Nassar
         {
             if (e.PropertyName == "Refresh")
             {
-                Cpts321.Cell refreshCell = (Cpts321.Cell)sender;
+                Cpts321.Cell senderAsCell = (Cpts321.Cell)sender;
 
-                if (refreshCell != null)
+                if (senderAsCell != null)
                 {
-                    int row = refreshCell.RowIndex;
-                    int col = refreshCell.ColIndex;
+                    int row = senderAsCell.RowIndex;
+                    int col = senderAsCell.ColIndex;
 
-                    this.DataGridView.Rows[row].Cells[col].Value = refreshCell.Val;
+                    this.DataGridView.Rows[row].Cells[col].Value = senderAsCell.Val;
                 }
             }
         }
