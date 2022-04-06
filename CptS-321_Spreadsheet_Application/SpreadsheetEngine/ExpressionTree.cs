@@ -138,8 +138,6 @@ namespace Cpts321
                         Console.WriteLine("Variable " + testVar.Var + " doesn't exist.");
 
                         throw new ArgumentNullException();
-
-                        // throw new NotImplementedException();
                     }
                 }
 
@@ -161,13 +159,12 @@ namespace Cpts321
         // Called by constructor and setter - Converts to PostFix and then builds expression tree.
         private Node Compile(string expression)
         {
-            // Checks if empty.
             if (!string.IsNullOrEmpty(expression))
             {
                 // postfix has no practical use
                 string postfix = this.ConvertToPostFix(expression);
 
-                return this.CompileUsingExprStack();
+                return this.BuildUsingExprStack();
             }
 
             return null;
@@ -178,10 +175,9 @@ namespace Cpts321
         {
             List<string> elements = this.GetExprList(expression);
 
-            string postfix = string.Empty;
-            string pop = string.Empty;
+            string postfix = string.Empty, pop = string.Empty;
 
-            // Goes through each string in list (shunting alg)
+            /* SHUNTING BEGIN */
             foreach (string elem in elements)
             {
                 if (elem == "(")
@@ -242,7 +238,7 @@ namespace Cpts321
                 }
             }
 
-            // Rule 7 (the remaining code)
+            // Rule 7 (all the remaining code)
             try
             {
                 pop = opStack.Pop();
@@ -252,7 +248,7 @@ namespace Cpts321
                 // no operators ever used
             }
 
-            // Stack was double pushing when just 1 element was involved
+            // Unecessary if only one element in exprStack
             if (exprStack.Count > 1)
             {
                 while (true)
@@ -271,14 +267,14 @@ namespace Cpts321
                 }
             }
 
-            // returns string for testcase purposes
+            /* SHUNTING END */
+
             return postfix;
         }
 
         // Called by ConvertToPostfix - Converts string to one of the 3 types of nodes given a string
         private Node GetNode(string expression)
         {
-            // Checks if op.
             if (ExpressionTreeFactory.IsOperator(expression))
             {
                 return ExpressionTreeFactory.Create(expression);
@@ -297,12 +293,10 @@ namespace Cpts321
                     Var = expression,
                 };
             }
-
-            throw new NotSupportedException();
         }
 
         // Called by compile - Builds expression tree
-        private Node CompileUsingExprStack()
+        private Node BuildUsingExprStack()
         {
             Stack<Node> reverse = new Stack<Node>();
 

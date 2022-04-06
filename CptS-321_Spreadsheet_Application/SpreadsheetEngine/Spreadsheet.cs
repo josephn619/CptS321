@@ -96,7 +96,7 @@ namespace Cpts321
             if (int.TryParse(name.Substring(1), out int row))
             {
                 int col = Convert.ToInt32(name[0]) - 'A';
-                return this.GetCell(row- 1, col);
+                return this.GetCell(row - 1, col);
             }
 
             return null;
