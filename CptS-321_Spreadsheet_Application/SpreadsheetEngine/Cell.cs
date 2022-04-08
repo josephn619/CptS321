@@ -20,6 +20,7 @@ namespace Cpts321
         private readonly int colIndex;
         private string text;
         private string val;
+        private int bgColor;
 
         private ExpressionTree expTree;
 
@@ -30,12 +31,13 @@ namespace Cpts321
         /// <param name="col">col.</param>
         public Cell(int row, int col)
         {
-            this.expTree = new ExpressionTree(string.Empty);
-
             this.rowIndex = row;
             this.colIndex = col;
             this.text = string.Empty;
             this.val = string.Empty;
+            this.bgColor = 0;
+
+            this.expTree = new ExpressionTree(string.Empty);
         }
 
         /// <summary>
@@ -103,6 +105,28 @@ namespace Cpts321
                     this.val = value;
 
                     this.PropertyChanged(this, new PropertyChangedEventArgs("Val"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets bgColor (note, had a big issue where using uint caused a system overflow exception. Someone explained
+        /// that uint is to big for Color since max(uint) is greater than max(int32).
+        /// </summary>
+        public int BGColor
+        {
+            get
+            {
+                return this.bgColor;
+            }
+
+            set
+            {
+                if (this.bgColor != value)
+                {
+                    this.bgColor = value;
+
+                    this.PropertyChanged(this, new PropertyChangedEventArgs("BgColor"));
                 }
             }
         }

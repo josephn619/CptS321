@@ -15,7 +15,6 @@ namespace Cpts321
     /// </summary>
     public class ExpressionTree
     {
-        private static Stack<string> opStack = new Stack<string>();
         private static Stack<Node> exprStack = new Stack<Node>();
 
         private string expression;
@@ -68,7 +67,7 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Called from ConvertToPostFix & GetVariables in Spreadsheet.cs - Gets all nodes in given string.
+        /// Called from ConvertToPostFix & GetVariables in Spreadsheet.cs - Converts string to list of strings (10 instead of 1 0).
         /// </summary>
         /// <param name="expression">expression.</param>
         /// <returns>List of available variables names.</returns>
@@ -78,7 +77,6 @@ namespace Cpts321
 
             int start = 0, expressionIndex = 0;
 
-            // Converts string to list of strings to ensure elements read correctly - 10 instead of 1 0
             for (; expressionIndex < expression.Length; expressionIndex++)
             {
                 if (ExpressionTreeFactory.IsOperator(expression[expressionIndex].ToString()))
@@ -173,9 +171,10 @@ namespace Cpts321
         // Called from compile - Converts expression to postfix and fills static member exprStack.
         private string ConvertToPostFix(string expression)
         {
-            List<string> elements = this.GetExprList(expression);
-
             string postfix = string.Empty, pop = string.Empty;
+            Stack<string> opStack = new Stack<string>();
+
+            List<string> elements = this.GetExprList(expression);
 
             /* SHUNTING BEGIN */
             foreach (string elem in elements)
@@ -306,8 +305,8 @@ namespace Cpts321
                 reverse.Push(exprStack.Pop());
             }
 
-            Stack<Node> result = new Stack<Node>();
             Node newNode;
+            Stack<Node> result = new Stack<Node>();
 
             // Goes through reverse exprStack and returns current root
             while (reverse.Count > 0)

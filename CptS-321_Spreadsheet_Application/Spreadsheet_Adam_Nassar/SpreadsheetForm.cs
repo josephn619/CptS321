@@ -30,7 +30,7 @@ namespace Spreadsheet_Adam_Nassar
 
             this.InitializeComponent();
 
-            this.mySpreadsheet.CellPropertyChanged += this.Refresh_PropertyChanged;
+            this.mySpreadsheet.CellPropertyChanged += this.Refresh_CellPropertyChanged;
 
             this.DataGridView.CellBeginEdit += this.DGV_CellBeginEdit;
 
@@ -57,18 +57,25 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        private void Refresh_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void Refresh_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Refresh")
-            {
-                Cpts321.Cell senderAsCell = (Cpts321.Cell)sender;
+            Cpts321.Cell senderAsCell = (Cpts321.Cell)sender;
 
+            int row = senderAsCell.RowIndex;
+            int col = senderAsCell.ColIndex;
+
+            if (e.PropertyName == "RefreshVal")
+            {
                 if (senderAsCell != null)
                 {
-                    int row = senderAsCell.RowIndex;
-                    int col = senderAsCell.ColIndex;
-
                     this.DataGridView.Rows[row].Cells[col].Value = senderAsCell.Val;
+                }
+            }
+            else if (e.PropertyName == "RefreshBgColor")
+            {
+                if (senderAsCell != null)
+                {
+                    this.DataGridView.Rows[row].Cells[col].Style.BackColor = Color.FromArgb((int)senderAsCell.BGColor);
                 }
             }
         }
@@ -129,6 +136,36 @@ namespace Spreadsheet_Adam_Nassar
         {
             Cpts321.Cell initCell = this.mySpreadsheet.GetCell(row, col);
             initCell.Text = message + (row + 1);
+        }
+
+        private void ChangeSelectedCellsColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.DataGridView.SelectedCells.Count > 0)
+            {
+                ColorDialog myDialog = new ColorDialog
+                {
+                    AllowFullOpen = false,
+                    ShowHelp = true,
+                    Color = this.DataGridView.SelectedCells[0].Style.BackColor,
+                };
+
+                if (myDialog.ShowDialog() == DialogResult.OK)
+                {
+                    for (int i = 0; i < this.DataGridView.SelectedCells.Count; i++)
+                    {
+                        int row = this.DataGridView.SelectedCells[i].RowIndex;
+                        int col = this.DataGridView.SelectedCells[i].ColumnIndex;
+
+                        this.mySpreadsheet.GetCell(row, col).BGColor = myDialog.Color.ToArgb();
+
+                        // this.mySpreadsheet.GetCell(row, col).BGColor =
+                        //   (myDialog.Color.A << 24)
+                        //    | (myDialog.Color.R << 16)
+                        //    | (myDialog.Color.G << 8)
+                        //    | (myDialog.Color.B << 0);
+                    }
+                }
+            }
         }
     }
 }

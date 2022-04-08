@@ -8,8 +8,6 @@ namespace Cpts321
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Container class for spreadsheet.
@@ -161,15 +159,15 @@ namespace Cpts321
 
         private void Spreadsheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            Cell senderCell = (Cell)sender;
+
+            int row = senderCell.RowIndex;
+            int col = senderCell.ColIndex;
+
             if (e.PropertyName == "Text")
             {
-                Cell senderCell = (Cell)sender;
-
                 if (senderCell.Text.StartsWith("="))
                 {
-                    int row = senderCell.RowIndex;
-                    int col = senderCell.ColIndex;
-
                     // Cell already has expression (unsubscribe)
                     if (senderCell.ExpTree.Expression != string.Empty)
                     {
@@ -184,9 +182,13 @@ namespace Cpts321
                 {
                     senderCell.Val = senderCell.Text;
                 }
-            }
 
-            this.CellPropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Refresh"));
+                this.CellPropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("RefreshVal"));
+            }
+            else if (e.PropertyName == "BgColor")
+            {
+                this.CellPropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("RefreshBgColor"));
+            }
         }
     }
 }
