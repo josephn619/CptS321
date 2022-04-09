@@ -21,8 +21,8 @@ namespace Cpts321
         private Stack<Undo_Redo> undoStack;
         private Stack<Undo_Redo> redoStack;
 
-        private Stack<int> massUndo;
-        private Stack<int> massRedo;
+        private int sizeUndo;
+        private int sizeRedo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
@@ -31,15 +31,15 @@ namespace Cpts321
         /// <param name="cols">cols.</param>
         public Spreadsheet(int rows, int cols)
         {
-            this.undoStack = new Stack<Undo_Redo>();
-            this.redoStack = new Stack<Undo_Redo>();
-
-            this.massUndo = new Stack<int>();
-            this.massRedo = new Stack<int>();
-
             this.nRows = rows;
             this.nCols = cols;
             this.cells = new Cell[this.nRows, this.nCols];
+
+            this.undoStack = new Stack<Undo_Redo>();
+            this.redoStack = new Stack<Undo_Redo>();
+
+            this.sizeUndo = 0;
+            this.sizeRedo = 0;
 
             for (int i = 0; i < this.nRows; i++)
             {
@@ -113,34 +113,34 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Gets or sets stack for multiple undos.
+        /// Gets or sets for total number of undos.
         /// </summary>
-        public Stack<int> MassUndo
+        public int SizeUndo
         {
             get
             {
-                return this.massUndo;
+                return this.sizeUndo;
             }
 
             set
             {
-                this.massUndo = value;
+                this.sizeUndo = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets stack for multiple redos.
+        /// Gets or sets for total number of redos.
         /// </summary>
-        public Stack<int> MassRedo
+        public int SizeRedo
         {
             get
             {
-                return this.massRedo;
+                return this.sizeRedo;
             }
 
             set
             {
-                this.massRedo = value;
+                this.sizeRedo = value;
             }
         }
 

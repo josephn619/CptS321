@@ -155,7 +155,6 @@ namespace Cpts321
             };
         }
 
-
         /// <summary>
         /// Raises PropertyChanged event.
         /// </summary>
