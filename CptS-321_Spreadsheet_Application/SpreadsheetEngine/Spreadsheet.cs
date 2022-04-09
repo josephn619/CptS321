@@ -18,6 +18,9 @@ namespace Cpts321
         private readonly int nCols;
         private Cell[,] cells;
 
+        private Stack<Undo_Redo> undoStack;
+        private Stack<Undo_Redo> redoStack;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
         /// </summary>
@@ -25,6 +28,9 @@ namespace Cpts321
         /// <param name="cols">cols.</param>
         public Spreadsheet(int rows, int cols)
         {
+            this.undoStack = new Stack<Undo_Redo>();
+            this.redoStack = new Stack<Undo_Redo>();
+
             this.nRows = rows;
             this.nCols = cols;
             this.cells = new Cell[this.nRows, this.nCols];
@@ -65,6 +71,38 @@ namespace Cpts321
             get
             {
                 return this.nCols;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets undo stack.
+        /// </summary>
+        public Stack<Undo_Redo> UndoStack
+        {
+            get
+            {
+                return this.undoStack;
+            }
+
+            set
+            {
+                this.undoStack = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets redo stack.
+        /// </summary>
+        public Stack<Undo_Redo> RedoStack
+        {
+            get
+            {
+                return this.redoStack;
+            }
+
+            set
+            {
+                this.redoStack = value;
             }
         }
 
@@ -113,6 +151,44 @@ namespace Cpts321
             double.TryParse(this.cells[row, col].Val, out double num);
 
             return num;
+        }
+
+        /// <summary>
+        /// Returns previous operation.
+        /// </summary>
+        /// <returns>Last node.</returns>
+        public Undo_Redo Undo()
+        {
+            if (this.undoStack.Count > 0)
+            {
+                Undo_Redo prevOperation = this.undoStack.Pop();
+
+                Undo_Redo undo = new Undo_Redo(this.cells[prevOperation.GetPrevLocation()[0], prevOperation.GetPrevLocation()[1]].CreateCopy(), prevOperation.PropertyChanged);
+                prevOperation.Update(ref this.cells[prevOperation.GetPrevLocation()[0], prevOperation.GetPrevLocation()[1]]);
+
+                return undo;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns previous operation.
+        /// </summary>
+        /// <returns>Last node.</returns>
+        public Undo_Redo Redo()
+        {
+            if (this.redoStack.Count > 0)
+            {
+                Undo_Redo prevOperation = this.redoStack.Pop();
+
+                Undo_Redo redo = new Undo_Redo(this.cells[prevOperation.GetPrevLocation()[0], prevOperation.GetPrevLocation()[1]].CreateCopy(), prevOperation.PropertyChanged);
+                prevOperation.Update(ref this.cells[prevOperation.GetPrevLocation()[0], prevOperation.GetPrevLocation()[1]]);
+
+                return redo;
+            }
+
+            return null;
         }
 
         private List<string> GetVariables(Cell senderCell, string expression)

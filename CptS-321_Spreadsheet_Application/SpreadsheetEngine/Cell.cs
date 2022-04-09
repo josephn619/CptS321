@@ -35,7 +35,7 @@ namespace Cpts321
             this.colIndex = col;
             this.text = string.Empty;
             this.val = string.Empty;
-            this.bgColor = 0;
+            this.bgColor = -1;
 
             this.expTree = new ExpressionTree(string.Empty);
         }
@@ -141,6 +141,20 @@ namespace Cpts321
                 return this.expTree;
             }
         }
+
+        /// <summary>
+        /// Creates copy of the given cell.
+        /// </summary>
+        /// <returns>Cell copy.</returns>
+        public Cell CreateCopy()
+        {
+            return new NewCell(this.rowIndex, this.colIndex)
+            {
+                Text = this.Text,
+                BGColor = this.BGColor,
+            };
+        }
+
 
         /// <summary>
         /// Raises PropertyChanged event.

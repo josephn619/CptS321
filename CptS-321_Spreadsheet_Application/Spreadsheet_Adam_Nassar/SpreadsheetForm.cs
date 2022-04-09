@@ -75,7 +75,7 @@ namespace Spreadsheet_Adam_Nassar
             {
                 if (senderAsCell != null)
                 {
-                    this.DataGridView.Rows[row].Cells[col].Style.BackColor = Color.FromArgb((int)senderAsCell.BGColor);
+                    this.DataGridView.Rows[row].Cells[col].Style.BackColor = Color.FromArgb(senderAsCell.BGColor);
                 }
             }
         }
@@ -156,6 +156,12 @@ namespace Spreadsheet_Adam_Nassar
                         int row = this.DataGridView.SelectedCells[i].RowIndex;
                         int col = this.DataGridView.SelectedCells[i].ColumnIndex;
 
+                        Cpts321.Cell newCell = this.mySpreadsheet.GetCell(row, col).CreateCopy();
+                        this.mySpreadsheet.UndoStack.Push(new Cpts321.Undo_Redo(newCell, "Color change"));
+
+                        this.undoToolStripMenuItem.Enabled = true;
+                        this.undoToolStripMenuItem.Text = "Undo " + this.mySpreadsheet.UndoStack.Peek().PropertyChanged;
+
                         this.mySpreadsheet.GetCell(row, col).BGColor = myDialog.Color.ToArgb();
 
                         // this.mySpreadsheet.GetCell(row, col).BGColor =
@@ -165,6 +171,54 @@ namespace Spreadsheet_Adam_Nassar
                         //    | (myDialog.Color.B << 0);
                     }
                 }
+            }
+        }
+
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Cpts321.Undo_Redo prevCell = this.mySpreadsheet.Undo();
+
+            if (prevCell != null)
+            {
+                this.mySpreadsheet.RedoStack.Push(new Cpts321.Undo_Redo(prevCell.PrevCell, prevCell.PropertyChanged));
+                this.redoToolStripMenuItem.Enabled = false;
+                if (this.mySpreadsheet.RedoStack.Count > 0)
+                {
+                    this.redoToolStripMenuItem.Text = "Redo " + this.mySpreadsheet.RedoStack.Peek().PropertyChanged;
+                }
+            }
+
+            if (this.mySpreadsheet.UndoStack.Count == 0)
+            {
+                this.undoToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                this.undoToolStripMenuItem.Enabled = true;
+            }
+        }
+
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Cpts321.Undo_Redo prevCell = this.mySpreadsheet.Redo();
+
+            if (prevCell != null)
+            {
+                this.mySpreadsheet.UndoStack.Push(new Cpts321.Undo_Redo(prevCell.PrevCell, prevCell.PropertyChanged));
+                this.undoToolStripMenuItem.Enabled = false;
+                if (this.mySpreadsheet.UndoStack.Count > 0)
+                {
+                    this.undoToolStripMenuItem.Text = "Undo " + this.mySpreadsheet.UndoStack.Peek().PropertyChanged;
+                }
+            }
+
+            if (this.mySpreadsheet.RedoStack.Count == 0)
+            {
+                this.redoToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                this.redoToolStripMenuItem.Enabled = true;
             }
         }
     }
