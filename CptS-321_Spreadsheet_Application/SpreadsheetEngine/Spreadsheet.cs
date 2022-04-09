@@ -201,8 +201,8 @@ namespace Cpts321
             {
                 Undo_Redo prevOperation = this.undoStack.Pop();
 
-                Undo_Redo undo = new Undo_Redo(this.cells[prevOperation.GetPrevLocation()[0], prevOperation.GetPrevLocation()[1]].CreateCopy(), prevOperation.PropertyChanged);
-                prevOperation.Update(ref this.cells[prevOperation.GetPrevLocation()[0], prevOperation.GetPrevLocation()[1]]);
+                Undo_Redo undo = new Undo_Redo(this.cells[prevOperation.GetRow(), prevOperation.GetCol()].CreateCopy(), prevOperation.PropertyChanged);
+                prevOperation.Update(ref this.cells[prevOperation.GetRow(), prevOperation.GetCol()]);
 
                 return undo;
             }
@@ -220,8 +220,8 @@ namespace Cpts321
             {
                 Undo_Redo prevOperation = this.redoStack.Pop();
 
-                Undo_Redo redo = new Undo_Redo(this.cells[prevOperation.GetPrevLocation()[0], prevOperation.GetPrevLocation()[1]].CreateCopy(), prevOperation.PropertyChanged);
-                prevOperation.Update(ref this.cells[prevOperation.GetPrevLocation()[0], prevOperation.GetPrevLocation()[1]]);
+                Undo_Redo redo = new Undo_Redo(this.cells[prevOperation.GetRow(), prevOperation.GetCol()].CreateCopy(), prevOperation.PropertyChanged);
+                prevOperation.Update(ref this.cells[prevOperation.GetRow(), prevOperation.GetCol()]);
 
                 return redo;
             }

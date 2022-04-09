@@ -193,13 +193,32 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.redoToolStripMenuItem.Text == "Redo Color change")
+            {
+                this.mySpreadsheet.SizeRedo = this.mySpreadsheet.SizeRedo;
+
+                for (int i = 0; i < this.mySpreadsheet.SizeRedo; i++)
+                {
+                    this.SingleRedo();
+                }
+            }
+            else
+            {
+                this.SingleRedo();
+            }
+        }
+
         private void SingleUndo()
         {
             Cpts321.Undo_Redo curCell = this.mySpreadsheet.Undo();
 
             if (curCell != null)
             {
+                // Create new Undo_Redo instance and push onto redoStack (future redo operation)
                 this.mySpreadsheet.RedoStack.Push(new Cpts321.Undo_Redo(curCell.PrevCell, curCell.PropertyChanged));
+
                 this.redoToolStripMenuItem.Enabled = true;
 
                 if (this.mySpreadsheet.RedoStack.Count > 0)
@@ -219,30 +238,15 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (this.redoToolStripMenuItem.Text == "Redo Color change")
-            {
-                this.mySpreadsheet.SizeRedo = this.mySpreadsheet.SizeRedo;
-
-                for (int i = 0; i < this.mySpreadsheet.SizeRedo; i++)
-                {
-                    this.SingleRedo();
-                }
-            }
-            else
-            {
-                this.SingleRedo();
-            }
-        }
-
         private void SingleRedo()
         {
             Cpts321.Undo_Redo curCell = this.mySpreadsheet.Redo();
 
             if (curCell != null)
             {
+                // Create new Undo_Redo instance and push onto undoStack (future undo operation)
                 this.mySpreadsheet.UndoStack.Push(new Cpts321.Undo_Redo(curCell.PrevCell, curCell.PropertyChanged));
+
                 this.undoToolStripMenuItem.Enabled = true;
 
                 if (this.mySpreadsheet.UndoStack.Count > 0)

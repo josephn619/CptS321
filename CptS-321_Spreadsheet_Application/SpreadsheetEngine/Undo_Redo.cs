@@ -72,12 +72,21 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Gets previous cells locations.
+        /// Gets row for prev cell.
         /// </summary>
         /// <returns>Previous cell.</returns>
-        public int[] GetPrevLocation()
+        public int GetRow()
         {
-            return new int[2] { this.prevCell.RowIndex, this.prevCell.ColIndex };
+            return this.prevCell.RowIndex;
+        }
+
+        /// <summary>
+        /// Gets col for prev cell.
+        /// </summary>
+        /// <returns>Previous cel coll.</returns>
+        public int GetCol ()
+        {
+            return this.prevCell.ColIndex;
         }
     }
 }
