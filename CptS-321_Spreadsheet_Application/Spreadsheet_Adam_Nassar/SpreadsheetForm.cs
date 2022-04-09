@@ -151,6 +151,8 @@ namespace Spreadsheet_Adam_Nassar
 
                 if (myDialog.ShowDialog() == DialogResult.OK)
                 {
+                    this.mySpreadsheet.MassUndo.Push(this.DataGridView.SelectedCells.Count);
+
                     for (int i = 0; i < this.DataGridView.SelectedCells.Count; i++)
                     {
                         int row = this.DataGridView.SelectedCells[i].RowIndex;
@@ -176,12 +178,31 @@ namespace Spreadsheet_Adam_Nassar
 
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (this.undoToolStripMenuItem.Text == "Undo Color change")
+            {
+                int size = this.mySpreadsheet.MassUndo.Pop();
+
+                this.mySpreadsheet.MassRedo.Push(size);
+
+                for (int i = 0; i < size; i++)
+                {
+                    this.SingleUndo();
+                }
+            }
+            else
+            {
+                this.SingleUndo();
+            }
+        }
+
+        private void SingleUndo()
+        {
             Cpts321.Undo_Redo prevCell = this.mySpreadsheet.Undo();
 
             if (prevCell != null)
             {
                 this.mySpreadsheet.RedoStack.Push(new Cpts321.Undo_Redo(prevCell.PrevCell, prevCell.PropertyChanged));
-                this.redoToolStripMenuItem.Enabled = false;
+                this.redoToolStripMenuItem.Enabled = true;
                 if (this.mySpreadsheet.RedoStack.Count > 0)
                 {
                     this.redoToolStripMenuItem.Text = "Redo " + this.mySpreadsheet.RedoStack.Peek().PropertyChanged;
@@ -200,12 +221,31 @@ namespace Spreadsheet_Adam_Nassar
 
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (this.redoToolStripMenuItem.Text == "Redo Color change")
+            {
+                int size = this.mySpreadsheet.MassRedo.Pop();
+
+                this.mySpreadsheet.MassUndo.Push(size);
+
+                for (int i = 0; i < size; i++)
+                {
+                    this.SingleRedo();
+                }
+            }
+            else
+            {
+                this.SingleRedo();
+            }
+        }
+
+        private void SingleRedo()
+        {
             Cpts321.Undo_Redo prevCell = this.mySpreadsheet.Redo();
 
             if (prevCell != null)
             {
                 this.mySpreadsheet.UndoStack.Push(new Cpts321.Undo_Redo(prevCell.PrevCell, prevCell.PropertyChanged));
-                this.undoToolStripMenuItem.Enabled = false;
+                this.undoToolStripMenuItem.Enabled = true;
                 if (this.mySpreadsheet.UndoStack.Count > 0)
                 {
                     this.undoToolStripMenuItem.Text = "Undo " + this.mySpreadsheet.UndoStack.Peek().PropertyChanged;

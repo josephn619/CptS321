@@ -21,6 +21,9 @@ namespace Cpts321
         private Stack<Undo_Redo> undoStack;
         private Stack<Undo_Redo> redoStack;
 
+        private Stack<int> massUndo;
+        private Stack<int> massRedo;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
         /// </summary>
@@ -30,6 +33,9 @@ namespace Cpts321
         {
             this.undoStack = new Stack<Undo_Redo>();
             this.redoStack = new Stack<Undo_Redo>();
+
+            this.massUndo = new Stack<int>();
+            this.massRedo = new Stack<int>();
 
             this.nRows = rows;
             this.nCols = cols;
@@ -103,6 +109,38 @@ namespace Cpts321
             set
             {
                 this.redoStack = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets stack for multiple undos.
+        /// </summary>
+        public Stack<int> MassUndo
+        {
+            get
+            {
+                return this.massUndo;
+            }
+
+            set
+            {
+                this.massUndo = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets stack for multiple redos.
+        /// </summary>
+        public Stack<int> MassRedo
+        {
+            get
+            {
+                return this.massRedo;
+            }
+
+            set
+            {
+                this.massRedo = value;
             }
         }
 
