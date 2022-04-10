@@ -176,94 +176,90 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        // Greys out revelantStacks button if empty
+        private void GreyOutButton(Stack<Cpts321.Undo_Redo> relevantStack, ToolStripMenuItem relevantToolStrip)
         {
-            if (this.undoToolStripMenuItem.Text == "Undo Color change")
+            if (relevantStack.Count == 0)
             {
-                this.mySpreadsheet.SizeRedo = this.mySpreadsheet.SizeUndo;
-
-                for (int i = 0; i < this.mySpreadsheet.SizeUndo; i++)
-                {
-                    this.SingleUndo();
-                }
+                relevantToolStrip.Enabled = false;
             }
             else
             {
-                this.SingleUndo();
+                relevantToolStrip.Enabled = true;
             }
         }
 
-        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        // Undoes or redoes a single operation previously done
+        private void SingleUndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Cpts321.Undo_Redo pop, string method)
         {
-            if (this.redoToolStripMenuItem.Text == "Redo Color change")
-            {
-                this.mySpreadsheet.SizeRedo = this.mySpreadsheet.SizeRedo;
-
-                for (int i = 0; i < this.mySpreadsheet.SizeRedo; i++)
-                {
-                    this.SingleRedo();
-                }
-            }
-            else
-            {
-                this.SingleRedo();
-            }
-        }
-
-        private void SingleUndo()
-        {
-            Cpts321.Undo_Redo curCell = this.mySpreadsheet.Undo();
-
-            if (curCell != null)
-            {
-                // Create new Undo_Redo instance and push onto redoStack (future redo operation)
-                this.mySpreadsheet.RedoStack.Push(new Cpts321.Undo_Redo(curCell.PrevCell, curCell.PropertyChanged));
-
-                this.redoToolStripMenuItem.Enabled = true;
-
-                if (this.mySpreadsheet.RedoStack.Count > 0)
-                {
-                    this.redoToolStripMenuItem.Text = "Redo " + this.mySpreadsheet.RedoStack.Peek().PropertyChanged;
-                }
-            }
-
-            // Greys out button
-            if (this.mySpreadsheet.UndoStack.Count == 0)
-            {
-                this.undoToolStripMenuItem.Enabled = false;
-            }
-            else
-            {
-                this.undoToolStripMenuItem.Enabled = true;
-            }
-        }
-
-        private void SingleRedo()
-        {
-            Cpts321.Undo_Redo curCell = this.mySpreadsheet.Redo();
+            Cpts321.Undo_Redo curCell = pop;
 
             if (curCell != null)
             {
                 // Create new Undo_Redo instance and push onto undoStack (future undo operation)
-                this.mySpreadsheet.UndoStack.Push(new Cpts321.Undo_Redo(curCell.PrevCell, curCell.PropertyChanged));
+                otherStack.Push(new Cpts321.Undo_Redo(curCell.PrevCell, curCell.PropertyChanged));
 
-                this.undoToolStripMenuItem.Enabled = true;
+                otherToolStrip.Enabled = true;
 
-                if (this.mySpreadsheet.UndoStack.Count > 0)
+                if (otherStack.Count > 0)
                 {
-                    this.undoToolStripMenuItem.Text = "Undo " + this.mySpreadsheet.UndoStack.Peek().PropertyChanged;
+                    // Sets button to method + operation ("Redo " + "Color Changed")
+                    otherToolStrip.Text = method + otherStack.Peek().PropertyChanged;
                 }
             }
 
-            // Greys out button
-            if (this.mySpreadsheet.RedoStack.Count == 0)
+            this.GreyOutButton(relevantStack, relevantToolStrip);
+        }
+
+        // Undoes or redoes every operation previously done
+        private void AllUndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Cpts321.Undo_Redo[] popArr, int relevantSize, ref int otherSize, string checkMessage, string method)
+        {
+            // Checks if the text expecting the undo or redo
+            if (relevantToolStrip.Text == checkMessage)
             {
-                this.redoToolStripMenuItem.Enabled = false;
+                // Updates the reference for SizeUndo or SizeRedo
+                otherSize = relevantSize;
+
+                for (int i = 0; i < relevantSize; i++)
+                {
+                    this.SingleUndoOrRedo(relevantStack, otherStack, relevantToolStrip, otherToolStrip, popArr[i], method);
+                }
             }
             else
             {
-                this.redoToolStripMenuItem.Enabled = true;
+                this.SingleUndoOrRedo(relevantStack, otherStack, relevantToolStrip, otherToolStrip, popArr[0], method);
             }
+        }
+
+        // Gets all the undo or redo operations that need to happen, and then calls AllUndoOrRedo which executes them all
+        private void UndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Cpts321.Undo_Redo> methodName, int relevantSize, ref int otherSize, string checkMessage, string method)
+        {
+            Cpts321.Undo_Redo[] popArr = new Cpts321.Undo_Redo[relevantSize];
+
+            for (int i = 0; i < popArr.Length; i++)
+            {
+                popArr[i] = methodName();
+            }
+
+            this.AllUndoOrRedo(relevantStack, otherStack, relevantToolStrip, otherToolStrip, popArr, popArr.Length, ref otherSize, checkMessage, method);
+        }
+
+        // Undo button click
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Have to use temp because you can't reference a member of a class (ref this.mySpreadsheet.SizeRedo)
+            int temp = 0;
+            this.UndoOrRedo(this.mySpreadsheet.UndoStack, this.mySpreadsheet.RedoStack, this.undoToolStripMenuItem, this.redoToolStripMenuItem, this.mySpreadsheet.Undo, this.mySpreadsheet.SizeUndo, ref temp, "Undo Color change", "Redo ");
+            this.mySpreadsheet.SizeRedo = temp;
+        }
+
+        // Redo button click
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Have to use temp because you can't reference a member of a class (ref this.mySpreadsheet.SizeUndo)
+            int temp = 0;
+            this.UndoOrRedo(this.mySpreadsheet.RedoStack, this.mySpreadsheet.UndoStack, this.redoToolStripMenuItem, this.undoToolStripMenuItem, this.mySpreadsheet.Redo, this.mySpreadsheet.SizeRedo, ref temp, "Redo Color change", "Undo ");
+            this.mySpreadsheet.SizeUndo = temp;
         }
     }
 }
