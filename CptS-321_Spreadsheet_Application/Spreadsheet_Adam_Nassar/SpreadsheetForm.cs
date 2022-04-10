@@ -189,7 +189,7 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        // Undoes or redoes a single operation previously done
+        // Undoes or redoes a single previous operation
         private void SingleUndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Cpts321.Undo_Redo pop, string method)
         {
             Cpts321.Undo_Redo curCell = pop;
