@@ -192,38 +192,20 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Returns previous operation.
+        /// Pops and returns previous operation.
         /// </summary>
-        /// <returns>Last node.</returns>
-        public Undo_Redo Undo()
+        /// <param name="relevantStack">relevantStack.</param>
+        /// <returns>Last operation as node.</returns>
+        public Undo_Redo UndoOrRedoPop(Stack<Undo_Redo> relevantStack)
         {
-            if (this.undoStack.Count > 0)
+            if (relevantStack.Count > 0)
             {
-                Undo_Redo prevOperation = this.undoStack.Pop();
+                Undo_Redo prevOperation = relevantStack.Pop();
 
-                Undo_Redo undo = new Undo_Redo(this.cells[prevOperation.GetRow(), prevOperation.GetCol()].CreateCopy(), prevOperation.PropertyChanged);
+                Undo_Redo undoOrRedo = new Undo_Redo(this.cells[prevOperation.GetRow(), prevOperation.GetCol()].CreateCopy(), prevOperation.PropertyChanged);
                 prevOperation.Update(ref this.cells[prevOperation.GetRow(), prevOperation.GetCol()]);
 
-                return undo;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Returns previous operation.
-        /// </summary>
-        /// <returns>Last node.</returns>
-        public Undo_Redo Redo()
-        {
-            if (this.redoStack.Count > 0)
-            {
-                Undo_Redo prevOperation = this.redoStack.Pop();
-
-                Undo_Redo redo = new Undo_Redo(this.cells[prevOperation.GetRow(), prevOperation.GetCol()].CreateCopy(), prevOperation.PropertyChanged);
-                prevOperation.Update(ref this.cells[prevOperation.GetRow(), prevOperation.GetCol()]);
-
-                return redo;
+                return undoOrRedo;
             }
 
             return null;

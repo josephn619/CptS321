@@ -232,13 +232,14 @@ namespace Spreadsheet_Adam_Nassar
         }
 
         // Gets all the undo or redo operations that need to happen, and then calls AllUndoOrRedo which executes them all
-        private void UndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Cpts321.Undo_Redo> methodName, int relevantSize, ref int otherSize, string checkMessage, string method)
+        private void UndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Cpts321.Undo_Redo>, Cpts321.Undo_Redo> methodName, int relevantSize, ref int otherSize, string checkMessage, string method)
         {
             Cpts321.Undo_Redo[] popArr = new Cpts321.Undo_Redo[relevantSize];
 
+            // Gets all the undo or redo pops (previous operations)
             for (int i = 0; i < popArr.Length; i++)
             {
-                popArr[i] = methodName();
+                popArr[i] = methodName(relevantStack);
             }
 
             this.AllUndoOrRedo(relevantStack, otherStack, relevantToolStrip, otherToolStrip, popArr, popArr.Length, ref otherSize, checkMessage, method);
@@ -249,7 +250,7 @@ namespace Spreadsheet_Adam_Nassar
         {
             // Have to use temp because you can't reference a member of a class (ref this.mySpreadsheet.SizeRedo)
             int temp = 0;
-            this.UndoOrRedo(this.mySpreadsheet.UndoStack, this.mySpreadsheet.RedoStack, this.undoToolStripMenuItem, this.redoToolStripMenuItem, this.mySpreadsheet.Undo, this.mySpreadsheet.SizeUndo, ref temp, "Undo Color change", "Redo ");
+            this.UndoOrRedo(this.mySpreadsheet.UndoStack, this.mySpreadsheet.RedoStack, this.undoToolStripMenuItem, this.redoToolStripMenuItem, this.mySpreadsheet.UndoOrRedoPop, this.mySpreadsheet.SizeUndo, ref temp, "Undo Color change", "Redo ");
             this.mySpreadsheet.SizeRedo = temp;
         }
 
@@ -258,7 +259,7 @@ namespace Spreadsheet_Adam_Nassar
         {
             // Have to use temp because you can't reference a member of a class (ref this.mySpreadsheet.SizeUndo)
             int temp = 0;
-            this.UndoOrRedo(this.mySpreadsheet.RedoStack, this.mySpreadsheet.UndoStack, this.redoToolStripMenuItem, this.undoToolStripMenuItem, this.mySpreadsheet.Redo, this.mySpreadsheet.SizeRedo, ref temp, "Redo Color change", "Undo ");
+            this.UndoOrRedo(this.mySpreadsheet.RedoStack, this.mySpreadsheet.UndoStack, this.redoToolStripMenuItem, this.undoToolStripMenuItem, this.mySpreadsheet.UndoOrRedoPop, this.mySpreadsheet.SizeRedo, ref temp, "Redo Color change", "Undo ");
             this.mySpreadsheet.SizeUndo = temp;
         }
     }
