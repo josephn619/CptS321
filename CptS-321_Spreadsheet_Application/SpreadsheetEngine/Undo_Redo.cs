@@ -84,7 +84,7 @@ namespace Cpts321
         /// Gets col for prev cell.
         /// </summary>
         /// <returns>Previous cel coll.</returns>
-        public int GetCol ()
+        public int GetCol()
         {
             return this.prevCell.ColIndex;
         }

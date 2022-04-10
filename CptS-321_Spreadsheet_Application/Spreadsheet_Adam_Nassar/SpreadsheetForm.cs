@@ -39,6 +39,12 @@ namespace Spreadsheet_Adam_Nassar
 
         private void SpreadsheetForm_Load(object sender, EventArgs e)
         {
+            this.undoToolStripMenuItem.Enabled = false;
+            this.undoToolStripMenuItem.Text = "Undo operation";
+
+            this.redoToolStripMenuItem.Enabled = false;
+            this.redoToolStripMenuItem.Text = "Redo operation";
+
             string[] s = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
             // Column creation
@@ -232,14 +238,14 @@ namespace Spreadsheet_Adam_Nassar
         }
 
         // Gets all the undo or redo operations that need to happen, and then calls AllUndoOrRedo which executes them all
-        private void UndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Cpts321.Undo_Redo>, Cpts321.Undo_Redo> methodName, int relevantSize, ref int otherSize, string checkMessage, string method)
+        private void UndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Cpts321.Undo_Redo>, Cpts321.Undo_Redo> popUndoOrRedo, int relevantSize, ref int otherSize, string checkMessage, string method)
         {
             Cpts321.Undo_Redo[] popArr = new Cpts321.Undo_Redo[relevantSize];
 
             // Gets all the undo or redo pops (previous operations)
             for (int i = 0; i < popArr.Length; i++)
             {
-                popArr[i] = methodName(relevantStack);
+                popArr[i] = popUndoOrRedo(relevantStack);
             }
 
             this.AllUndoOrRedo(relevantStack, otherStack, relevantToolStrip, otherToolStrip, popArr, popArr.Length, ref otherSize, checkMessage, method);
