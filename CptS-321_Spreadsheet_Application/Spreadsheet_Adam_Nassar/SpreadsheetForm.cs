@@ -238,14 +238,14 @@ namespace Spreadsheet_Adam_Nassar
         }
 
         // Gets all the undo or redo operations that need to happen, and then calls AllUndoOrRedo which executes them all
-        private void UndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Undo_Redo>, Undo_Redo> popUndoOrRedo, int relevantSize, ref int otherSize, string checkMessage, string method)
+        private void UndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Undo_Redo>, Undo_Redo> UndoOrRedoPop, int relevantSize, ref int otherSize, string checkMessage, string method)
         {
             Undo_Redo[] popArr = new Undo_Redo[relevantSize];
 
             // Gets all the undo or redo pops (previous operations)
             for (int i = 0; i < popArr.Length; i++)
             {
-                popArr[i] = popUndoOrRedo(relevantStack);
+                popArr[i] = UndoOrRedoPop(relevantStack);
             }
 
             this.AllUndoOrRedo(relevantStack, otherStack, relevantToolStrip, otherToolStrip, popArr, popArr.Length, ref otherSize, checkMessage, method);
