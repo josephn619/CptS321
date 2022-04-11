@@ -14,19 +14,21 @@ namespace Spreadsheet_Adam_Nassar
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
+    using Cpts321;
+
     /// <summary>
     /// Basic Form Class.
     /// </summary>
     public partial class SpreadsheetForm : Form
     {
-        private Cpts321.Spreadsheet mySpreadsheet;
+        private Spreadsheet mySpreadsheet;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpreadsheetForm"/> class.
         /// </summary>
         public SpreadsheetForm()
         {
-            this.mySpreadsheet = new Cpts321.Spreadsheet(50, 26);
+            this.mySpreadsheet = new Spreadsheet(50, 26);
 
             this.InitializeComponent();
 
@@ -65,7 +67,7 @@ namespace Spreadsheet_Adam_Nassar
 
         private void Refresh_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Cpts321.Cell senderAsCell = (Cpts321.Cell)sender;
+            Cell senderAsCell = (Cell)sender;
 
             int row = senderAsCell.RowIndex;
             int col = senderAsCell.ColIndex;
@@ -88,7 +90,7 @@ namespace Spreadsheet_Adam_Nassar
 
         private void DGV_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(e.RowIndex, e.ColumnIndex);
+            Cell initCell = this.mySpreadsheet.GetCell(e.RowIndex, e.ColumnIndex);
 
             if (initCell != null)
             {
@@ -98,7 +100,7 @@ namespace Spreadsheet_Adam_Nassar
 
         private void DGV_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(e.RowIndex, e.ColumnIndex);
+            Cell initCell = this.mySpreadsheet.GetCell(e.RowIndex, e.ColumnIndex);
 
             if (initCell != null)
             {
@@ -140,7 +142,7 @@ namespace Spreadsheet_Adam_Nassar
 
         private void NamePlacement(int row, int col, string message)
         {
-            Cpts321.Cell initCell = this.mySpreadsheet.GetCell(row, col);
+            Cell initCell = this.mySpreadsheet.GetCell(row, col);
             initCell.Text = message + (row + 1);
         }
 
@@ -148,6 +150,7 @@ namespace Spreadsheet_Adam_Nassar
         {
             if (this.DataGridView.SelectedCells.Count > 0)
             {
+                // Creates new ColorDialog instance
                 ColorDialog myDialog = new ColorDialog
                 {
                     AllowFullOpen = false,
@@ -164,26 +167,23 @@ namespace Spreadsheet_Adam_Nassar
                         int row = this.DataGridView.SelectedCells[i].RowIndex;
                         int col = this.DataGridView.SelectedCells[i].ColumnIndex;
 
-                        Cpts321.Cell newCell = this.mySpreadsheet.GetCell(row, col).CreateCopy();
-                        this.mySpreadsheet.UndoStack.Push(new Cpts321.Undo_Redo(newCell, "Color change"));
+                        // Creates copy of the cell, then pushes new undo operation
+                        Cell newCell = this.mySpreadsheet.GetCell(row, col).CreateCopy();
+                        this.mySpreadsheet.UndoStack.Push(new Undo_Redo(newCell, "Color Change"));
 
-                        this.undoToolStripMenuItem.Enabled = true;
+                        // Changes button text, and then UnGreys the button
                         this.undoToolStripMenuItem.Text = "Undo " + this.mySpreadsheet.UndoStack.Peek().PropertyChanged;
+                        this.GreyOrUnGreyButton(this.mySpreadsheet.UndoStack, this.undoToolStripMenuItem);
 
+                        // Changes the color
                         this.mySpreadsheet.GetCell(row, col).BGColor = myDialog.Color.ToArgb();
-
-                        // this.mySpreadsheet.GetCell(row, col).BGColor =
-                        //   (myDialog.Color.A << 24)
-                        //    | (myDialog.Color.R << 16)
-                        //    | (myDialog.Color.G << 8)
-                        //    | (myDialog.Color.B << 0);
                     }
                 }
             }
         }
 
         // Greys out revelantStacks button if empty
-        private void GreyOutButton(Stack<Cpts321.Undo_Redo> relevantStack, ToolStripMenuItem relevantToolStrip)
+        private void GreyOrUnGreyButton(Stack<Undo_Redo> relevantStack, ToolStripMenuItem relevantToolStrip)
         {
             if (relevantStack.Count == 0)
             {
@@ -196,14 +196,14 @@ namespace Spreadsheet_Adam_Nassar
         }
 
         // Undoes or redoes a single previous operation
-        private void SingleUndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Cpts321.Undo_Redo pop, string method)
+        private void SingleUndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Undo_Redo pop, string method)
         {
-            Cpts321.Undo_Redo curCell = pop;
+            Undo_Redo curCell = pop;
 
             if (curCell != null)
             {
                 // Create new Undo_Redo instance and push onto undoStack (future undo operation)
-                otherStack.Push(new Cpts321.Undo_Redo(curCell.PrevCell, curCell.PropertyChanged));
+                otherStack.Push(new Undo_Redo(curCell.PrevCell, curCell.PropertyChanged));
 
                 otherToolStrip.Enabled = true;
 
@@ -214,11 +214,11 @@ namespace Spreadsheet_Adam_Nassar
                 }
             }
 
-            this.GreyOutButton(relevantStack, relevantToolStrip);
+            this.GreyOrUnGreyButton(relevantStack, relevantToolStrip);
         }
 
         // Undoes or redoes every operation previously done
-        private void AllUndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Cpts321.Undo_Redo[] popArr, int relevantSize, ref int otherSize, string checkMessage, string method)
+        private void AllUndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Undo_Redo[] popArr, int relevantSize, ref int otherSize, string checkMessage, string method)
         {
             // Checks if the text expecting the undo or redo
             if (relevantToolStrip.Text == checkMessage)
@@ -238,9 +238,9 @@ namespace Spreadsheet_Adam_Nassar
         }
 
         // Gets all the undo or redo operations that need to happen, and then calls AllUndoOrRedo which executes them all
-        private void UndoOrRedo(Stack<Cpts321.Undo_Redo> relevantStack, Stack<Cpts321.Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Cpts321.Undo_Redo>, Cpts321.Undo_Redo> popUndoOrRedo, int relevantSize, ref int otherSize, string checkMessage, string method)
+        private void UndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Undo_Redo>, Undo_Redo> popUndoOrRedo, int relevantSize, ref int otherSize, string checkMessage, string method)
         {
-            Cpts321.Undo_Redo[] popArr = new Cpts321.Undo_Redo[relevantSize];
+            Undo_Redo[] popArr = new Undo_Redo[relevantSize];
 
             // Gets all the undo or redo pops (previous operations)
             for (int i = 0; i < popArr.Length; i++)
@@ -256,7 +256,7 @@ namespace Spreadsheet_Adam_Nassar
         {
             // Have to use temp because you can't reference a member of a class (ref this.mySpreadsheet.SizeRedo)
             int temp = 0;
-            this.UndoOrRedo(this.mySpreadsheet.UndoStack, this.mySpreadsheet.RedoStack, this.undoToolStripMenuItem, this.redoToolStripMenuItem, this.mySpreadsheet.UndoOrRedoPop, this.mySpreadsheet.SizeUndo, ref temp, "Undo Color change", "Redo ");
+            this.UndoOrRedo(this.mySpreadsheet.UndoStack, this.mySpreadsheet.RedoStack, this.undoToolStripMenuItem, this.redoToolStripMenuItem, this.mySpreadsheet.UndoOrRedoPop, this.mySpreadsheet.SizeUndo, ref temp, "Undo Color Change", "Redo ");
             this.mySpreadsheet.SizeRedo = temp;
         }
 
@@ -265,7 +265,7 @@ namespace Spreadsheet_Adam_Nassar
         {
             // Have to use temp because you can't reference a member of a class (ref this.mySpreadsheet.SizeUndo)
             int temp = 0;
-            this.UndoOrRedo(this.mySpreadsheet.RedoStack, this.mySpreadsheet.UndoStack, this.redoToolStripMenuItem, this.undoToolStripMenuItem, this.mySpreadsheet.UndoOrRedoPop, this.mySpreadsheet.SizeRedo, ref temp, "Redo Color change", "Undo ");
+            this.UndoOrRedo(this.mySpreadsheet.RedoStack, this.mySpreadsheet.UndoStack, this.redoToolStripMenuItem, this.undoToolStripMenuItem, this.mySpreadsheet.UndoOrRedoPop, this.mySpreadsheet.SizeRedo, ref temp, "Redo Color Change", "Undo ");
             this.mySpreadsheet.SizeUndo = temp;
         }
     }
