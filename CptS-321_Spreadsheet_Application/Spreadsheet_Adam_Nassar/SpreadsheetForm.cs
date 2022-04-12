@@ -237,36 +237,52 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        // Gets all the undo or redo operations that need to happen, and then calls AllUndoOrRedo which executes them all
-        private void UndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Undo_Redo>, Undo_Redo> UndoOrRedoPop, int relevantSize, ref int otherSize, string checkMessage, string method)
+        // Gets all the undo or redo operations that need to happen, and then calls AllUndoOrRedo which executes them all, returns the size of otherStack
+        private int UndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Func<Stack<Undo_Redo>, Undo_Redo> undoOrRedoPop, int relevantSize, int otherSize, string checkMessage, string method)
         {
             Undo_Redo[] popArr = new Undo_Redo[relevantSize];
 
             // Gets all the undo or redo pops (previous operations)
             for (int i = 0; i < popArr.Length; i++)
             {
-                popArr[i] = UndoOrRedoPop(relevantStack);
+                popArr[i] = undoOrRedoPop(relevantStack);
             }
 
             this.AllUndoOrRedo(relevantStack, otherStack, relevantToolStrip, otherToolStrip, popArr, popArr.Length, ref otherSize, checkMessage, method);
+
+            return otherSize;
         }
 
         // Undo button click
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Have to use temp because you can't reference a member of a class (ref this.mySpreadsheet.SizeRedo)
-            int temp = 0;
-            this.UndoOrRedo(this.mySpreadsheet.UndoStack, this.mySpreadsheet.RedoStack, this.undoToolStripMenuItem, this.redoToolStripMenuItem, this.mySpreadsheet.UndoOrRedoPop, this.mySpreadsheet.SizeUndo, ref temp, "Undo Color Change", "Redo ");
-            this.mySpreadsheet.SizeRedo = temp;
+            // We need to update SizeRedo because this sets the number of iterations when we redo
+            this.mySpreadsheet.SizeRedo = this.UndoOrRedo(
+                this.mySpreadsheet.UndoStack,
+                this.mySpreadsheet.RedoStack,
+                this.undoToolStripMenuItem,
+                this.redoToolStripMenuItem,
+                this.mySpreadsheet.UndoOrRedoPop,
+                this.mySpreadsheet.SizeUndo,
+                this.mySpreadsheet.SizeRedo,
+                "Undo Color Change",
+                "Redo ");
         }
 
         // Redo button click
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Have to use temp because you can't reference a member of a class (ref this.mySpreadsheet.SizeUndo)
-            int temp = 0;
-            this.UndoOrRedo(this.mySpreadsheet.RedoStack, this.mySpreadsheet.UndoStack, this.redoToolStripMenuItem, this.undoToolStripMenuItem, this.mySpreadsheet.UndoOrRedoPop, this.mySpreadsheet.SizeRedo, ref temp, "Redo Color Change", "Undo ");
-            this.mySpreadsheet.SizeUndo = temp;
+            // We need to update SizeUndo because this sets the number of iterations when we undo
+            this.mySpreadsheet.SizeUndo = this.UndoOrRedo(
+                this.mySpreadsheet.RedoStack,
+                this.mySpreadsheet.UndoStack,
+                this.redoToolStripMenuItem,
+                this.undoToolStripMenuItem,
+                this.mySpreadsheet.UndoOrRedoPop,
+                this.mySpreadsheet.SizeRedo,
+                this.mySpreadsheet.SizeUndo,
+                "Redo Color Change",
+                "Undo ");
         }
     }
 }
