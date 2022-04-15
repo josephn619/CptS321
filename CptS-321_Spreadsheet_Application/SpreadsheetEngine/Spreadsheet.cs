@@ -249,7 +249,71 @@ namespace Cpts321
         /// <param name="fs">fileStream.</param>
         public void LoadFromXML(Stream fs)
         {
+            string filename = "Spreadsheet.xml";
+            string pathname = Path.Combine(AppContext.BaseDirectory, filename);
 
+            this.undoStack.Clear();
+            this.redoStack.Clear();
+
+            for (int row = 0; row < this.RowCount; row++)
+            {
+                for (int col = 0; col < this.ColCount; col++)
+                {
+                    this.cells[row, col] = new NewCell(row, col)
+                    {
+                        Text = string.Empty,
+                    };
+                    this.cells[row,col].PropertyChanged += this.CellPropertyChanged;
+                }
+            }
+
+            XmlReaderSettings settings = new XmlReaderSettings()
+            {
+                Async = false,
+            };
+
+            using (XmlReader infile = XmlReader.Create(fs, settings))
+            {
+                while (infile.Read())
+                {
+                    if (infile.NodeType == XmlNodeType.Element)
+                    {
+                        if (infile.Name == "cell")
+                        {
+                            string name = infile.GetAttribute("name");
+                            Cell copyCell = this.CreateCell(name, infile.GetAttribute("text"), Convert.ToInt32(infile.GetAttribute("bgColor")));
+                            this.cells[copyCell.RowIndex, copyCell.ColIndex] = this.CopyCell(copyCell);
+
+                            this.CellPropertyChanged?.Invoke(this.cells[copyCell.RowIndex, copyCell.ColIndex], new PropertyChangedEventArgs("Cell"));
+                        }
+                    }
+                }
+            }
+        }
+
+        private Cell CreateCell(string name, string text, int bgColor)
+        {
+            if (int.TryParse(name.Substring(1), out int row))
+            {
+                int col = (int)name[0] - 'A';
+
+                return new NewCell(row - 1, col)
+                {
+                    Text = text,
+                    BGColor = bgColor,
+                };
+            }
+
+            return null;
+        }
+
+        private Cell CopyCell(Cell source)
+        {
+            return new NewCell(source.RowIndex, source.ColIndex)
+            {
+                Text = source.Text,
+                BGColor = source.BGColor,
+            };
         }
 
         private List<string> GetVariables(Cell senderCell, string expression)
