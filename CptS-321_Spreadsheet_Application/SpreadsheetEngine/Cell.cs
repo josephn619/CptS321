@@ -156,6 +156,15 @@ namespace Cpts321
         }
 
         /// <summary>
+        /// Finds if cell is not empty.
+        /// </summary>
+        /// <returns>True if not empty.</returns>
+        public bool IsNotEmpty()
+        {
+            return this.text.Length > 0 || this.bgColor != -1;
+        }
+
+        /// <summary>
         /// Raises PropertyChanged event.
         /// </summary>
         /// <param name="sender">sender.</param>

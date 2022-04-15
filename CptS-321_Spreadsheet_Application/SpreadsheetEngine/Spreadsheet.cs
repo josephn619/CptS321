@@ -9,6 +9,8 @@ namespace Cpts321
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Xml;
+    using System.Xml.Linq;
 
     /// <summary>
     /// Container class for spreadsheet.
@@ -218,7 +220,27 @@ namespace Cpts321
         /// <param name="fs">filestream.</param>
         public void SaveToXML(Stream fs)
         {
+            using (XmlWriter outfile = XmlWriter.Create(fs, new XmlWriterSettings()))
+            {
+                outfile.WriteStartElement("MySpreadsheet");
 
+                foreach (Cell cell in this.cells)
+                {
+                    if (cell.IsNotEmpty())
+                    {
+                        int row = cell.RowIndex;
+                        char col = (char)(cell.ColIndex + 'A');
+                        string name = col.ToString() + (row + 1).ToString();
+                        outfile.WriteStartElement("cell");
+                        outfile.WriteAttributeString("name", name);
+                        outfile.WriteAttributeString("text", cell.Text);
+                        outfile.WriteAttributeString("bgColor", cell.BGColor.ToString());
+                        outfile.WriteEndElement();
+                    }
+                }
+
+                outfile.WriteEndElement();
+            }
         }
 
         /// <summary>
