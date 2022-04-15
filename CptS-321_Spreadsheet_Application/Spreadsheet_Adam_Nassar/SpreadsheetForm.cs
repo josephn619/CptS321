@@ -288,10 +288,40 @@ namespace Spreadsheet_Adam_Nassar
 
         private void SaveToXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SaveFileDialog saveFileInstance = new SaveFileDialog()
+            {
+                InitialDirectory = AppContext.BaseDirectory,
+            };
+
+            if (saveFileInstance.ShowDialog() == DialogResult.OK)
+            {
+                Stream fs = saveFileInstance.OpenFile();
+
+                if (fs != null)
+                {
+                    this.mySpreadsheet.SaveToXML(fs);
+                    fs.Close();
+                }
+            }
+
+            string pathname = saveFileInstance.FileName;
         }
 
         private void LoadFromXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog loadFileInstance = new OpenFileDialog
+            {
+                InitialDirectory = AppContext.BaseDirectory,
+            };
+
+            if (loadFileInstance.ShowDialog() == DialogResult.OK)
+            {
+                string pathname = loadFileInstance.FileName;
+
+                Stream fs = loadFileInstance.OpenFile();
+
+                this.mySpreadsheet.LoadFromXML(fs);
+            }
         }
     }
 }
