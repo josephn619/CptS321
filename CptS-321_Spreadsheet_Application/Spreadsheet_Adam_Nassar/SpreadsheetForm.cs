@@ -9,6 +9,7 @@ namespace Spreadsheet_Adam_Nassar
     using System.ComponentModel;
     using System.Data;
     using System.Drawing;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -220,7 +221,7 @@ namespace Spreadsheet_Adam_Nassar
         // Undoes or redoes every operation previously done
         private void AllUndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Undo_Redo[] popArr, int relevantSize, ref int otherSize, string checkMessage, string method)
         {
-            // Checks if the text expecting the undo or redo
+            // Checks if the text expecting the undo or redo for colors (more than one cell)
             if (relevantToolStrip.Text == checkMessage)
             {
                 // Updates the reference for SizeUndo or SizeRedo
@@ -283,6 +284,14 @@ namespace Spreadsheet_Adam_Nassar
                 this.mySpreadsheet.SizeUndo,
                 "Redo Color Change",
                 "Undo ");
+        }
+
+        private void SaveToXMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void LoadFromXMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
         }
     }
 }

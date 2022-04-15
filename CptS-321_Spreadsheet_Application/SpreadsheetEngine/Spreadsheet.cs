@@ -7,6 +7,7 @@ namespace Cpts321
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Linq;
 
     /// <summary>
@@ -209,6 +210,24 @@ namespace Cpts321
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Saves spreadsheet to XML.
+        /// </summary>
+        /// <param name="fs">filestream.</param>
+        public void SaveToXML(Stream fs)
+        {
+
+        }
+
+        /// <summary>
+        /// Loads spreadsheet from XML.
+        /// </summary>
+        /// <param name="fs">fileStream.</param>
+        public void LoadFromXML(Stream fs)
+        {
+
         }
 
         private List<string> GetVariables(Cell senderCell, string expression)

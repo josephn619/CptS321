@@ -39,6 +39,9 @@
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadFromXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -75,8 +78,9 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cellToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.editToolStripMenuItem,
+            this.cellToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1333, 28);
@@ -122,10 +126,33 @@
             // 
             // redoToolStripMenuItem
             // 
-            this.redoToolStripMenuItem.Name = "redoCellToolStripMenuItem";
+            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(301, 26);
             this.redoToolStripMenuItem.Text = "Redo text change";
             this.redoToolStripMenuItem.Click += new System.EventHandler(this.RedoToolStripMenuItem_Click);
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToXMLToolStripMenuItem,
+            this.loadFromXMLToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // saveToXMLToolStripMenuItem
+            // 
+            this.saveToXMLToolStripMenuItem.Name = "saveToXMLToolStripMenuItem";
+            this.saveToXMLToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.saveToXMLToolStripMenuItem.Text = "Save to XML";
+            this.saveToXMLToolStripMenuItem.Click += new System.EventHandler(this.SaveToXMLToolStripMenuItem_Click);
+            // 
+            // loadFromXMLToolStripMenuItem
+            // 
+            this.loadFromXMLToolStripMenuItem.Name = "loadFromXMLToolStripMenuItem";
+            this.loadFromXMLToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.loadFromXMLToolStripMenuItem.Text = "Load from XML";
+            this.loadFromXMLToolStripMenuItem.Click += new System.EventHandler(this.LoadFromXMLToolStripMenuItem_Click);
             // 
             // SpreadsheetForm
             // 
@@ -159,6 +186,9 @@
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToXMLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadFromXMLToolStripMenuItem;
     }
 }
 
