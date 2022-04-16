@@ -305,12 +305,12 @@ namespace Spreadsheet_Adam_Nassar
 
             if (saveFileInstance.ShowDialog() == DialogResult.OK)
             {
-                Stream fs = saveFileInstance.OpenFile();
+                Stream fileStream = saveFileInstance.OpenFile();
 
-                if (fs != null)
+                if (fileStream != null)
                 {
-                    this.mySpreadsheet.SaveToXML(fs);
-                    fs.Close();
+                    this.mySpreadsheet.SaveToXML(fileStream);
+                    fileStream.Close();
                 }
             }
         }
@@ -326,11 +326,11 @@ namespace Spreadsheet_Adam_Nassar
             {
                 string pathname = loadFileInstance.FileName;
 
-                Stream fs = loadFileInstance.OpenFile();
+                Stream fileStream = loadFileInstance.OpenFile();
 
-                this.mySpreadsheet.LoadFromXML(fs);
+                this.mySpreadsheet.LoadFromXML(fileStream);
 
-                fs.Close();
+                fileStream.Close();
             }
         }
     }

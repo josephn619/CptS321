@@ -48,8 +48,10 @@ namespace Cpts321
             {
                 for (int j = 0; j < this.nCols; j++)
                 {
-                    this.cells[i, j] = new NewCell(i, j);
-                    this.cells[i, j].Text = string.Empty;
+                    this.cells[i, j] = new NewCell(i, j)
+                    {
+                        Text = string.Empty,
+                    };
 
                     this.cells[i, j].PropertyChanged += this.Spreadsheet_CellPropertyChanged;
                 }
@@ -222,6 +224,7 @@ namespace Cpts321
         {
             using (XmlWriter outfile = XmlWriter.Create(fs, new XmlWriterSettings()))
             {
+                /* Start of Spreadsheet */
                 outfile.WriteStartElement("MySpreadsheet");
 
                 foreach (Cell cell in this.cells)
@@ -232,21 +235,29 @@ namespace Cpts321
                         char col = (char)(cell.ColIndex + 'A');
                         string name = col.ToString() + (row + 1).ToString();
 
+                        /* Start of Celll */
                         outfile.WriteStartElement("cell", name);
 
+                        /* Start of Color */
                         outfile.WriteStartElement("bgColor");
                         outfile.WriteString(cell.BGColor.ToString());
                         outfile.WriteEndElement();
+                        /* End of Color */
 
+                        /* Start of Text */
                         outfile.WriteStartElement("text");
                         outfile.WriteString(cell.Text);
                         outfile.WriteEndElement();
+                        /* End of Text */
 
                         outfile.WriteEndElement();
+                        /* End of Cell */
                     }
                 }
 
                 outfile.WriteEndElement();
+                /* End of Spreadsheet */
+
                 outfile.Close();
             }
         }
@@ -254,57 +265,49 @@ namespace Cpts321
         /// <summary>
         /// Loads spreadsheet from XML.
         /// </summary>
-        /// <param name="fs">fileStream.</param>
-        public void LoadFromXML(Stream fs)
+        /// <param name="fileStream">fileStream.</param>
+        public void LoadFromXML(Stream fileStream)
         {
-            string filename = "Spreadsheet.xml";
-            string pathname = Path.Combine(AppContext.BaseDirectory, filename);
+            string pathname = Path.Combine(AppContext.BaseDirectory, "Spreadsheet.xml");
 
+            // Clear stacks
             this.undoStack.Clear();
             this.redoStack.Clear();
 
-            for (int row = 0; row < this.RowCount; row++)
+            using (XmlReader infile = XmlReader.Create(fileStream, new XmlReaderSettings()))
             {
-                for (int col = 0; col < this.ColCount; col++)
-                {
-                    this.cells[row, col] = new NewCell(row, col)
-                    {
-                        Text = string.Empty,
-                    };
-                    this.cells[row,col].PropertyChanged += this.CellPropertyChanged;
-                }
-            }
-
-            XmlReaderSettings settings = new XmlReaderSettings()
-            {
-                Async = false,
-            };
-
-            using (XmlReader infile = XmlReader.Create(fs, settings))
-            {
+                /* Start of Spreadsheet*/
                 infile.ReadStartElement("MySpreadsheet");
 
                 while (infile.Name == "cell")
                 {
+                    /*Start of Cell */
                     string name = infile.NamespaceURI;
                     infile.ReadStartElement("cell");
 
+                    /* Start of Color */
                     infile.ReadStartElement("bgColor");
                     int color = Convert.ToInt32(infile.ReadContentAsString());
                     infile.ReadEndElement();
+                    /* End of Color */
 
+                    /* Start of text */
                     infile.ReadStartElement("text");
                     string text = infile.ReadContentAsString();
                     infile.ReadEndElement();
+                    /* Start of text */
 
                     infile.ReadEndElement();
+                    /* End of cell */
 
                     Cell copyCell = this.CreateCell(name, text, color);
                     this.cells[copyCell.RowIndex, copyCell.ColIndex] = this.CopyCell(copyCell);
+
                     this.CellPropertyChanged?.Invoke(this.cells[copyCell.RowIndex, copyCell.ColIndex], new PropertyChangedEventArgs("Cell"));
                 }
 
                 infile.ReadEndElement();
+                /* End of Spreadsheet */
             }
         }
 
