@@ -231,15 +231,23 @@ namespace Cpts321
                         int row = cell.RowIndex;
                         char col = (char)(cell.ColIndex + 'A');
                         string name = col.ToString() + (row + 1).ToString();
-                        outfile.WriteStartElement("cell");
-                        outfile.WriteAttributeString("name", name);
-                        outfile.WriteAttributeString("text", cell.Text);
-                        outfile.WriteAttributeString("bgColor", cell.BGColor.ToString());
+
+                        outfile.WriteStartElement("cell", name);
+
+                        outfile.WriteStartElement("bgColor");
+                        outfile.WriteString(cell.BGColor.ToString());
+                        outfile.WriteEndElement();
+
+                        outfile.WriteStartElement("text");
+                        outfile.WriteString(cell.Text);
+                        outfile.WriteEndElement();
+
                         outfile.WriteEndElement();
                     }
                 }
 
                 outfile.WriteEndElement();
+                outfile.Close();
             }
         }
 
@@ -274,20 +282,29 @@ namespace Cpts321
 
             using (XmlReader infile = XmlReader.Create(fs, settings))
             {
-                while (infile.Read())
-                {
-                    if (infile.NodeType == XmlNodeType.Element)
-                    {
-                        if (infile.Name == "cell")
-                        {
-                            string name = infile.GetAttribute("name");
-                            Cell copyCell = this.CreateCell(name, infile.GetAttribute("text"), Convert.ToInt32(infile.GetAttribute("bgColor")));
-                            this.cells[copyCell.RowIndex, copyCell.ColIndex] = this.CopyCell(copyCell);
+                infile.ReadStartElement("MySpreadsheet");
 
-                            this.CellPropertyChanged?.Invoke(this.cells[copyCell.RowIndex, copyCell.ColIndex], new PropertyChangedEventArgs("Cell"));
-                        }
-                    }
+                while (infile.Name == "cell")
+                {
+                    string name = infile.NamespaceURI;
+                    infile.ReadStartElement("cell");
+
+                    infile.ReadStartElement("bgColor");
+                    int color = Convert.ToInt32(infile.ReadContentAsString());
+                    infile.ReadEndElement();
+
+                    infile.ReadStartElement("text");
+                    string text = infile.ReadContentAsString();
+                    infile.ReadEndElement();
+
+                    infile.ReadEndElement();
+
+                    Cell copyCell = this.CreateCell(name, text, color);
+                    this.cells[copyCell.RowIndex, copyCell.ColIndex] = this.CopyCell(copyCell);
+                    this.CellPropertyChanged?.Invoke(this.cells[copyCell.RowIndex, copyCell.ColIndex], new PropertyChangedEventArgs("Cell"));
                 }
+
+                infile.ReadEndElement();
             }
         }
 

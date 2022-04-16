@@ -87,6 +87,16 @@ namespace Spreadsheet_Adam_Nassar
                     this.DataGridView.Rows[row].Cells[col].Style.BackColor = Color.FromArgb(senderAsCell.BGColor);
                 }
             }
+            else if (e.PropertyName == "Cell")
+            {
+                if (senderAsCell != null)
+                {
+                    this.DataGridView.Rows[row].Cells[col].Value = senderAsCell.Val;
+                    this.DataGridView.Rows[row].Cells[col].Style.BackColor = Color.FromArgb(senderAsCell.BGColor);
+
+
+                }
+            }
         }
 
         private void DGV_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -303,8 +313,6 @@ namespace Spreadsheet_Adam_Nassar
                     fs.Close();
                 }
             }
-
-            string pathname = saveFileInstance.FileName;
         }
 
         private void LoadFromXMLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -321,6 +329,8 @@ namespace Spreadsheet_Adam_Nassar
                 Stream fs = loadFileInstance.OpenFile();
 
                 this.mySpreadsheet.LoadFromXML(fs);
+
+                fs.Close();
             }
         }
     }
