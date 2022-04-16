@@ -45,7 +45,7 @@ namespace Spreadsheet_Adam_Nassar.Tests
         }
 
         /// <summary>
-        /// Tests expression tree functionality
+        /// Tests expression tree functionality.
         /// </summary>
         [Test]
         public void TestExpr()
