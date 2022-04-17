@@ -21,11 +21,11 @@ namespace Cpts321
         private readonly int nCols;
         private Cell[,] cells;
 
-        private Stack<Undo_Redo> undoStack;
-        private Stack<Undo_Redo> redoStack;
+        private Stack<Undo_Redo> undoStack = new Stack<Undo_Redo>();
+        private Stack<Undo_Redo> redoStack = new Stack<Undo_Redo>();
 
-        private Stack<int> sizeUndo;
-        private Stack<int> sizeRedo;
+        private Stack<int> sizeUndo = new Stack<int>();
+        private Stack<int> sizeRedo = new Stack<int>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
@@ -37,12 +37,6 @@ namespace Cpts321
             this.nRows = rows;
             this.nCols = cols;
             this.cells = new Cell[this.nRows, this.nCols];
-
-            this.undoStack = new Stack<Undo_Redo>();
-            this.redoStack = new Stack<Undo_Redo>();
-
-            this.sizeUndo = new Stack<int>();
-            this.sizeRedo = new Stack<int>();
 
             this.sizeUndo.Push(0);
             this.SizeRedo.Push(0);
@@ -121,7 +115,7 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Gets sizeUndo Stack.
+        /// Gets SizeUndo stack.
         /// </summary>
         public Stack<int> SizeUndo
         {
@@ -132,7 +126,7 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Gets sizeRedo stack.
+        /// Gets  sizeRedo stack.
         /// </summary>
         public Stack<int> SizeRedo
         {
