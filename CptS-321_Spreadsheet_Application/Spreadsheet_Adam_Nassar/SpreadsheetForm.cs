@@ -43,10 +43,10 @@ namespace Spreadsheet_Adam_Nassar
         private void SpreadsheetForm_Load(object sender, EventArgs e)
         {
             this.undoToolStripMenuItem.Enabled = false;
-            this.undoToolStripMenuItem.Text = "Undo operation";
+            this.undoToolStripMenuItem.Text = "Undo";
 
             this.redoToolStripMenuItem.Enabled = false;
-            this.redoToolStripMenuItem.Text = "Redo operation";
+            this.redoToolStripMenuItem.Text = "Redo";
 
             string[] s = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 

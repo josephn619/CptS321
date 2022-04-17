@@ -121,7 +121,7 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Gets or sets for total number of undos.
+        /// Gets sizeUndo Stack.
         /// </summary>
         public Stack<int> SizeUndo
         {
@@ -129,26 +129,16 @@ namespace Cpts321
             {
                 return this.sizeUndo;
             }
-
-            set
-            {
-                this.sizeUndo = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets for total number of redos.
+        /// Gets sizeRedo stack.
         /// </summary>
         public Stack<int> SizeRedo
         {
             get
             {
                 return this.sizeRedo;
-            }
-
-            set
-            {
-                this.sizeRedo = value;
             }
         }
 
