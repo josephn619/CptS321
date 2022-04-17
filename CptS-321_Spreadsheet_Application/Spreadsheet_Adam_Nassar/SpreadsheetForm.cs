@@ -171,7 +171,7 @@ namespace Spreadsheet_Adam_Nassar
 
                 if (myDialog.ShowDialog() == DialogResult.OK)
                 {
-                    this.mySpreadsheet.SizeUndo = this.DataGridView.SelectedCells.Count;
+                    this.mySpreadsheet.SizeUndo.Push(this.DataGridView.SelectedCells.Count);
 
                     for (int i = 0; i < this.DataGridView.SelectedCells.Count; i++)
                     {
@@ -270,32 +270,36 @@ namespace Spreadsheet_Adam_Nassar
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // We need to update SizeRedo because this sets the number of iterations when we redo
-            this.mySpreadsheet.SizeRedo = this.UndoOrRedo(
+            this.mySpreadsheet.SizeRedo.Push(this.UndoOrRedo(
                 this.mySpreadsheet.UndoStack,
                 this.mySpreadsheet.RedoStack,
                 this.undoToolStripMenuItem,
                 this.redoToolStripMenuItem,
                 this.mySpreadsheet.UndoOrRedoPop,
-                this.mySpreadsheet.SizeUndo,
-                this.mySpreadsheet.SizeRedo,
+                this.mySpreadsheet.SizeUndo.Peek(),
+                this.mySpreadsheet.SizeRedo.Peek(),
                 "Undo Color Change",
-                "Redo ");
+                "Redo "));
+
+            this.mySpreadsheet.SizeUndo.Pop();
         }
 
         // Redo button click
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // We need to update SizeUndo because this sets the number of iterations when we undo
-            this.mySpreadsheet.SizeUndo = this.UndoOrRedo(
+            this.mySpreadsheet.SizeUndo.Push(this.UndoOrRedo(
                 this.mySpreadsheet.RedoStack,
                 this.mySpreadsheet.UndoStack,
                 this.redoToolStripMenuItem,
                 this.undoToolStripMenuItem,
                 this.mySpreadsheet.UndoOrRedoPop,
-                this.mySpreadsheet.SizeRedo,
-                this.mySpreadsheet.SizeUndo,
+                this.mySpreadsheet.SizeRedo.Peek(),
+                this.mySpreadsheet.SizeUndo.Peek(),
                 "Redo Color Change",
-                "Undo ");
+                "Undo "));
+
+            this.mySpreadsheet.SizeRedo.Pop();
         }
 
         private void SaveToXMLToolStripMenuItem_Click(object sender, EventArgs e)

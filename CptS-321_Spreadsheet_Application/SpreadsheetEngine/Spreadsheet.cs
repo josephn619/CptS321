@@ -24,8 +24,8 @@ namespace Cpts321
         private Stack<Undo_Redo> undoStack;
         private Stack<Undo_Redo> redoStack;
 
-        private int sizeUndo;
-        private int sizeRedo;
+        private Stack<int> sizeUndo;
+        private Stack<int> sizeRedo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
@@ -41,8 +41,11 @@ namespace Cpts321
             this.undoStack = new Stack<Undo_Redo>();
             this.redoStack = new Stack<Undo_Redo>();
 
-            this.sizeUndo = 0;
-            this.sizeRedo = 0;
+            this.sizeUndo = new Stack<int>();
+            this.sizeRedo = new Stack<int>();
+
+            this.sizeUndo.Push(0);
+            this.SizeRedo.Push(0);
 
             for (int i = 0; i < this.nRows; i++)
             {
@@ -120,7 +123,7 @@ namespace Cpts321
         /// <summary>
         /// Gets or sets for total number of undos.
         /// </summary>
-        public int SizeUndo
+        public Stack<int> SizeUndo
         {
             get
             {
@@ -136,7 +139,7 @@ namespace Cpts321
         /// <summary>
         /// Gets or sets for total number of redos.
         /// </summary>
-        public int SizeRedo
+        public Stack<int> SizeRedo
         {
             get
             {
