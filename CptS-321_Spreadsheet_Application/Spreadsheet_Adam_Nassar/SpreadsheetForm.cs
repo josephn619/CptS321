@@ -93,8 +93,6 @@ namespace Spreadsheet_Adam_Nassar
                 {
                     this.DataGridView.Rows[row].Cells[col].Value = senderAsCell.Val;
                     this.DataGridView.Rows[row].Cells[col].Style.BackColor = Color.FromArgb(senderAsCell.BGColor);
-
-
                 }
             }
         }
@@ -281,6 +279,7 @@ namespace Spreadsheet_Adam_Nassar
                 "Undo Color Change",
                 "Redo "));
 
+            // Have to wait until operation is done to pop, otherwise the stack will be empty when it shouldn't be
             this.mySpreadsheet.SizeUndo.Pop();
         }
 
@@ -299,6 +298,7 @@ namespace Spreadsheet_Adam_Nassar
                 "Redo Color Change",
                 "Undo "));
 
+            // Have to wait until operation is done to pop, otherwise the stack will be empty when it shouldn't be
             this.mySpreadsheet.SizeRedo.Pop();
         }
 
