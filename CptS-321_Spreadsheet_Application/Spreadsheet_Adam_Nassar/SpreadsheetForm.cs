@@ -206,7 +206,7 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        // Undoes or redoes a single previous operation
+        // Updates a single cell of the undo or redo stacks
         private void SingleUndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Undo_Redo pop, string method)
         {
             Undo_Redo curCell = pop;
@@ -216,7 +216,7 @@ namespace Spreadsheet_Adam_Nassar
                 // Create new Undo_Redo instance and push onto undoStack (future undo operation)
                 otherStack.Push(new Undo_Redo(curCell.PrevCell, curCell.PropertyChanged));
 
-                otherToolStrip.Enabled = true;
+                this.GreyOrUnGreyButton(otherStack, otherToolStrip);
 
                 if (otherStack.Count > 0)
                 {
@@ -228,7 +228,7 @@ namespace Spreadsheet_Adam_Nassar
             this.GreyOrUnGreyButton(relevantStack, relevantToolStrip);
         }
 
-        // Undoes or redoes every operation previously done
+        // Updates the undo and redo stacks entirely (This function is uncessary as its only called once but I'm keeping it cuz it helps readability)
         private void AllUndoOrRedo(Stack<Undo_Redo> relevantStack, Stack<Undo_Redo> otherStack, ToolStripMenuItem relevantToolStrip, ToolStripMenuItem otherToolStrip, Undo_Redo[] popArr, int relevantSize, ref int otherSize, string checkMessage, string method)
         {
             // Checks if the text expecting the undo or redo for colors (more than one cell)
@@ -256,9 +256,11 @@ namespace Spreadsheet_Adam_Nassar
             // Gets all the undo or redo pops (previous operations)
             for (int i = 0; i < popArr.Length; i++)
             {
+                // Note this is where the actual color change happens
                 popArr[i] = undoOrRedoPop(relevantStack);
             }
 
+            // This just updates the stacks as well as the buttons
             this.AllUndoOrRedo(relevantStack, otherStack, relevantToolStrip, otherToolStrip, popArr, popArr.Length, ref otherSize, checkMessage, method);
 
             return otherSize;
