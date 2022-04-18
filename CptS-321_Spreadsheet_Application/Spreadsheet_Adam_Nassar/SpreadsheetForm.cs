@@ -330,13 +330,13 @@ namespace Spreadsheet_Adam_Nassar
 
             if (loadFileInstance.ShowDialog() == DialogResult.OK)
             {
-                string pathname = loadFileInstance.FileName;
-
                 Stream fileStream = loadFileInstance.OpenFile();
 
-                this.mySpreadsheet.LoadFromXML(fileStream);
-
-                fileStream.Close();
+                if (fileStream != null)
+                {
+                    this.mySpreadsheet.LoadFromXML(fileStream);
+                    fileStream.Close();
+                }
             }
         }
     }
