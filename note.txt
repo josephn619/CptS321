@@ -1,1 +1,3 @@
-Undo and redo functionality fixed in HW10
+Issue: Undo and redo functionality fixed in HW10
+Solution: Replace sizeUndo and sizeRedo with stacks so they can retain mulitple calls to undo and redo
+Actions: This required replacing all instances of addition with a push to the stack, and all instances of usaged with a pop from the stack.
