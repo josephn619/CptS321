@@ -271,7 +271,7 @@ namespace Cpts321
             return postfix;
         }
 
-        // Called by ConvertToPostfix - Converts string to one of the 3 types of nodes given a string
+        // Called by ConvertToPostfix - Converts string to one of the 3 types of nodes
         private Node GetNode(string expression)
         {
             if (ExpressionTreeFactory.IsOperator(expression))

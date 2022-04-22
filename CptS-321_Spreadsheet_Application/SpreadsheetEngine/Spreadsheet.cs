@@ -50,7 +50,7 @@ namespace Cpts321
                         Text = string.Empty,
                     };
 
-                    this.cells[i, j].PropertyChanged += this.Spreadsheet_CellPropertyChanged;
+                    this.cells[i, j].PropertyChanged += this.CellPropertyChanged;
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Cpts321
         /// <summary>
         /// Event for cell value changing.
         /// </summary>
-        public event PropertyChangedEventHandler CellPropertyChanged;
+        public event PropertyChangedEventHandler SpreadsheetChanged;
 
         /// <summary>
         /// Gets number rows.
@@ -115,7 +115,7 @@ namespace Cpts321
         }
 
         /// <summary>
-        /// Gets SizeUndo stack.
+        /// Gets sizeUndo stack.
         /// </summary>
         public Stack<int> SizeUndo
         {
@@ -290,7 +290,7 @@ namespace Cpts321
                     Cell copyCell = this.CreateCell(name, text, color);
                     this.cells[copyCell.RowIndex, copyCell.ColIndex] = this.CopyCell(copyCell);
 
-                    this.CellPropertyChanged?.Invoke(this.cells[copyCell.RowIndex, copyCell.ColIndex], new PropertyChangedEventArgs("Cell"));
+                    this.SpreadsheetChanged?.Invoke(this.cells[copyCell.RowIndex, copyCell.ColIndex], new PropertyChangedEventArgs("Cell"));
                 }
 
                 infile.ReadEndElement();
@@ -355,17 +355,17 @@ namespace Cpts321
                     // Sub or unsub
                     if (subscribe)
                     {
-                        refCell.PropertyChanged += senderCell.CellPropertyChanged;
+                        refCell.PropertyChanged += senderCell.RHSPropertyChanged;
                     }
                     else
                     {
-                        refCell.PropertyChanged -= senderCell.CellPropertyChanged;
+                        refCell.PropertyChanged -= senderCell.RHSPropertyChanged;
                     }
                 }
             }
         }
 
-        private void Spreadsheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Cell senderCell = (Cell)sender;
 
@@ -391,11 +391,11 @@ namespace Cpts321
                     senderCell.Val = senderCell.Text;
                 }
 
-                this.CellPropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("RefreshVal"));
+                this.SpreadsheetChanged?.Invoke(sender, new PropertyChangedEventArgs("RefreshVal"));
             }
             else if (e.PropertyName == "BgColor")
             {
-                this.CellPropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("RefreshBgColor"));
+                this.SpreadsheetChanged?.Invoke(sender, new PropertyChangedEventArgs("RefreshBgColor"));
             }
         }
     }

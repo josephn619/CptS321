@@ -169,7 +169,7 @@ namespace Cpts321
         /// </summary>
         /// <param name="sender">sender.</param>
         /// <param name="e">e.</param>
-        public void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
+        public void RHSPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e.PropertyName));
         }

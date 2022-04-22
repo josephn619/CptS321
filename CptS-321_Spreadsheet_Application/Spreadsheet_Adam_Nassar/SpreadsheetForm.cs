@@ -33,7 +33,7 @@ namespace Spreadsheet_Adam_Nassar
 
             this.InitializeComponent();
 
-            this.mySpreadsheet.CellPropertyChanged += this.Refresh_CellPropertyChanged;
+            this.mySpreadsheet.SpreadsheetChanged += this.RefreshCell;
 
             this.DataGridView.CellBeginEdit += this.DGV_CellBeginEdit;
 
@@ -66,7 +66,7 @@ namespace Spreadsheet_Adam_Nassar
             }
         }
 
-        private void Refresh_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void RefreshCell(object sender, PropertyChangedEventArgs e)
         {
             Cell senderAsCell = (Cell)sender;
 
@@ -135,21 +135,21 @@ namespace Spreadsheet_Adam_Nassar
                 int col = randomCell.Next(1, 26);
                 int row = randomCell.Next(1, 50);
 
-                this.NamePlacement(row, col, "Random Placement");
+                this.UpdateText(row, col, "Random Placement");
             }
 
             for (int i = 0; i < 50; i++)
             {
-                this.NamePlacement(i, 1, "This is cell B");
+                this.UpdateText(i, 1, "This is cell B");
             }
 
             for (int i = 0; i < 50; i++)
             {
-                this.NamePlacement(i, 0, "=B");
+                this.UpdateText(i, 0, "=B");
             }
         }
 
-        private void NamePlacement(int row, int col, string message)
+        private void UpdateText(int row, int col, string message)
         {
             Cell initCell = this.mySpreadsheet.GetCell(row, col);
             initCell.Text = message + (row + 1);
