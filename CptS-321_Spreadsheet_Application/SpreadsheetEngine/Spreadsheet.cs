@@ -300,7 +300,10 @@ namespace Cpts321
                     /* End of Cell */
 
                     Cell copyCell = this.CreateCell(name, val, text, color);
+
+                    // Assigns spreadsheet cell to newly created cell and then subscribes to spreadsheet cell
                     this.cells[copyCell.RowIndex, copyCell.ColIndex] = this.CopyCell(copyCell);
+                    this.cells[copyCell.RowIndex, copyCell.ColIndex].PropertyChanged += this.CellPropertyChanged;
 
                     this.SpreadsheetChanged?.Invoke(this.cells[copyCell.RowIndex, copyCell.ColIndex], new PropertyChangedEventArgs("Cell"));
                 }
@@ -312,6 +315,7 @@ namespace Cpts321
             }
         }
 
+        // Creates cell given all the components
         private Cell CreateCell(string name,  string val, string text, int bgColor)
         {
             if (int.TryParse(name.Substring(1), out int row))
@@ -329,6 +333,7 @@ namespace Cpts321
             return null;
         }
 
+        // Copies cell given the source cell
         private Cell CopyCell(Cell source)
         {
             return new NewCell(source.RowIndex, source.ColIndex)
@@ -339,6 +344,7 @@ namespace Cpts321
             };
         }
 
+        // Gets variable names in the expression
         private List<string> GetVariables(Cell senderCell, string expression)
         {
             // Gets list of operators, numbers, and variables
@@ -353,6 +359,7 @@ namespace Cpts321
             return names;
         }
 
+        // Verifies if variables are a valid entry
         private void VerifyVariables(Cell senderCell, List<string> varList)
         {
             foreach (string name in varList)
@@ -375,6 +382,31 @@ namespace Cpts321
             }
         }
 
+        // Subscribes or Unsubscribes to a single variable (subscribe is either true or false)
+        private void SubToVariable(Cell senderCell, string variable, bool subscribe)
+        {
+            if (subscribe)
+            {
+                senderCell.ExpTree.SetVariable(variable, this.GetValue(variable));
+            }
+
+            Cell refCell = this.GetCell(variable);
+
+            if (refCell != null)
+            {
+                // Sub or unsub
+                if (subscribe)
+                {
+                    refCell.PropertyChanged += senderCell.RHSPropertyChanged;
+                }
+                else
+                {
+                    refCell.PropertyChanged -= senderCell.RHSPropertyChanged;
+                }
+            }
+        }
+
+        // Subscribes or Unsubscribes to given names in the expression, if there is an error, it updates the message
         private void SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe, ref string message)
         {
             List<string> names = this.GetVariables(senderCell, expression);
@@ -387,25 +419,7 @@ namespace Cpts321
                 // Names are valid if we reach here, this is the subscription process
                 foreach (string variable in names)
                 {
-                    if (subscribe)
-                    {
-                        senderCell.ExpTree.SetVariable(variable, this.GetValue(variable));
-                    }
-
-                    Cell refCell = this.GetCell(variable);
-
-                    if (refCell != null)
-                    {
-                        // Sub or unsub
-                        if (subscribe)
-                        {
-                            refCell.PropertyChanged += senderCell.RHSPropertyChanged;
-                        }
-                        else
-                        {
-                            refCell.PropertyChanged -= senderCell.RHSPropertyChanged;
-                        }
-                    }
+                    this.SubToVariable(senderCell, variable, subscribe);
                 }
             }
             catch (SelfReferenceException)
@@ -418,6 +432,7 @@ namespace Cpts321
             }
         }
 
+        // Called when an event is raised from Cell.cs
         private void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Cell senderCell = (Cell)sender;
