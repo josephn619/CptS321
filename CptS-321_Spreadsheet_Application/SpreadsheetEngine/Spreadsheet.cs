@@ -360,7 +360,7 @@ namespace Cpts321
             return true;
         }
 
-        private bool SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe, ref string message)
+        private void SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe, ref string message)
         {
             List<string> names = this.GetVariables(senderCell, expression);
 
@@ -392,18 +392,14 @@ namespace Cpts321
                         }
                     }
                 }
-
-                return true;
             }
             catch (SelfReferenceException)
             {
                 message = "self reference!";
-                return false;
             }
             catch
             {
-                message = "bad reference";
-                return false;
+                message = "bad reference!";
             }
         }
 
@@ -423,12 +419,14 @@ namespace Cpts321
                     // Cell already has expression (unsubscribe)
                     if (senderCell.ExpTree.Expression != string.Empty)
                     {
-                        // No need to check here if Subscribe process succeeded because these are previously approved names
+                        // No need to check here if error message occured because these are previously approved names
                         this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, false, ref message);
                     }
 
-                    // Checks if Subscribe process succeeded
-                    if (this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true, ref message))
+                    this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true, ref message);
+
+                    // Checks if an error message occured
+                    if (message == string.Empty)
                     {
                         senderCell.Val = this.cells[row, col].Val = senderCell.ExpTree.Evaluate().ToString();
                     }
