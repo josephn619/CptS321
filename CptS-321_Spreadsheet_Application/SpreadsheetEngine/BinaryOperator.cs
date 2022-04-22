@@ -15,7 +15,7 @@ namespace Cpts321
     /// </summary>
     public abstract class BinaryOperator : Node
     {
-        private char op;
+        private string op;
         private int precedence;
         private char associativity;
 
@@ -25,7 +25,7 @@ namespace Cpts321
         /// <param name="newOperator">newOperator.</param>
         /// <param name="precedence">precedence.</param>
         /// <param name="associativity">associativity.</param>
-        public BinaryOperator(char newOperator, int precedence, char associativity)
+        public BinaryOperator(string newOperator, int precedence, char associativity)
         {
             this.op = newOperator;
             this.precedence = precedence;
@@ -37,7 +37,7 @@ namespace Cpts321
         /// <summary>
         /// Gets or sets op.
         /// </summary>
-        public char Op
+        public string Op
         {
             get
             {
@@ -47,6 +47,28 @@ namespace Cpts321
             set
             {
                 this.op = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets precedence.
+        /// </summary>
+        public int Precedence
+        {
+            get
+            {
+                return this.precedence;
+            }
+        }
+
+        /// <summary>
+        /// Gets associativity.
+        /// </summary>
+        public char Associativity
+        {
+            get
+            {
+                return this.associativity;
             }
         }
 

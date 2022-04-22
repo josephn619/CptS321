@@ -19,7 +19,7 @@ namespace Cpts321
         /// Initializes a new instance of the <see cref="Add"/> class.
         /// </summary>
         public Add()
-            : base('+', 7, 'l')
+            : base("+", 7, 'l')
         {
         }
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="Multiply.cs" company="Adam Nassar 11588762">
+﻿// <copyright file="LeftParenthesis.cs" company="Adam Nassar 11588762">
 // Copyright (c) Adam Nassar 11588762. All rights reserved.
 // </copyright>
 
@@ -11,15 +11,15 @@ namespace Cpts321
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Class for Multiply.
+    /// Class for Add.
     /// </summary>
-    public class Multiply : BinaryOperator
+    public class LeftParenthesis : BinaryOperator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Multiply"/> class.
+        /// Initializes a new instance of the <see cref="LeftParenthesis"/> class.
         /// </summary>
-        public Multiply()
-            : base("*", 6, 'r')
+        public LeftParenthesis()
+            : base("(", 5, 'n')
         {
         }
 
@@ -31,7 +31,7 @@ namespace Cpts321
         /// <returns>Evaluated expression.</returns>
         public override double Evaluate(double left, double right)
         {
-            return left * right;
+            return left + right;
         }
     }
 }

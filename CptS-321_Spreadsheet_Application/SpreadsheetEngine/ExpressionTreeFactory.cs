@@ -16,28 +16,6 @@ namespace Cpts321
     public class ExpressionTreeFactory
     {
         /// <summary>
-        /// Creates and returns operater.
-        /// </summary>
-        /// <param name="op">Key.</param>
-        /// <returns>Returns operation.</returns>
-        public static BinaryOperator Create(string op)
-        {
-            switch (op)
-            {
-                case "+":
-                    return new Add();
-                case "-":
-                    return new Subtract();
-                case "*":
-                    return new Multiply();
-                case "/":
-                    return new Divide();
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
-        /// <summary>
         /// Checks if index of expression is valid operator.
         /// </summary>
         /// <param name="index">index.</param>
@@ -58,13 +36,31 @@ namespace Cpts321
                     return true;
                 case ")":
                     return true;
-                case "%":
-                    throw new NotSupportedException();
-                case "^":
-                    throw new NotSupportedException();
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Creates and returns operater.
+        /// </summary>
+        /// <param name="op">Key.</param>
+        /// <returns>Returns operation.</returns>
+        public static BinaryOperator Create(string op)
+        {
+            switch (op)
+            {
+                case "+":
+                    return new Add();
+                case "-":
+                    return new Subtract();
+                case "*":
+                    return new Multiply();
+                case "/":
+                    return new Divide();
+            }
+
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -77,17 +73,17 @@ namespace Cpts321
             switch (op)
             {
                 case "+":
-                    return 7;
+                    return new Add().Precedence;
                 case "-":
-                    return 7;
+                    return new Subtract().Precedence;
                 case "*":
-                    return 6;
+                    return new Multiply().Precedence;
                 case "/":
-                    return 6;
+                    return new Divide().Precedence;
                 case "(":
-                    return 5;
+                    return new LeftParenthesis().Precedence;
                 case ")":
-                    return 5;
+                    return new RightParenthesis().Precedence;
             }
 
             throw new NotSupportedException();
@@ -103,17 +99,17 @@ namespace Cpts321
             switch (op)
             {
                 case "+":
-                    return 'l';
+                    return new Add().Associativity;
                 case "-":
-                    return 'l';
+                    return new Subtract().Associativity;
                 case "*":
-                    return 'r';
+                    return new Multiply().Associativity;
                 case "/":
-                    return 'r';
+                    return new Divide().Associativity;
                 case "(":
-                    return 'n';
+                    return new LeftParenthesis().Associativity;
                 case ")":
-                    return 'n';
+                    return new RightParenthesis().Associativity;
             }
 
             throw new NotSupportedException();

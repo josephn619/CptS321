@@ -19,7 +19,7 @@ namespace Cpts321
         /// Initializes a new instance of the <see cref="Divide"/> class.
         /// </summary>
         public Divide()
-            : base('/', 6, 'l')
+            : base("/", 6, 'r')
         {
         }
 
