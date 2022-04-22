@@ -337,7 +337,7 @@ namespace Cpts321
             return names;
         }
 
-        private bool VerifyVariables(List<string> varList)
+        private bool VerifyVariables(Cell senderCell, List<string> varList)
         {
             foreach (string name in varList)
             {
@@ -346,27 +346,28 @@ namespace Cpts321
                     // Expected row slot is not an integer
                     throw new InvalidColumnException("Column is not a letter.");
                 }
-                else
+                else if (name.Substring(1).Length > 2 || first > 5)
                 {
-                    if (name.Substring(1).Length > 2 || first > 5)
-                    {
-                        // More than 2 numbers or greater than 50
-                        throw new VariableOutOfRangeException("Row is greater than 50.");
-                    }
+                    // More than 2 numbers or greater than 50
+                    throw new VariableOutOfRangeException("Row is greater than 50.");
+                }
+                else if ((int)name[0] - 'A' == senderCell.ColIndex && (int)name[1] - '1' == senderCell.RowIndex)
+                {
+                    throw new SelfReferenceException("Equation references sender cell.");
                 }
             }
 
             return true;
         }
 
-        private bool SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe)
+        private bool SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe, ref string message)
         {
             List<string> names = this.GetVariables(senderCell, expression);
 
             try
             {
                 // Checks if names violate any rules
-                this.VerifyVariables(names);
+                this.VerifyVariables(senderCell, names);
 
                 // If we reach here, variable names are valid
                 foreach (string variable in names)
@@ -394,8 +395,14 @@ namespace Cpts321
 
                 return true;
             }
+            catch (SelfReferenceException)
+            {
+                message = "self reference!";
+                return false;
+            }
             catch
             {
+                message = "bad reference";
                 return false;
             }
         }
@@ -411,21 +418,23 @@ namespace Cpts321
             {
                 if (senderCell.Text.StartsWith("="))
                 {
+                    string message = string.Empty;
+
                     // Cell already has expression (unsubscribe)
                     if (senderCell.ExpTree.Expression != string.Empty)
                     {
                         // No need to check here if Subscribe process succeeded because these are previously approved names
-                        this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, false);
+                        this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, false, ref message);
                     }
 
                     // Checks if Subscribe process succeeded
-                    if (this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true))
+                    if (this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true, ref message))
                     {
                         senderCell.Val = this.cells[row, col].Val = senderCell.ExpTree.Evaluate().ToString();
                     }
                     else
                     {
-                        senderCell.Val = this.cells[row, col].Val = senderCell.Text = "bad reference!";
+                        senderCell.Val = this.cells[row, col].Val = senderCell.Text = message;
                     }
                 }
                 else

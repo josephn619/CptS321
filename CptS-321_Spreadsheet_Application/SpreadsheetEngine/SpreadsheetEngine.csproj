@@ -55,6 +55,7 @@
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RightParenthesis.cs" />
+    <Compile Include="SelfReferenceException.cs" />
     <Compile Include="Spreadsheet.cs" />
     <Compile Include="Subtract.cs" />
     <Compile Include="Undo_Redo.cs" />
