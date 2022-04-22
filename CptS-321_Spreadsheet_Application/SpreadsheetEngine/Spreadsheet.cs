@@ -353,6 +353,7 @@ namespace Cpts321
                 }
                 else if ((int)name[0] - 'A' == senderCell.ColIndex && (int)name[1] - '1' == senderCell.RowIndex)
                 {
+                    // Cell references itself
                     throw new SelfReferenceException("Equation references sender cell.");
                 }
             }
@@ -369,7 +370,7 @@ namespace Cpts321
                 // Checks if names violate any rules
                 this.VerifyVariables(senderCell, names);
 
-                // If we reach here, variable names are valid
+                // Names are valid if we reach here, this is the subscription process
                 foreach (string variable in names)
                 {
                     if (subscribe)
