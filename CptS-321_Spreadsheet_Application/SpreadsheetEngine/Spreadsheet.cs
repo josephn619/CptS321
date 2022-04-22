@@ -337,31 +337,66 @@ namespace Cpts321
             return names;
         }
 
-        private void SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe)
+        private bool VerifyVariables(List<string> varList)
+        {
+            foreach (string name in varList)
+            {
+                if (!int.TryParse(name[1].ToString(), out int first))
+                {
+                    // Expected row slot is not an integer
+                    throw new InvalidColumnException("Column is not a letter.");
+                }
+                else
+                {
+                    if (name.Substring(1).Length > 2 || first > 5)
+                    {
+                        // More than 2 numbers or greater than 50
+                        throw new VariableOutOfRangeException("Row is greater than 50.");
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe)
         {
             List<string> names = this.GetVariables(senderCell, expression);
 
-            foreach (string variable in names)
+            try
             {
-                if (subscribe)
-                {
-                    senderCell.ExpTree.SetVariable(variable, this.GetValue(variable));
-                }
+                // Checks if names violate any rules
+                this.VerifyVariables(names);
 
-                Cell refCell = this.GetCell(variable);
-
-                if (refCell != null)
+                // If we reach here, variable names are valid
+                foreach (string variable in names)
                 {
-                    // Sub or unsub
                     if (subscribe)
                     {
-                        refCell.PropertyChanged += senderCell.RHSPropertyChanged;
+                        senderCell.ExpTree.SetVariable(variable, this.GetValue(variable));
                     }
-                    else
+
+                    Cell refCell = this.GetCell(variable);
+
+                    if (refCell != null)
                     {
-                        refCell.PropertyChanged -= senderCell.RHSPropertyChanged;
+                        // Sub or unsub
+                        if (subscribe)
+                        {
+                            refCell.PropertyChanged += senderCell.RHSPropertyChanged;
+                        }
+                        else
+                        {
+                            refCell.PropertyChanged -= senderCell.RHSPropertyChanged;
+                        }
                     }
                 }
+
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -379,12 +414,19 @@ namespace Cpts321
                     // Cell already has expression (unsubscribe)
                     if (senderCell.ExpTree.Expression != string.Empty)
                     {
+                        // No need to check here if Subscribe process succeeded because these are previously approved names
                         this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, false);
                     }
 
-                    this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true);
-
-                    senderCell.Val = this.cells[row, col].Val = senderCell.ExpTree.Evaluate().ToString();
+                    // Checks if Subscribe process succeeded
+                    if (this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true))
+                    {
+                        senderCell.Val = this.cells[row, col].Val = senderCell.ExpTree.Evaluate().ToString();
+                    }
+                    else
+                    {
+                        senderCell.Val = this.cells[row, col].Val = senderCell.Text = "bad reference!";
+                    }
                 }
                 else
                 {

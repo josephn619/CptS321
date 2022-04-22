@@ -48,6 +48,7 @@
     <Compile Include="Divide.cs" />
     <Compile Include="ExpressionTree.cs" />
     <Compile Include="ExpressionTreeFactory.cs" />
+    <Compile Include="InvalidColumnException.cs" />
     <Compile Include="LeftParenthesis.cs" />
     <Compile Include="Multiply.cs" />
     <Compile Include="NewCell.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Subtract.cs" />
     <Compile Include="Undo_Redo.cs" />
     <Compile Include="Variable.cs" />
+    <Compile Include="VariableOutOfRangeException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
