@@ -307,6 +307,8 @@ namespace Cpts321
 
                 infile.ReadEndElement();
                 /* End of Spreadsheet */
+
+                infile.Close();
             }
         }
 
@@ -351,7 +353,7 @@ namespace Cpts321
             return names;
         }
 
-        private bool VerifyVariables(Cell senderCell, List<string> varList)
+        private void VerifyVariables(Cell senderCell, List<string> varList)
         {
             foreach (string name in varList)
             {
@@ -371,8 +373,6 @@ namespace Cpts321
                     throw new SelfReferenceException("Equation references sender cell.");
                 }
             }
-
-            return true;
         }
 
         private void SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe, ref string message)
