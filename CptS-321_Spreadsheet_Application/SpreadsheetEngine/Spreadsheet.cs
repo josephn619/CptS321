@@ -223,19 +223,25 @@ namespace Cpts321
                         string name = col.ToString() + (row + 1).ToString();
 
                         /* Start of Celll */
-                        outfile.WriteStartElement("cell", name);
+                        outfile.WriteStartElement("Cell", name);
+
+                        /* Start of Val */
+                        outfile.WriteStartElement("Val");
+                        outfile.WriteString(cell.Val);
+                        outfile.WriteEndElement();
+                        /* End of Val*/
+
+                        /* Start of Text */
+                        outfile.WriteStartElement("Text");
+                        outfile.WriteString(cell.Text);
+                        outfile.WriteEndElement();
+                        /* End of Text */
 
                         /* Start of Color */
                         outfile.WriteStartElement("bgColor");
                         outfile.WriteString(cell.BGColor.ToString());
                         outfile.WriteEndElement();
                         /* End of Color */
-
-                        /* Start of Text */
-                        outfile.WriteStartElement("text");
-                        outfile.WriteString(cell.Text);
-                        outfile.WriteEndElement();
-                        /* End of Text */
 
                         outfile.WriteEndElement();
                         /* End of Cell */
@@ -266,11 +272,23 @@ namespace Cpts321
                 /* Start of Spreadsheet*/
                 infile.ReadStartElement("MySpreadsheet");
 
-                while (infile.Name == "cell")
+                while (infile.Name == "Cell")
                 {
                     /*Start of Cell */
                     string name = infile.NamespaceURI;
-                    infile.ReadStartElement("cell");
+                    infile.ReadStartElement("Cell");
+
+                    /* Start of Val */
+                    infile.ReadStartElement("Val");
+                    string val = infile.ReadContentAsString();
+                    infile.ReadEndElement();
+                    /* End of Val */
+
+                    /* Start of Text */
+                    infile.ReadStartElement("Text");
+                    string text = infile.ReadContentAsString();
+                    infile.ReadEndElement();
+                    /* Start of Text */
 
                     /* Start of Color */
                     infile.ReadStartElement("bgColor");
@@ -278,16 +296,10 @@ namespace Cpts321
                     infile.ReadEndElement();
                     /* End of Color */
 
-                    /* Start of text */
-                    infile.ReadStartElement("text");
-                    string text = infile.ReadContentAsString();
                     infile.ReadEndElement();
-                    /* Start of text */
+                    /* End of Cell */
 
-                    infile.ReadEndElement();
-                    /* End of cell */
-
-                    Cell copyCell = this.CreateCell(name, text, color);
+                    Cell copyCell = this.CreateCell(name, val, text, color);
                     this.cells[copyCell.RowIndex, copyCell.ColIndex] = this.CopyCell(copyCell);
 
                     this.SpreadsheetChanged?.Invoke(this.cells[copyCell.RowIndex, copyCell.ColIndex], new PropertyChangedEventArgs("Cell"));
@@ -298,7 +310,7 @@ namespace Cpts321
             }
         }
 
-        private Cell CreateCell(string name, string text, int bgColor)
+        private Cell CreateCell(string name,  string val, string text, int bgColor)
         {
             if (int.TryParse(name.Substring(1), out int row))
             {
@@ -306,6 +318,7 @@ namespace Cpts321
 
                 return new NewCell(row - 1, col)
                 {
+                    Val = val,
                     Text = text,
                     BGColor = bgColor,
                 };
@@ -318,6 +331,7 @@ namespace Cpts321
         {
             return new NewCell(source.RowIndex, source.ColIndex)
             {
+                Val = source.Val,
                 Text = source.Text,
                 BGColor = source.BGColor,
             };
