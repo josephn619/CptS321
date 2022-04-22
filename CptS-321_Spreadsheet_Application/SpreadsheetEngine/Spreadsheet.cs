@@ -383,7 +383,7 @@ namespace Cpts321
         }
 
         // Subscribes or Unsubscribes to a single variable (subscribe is either true or false)
-        private void SubToVariable(Cell senderCell, string variable, bool subscribe)
+        private void SubOrUnsubToSingleVariable(Cell senderCell, string variable, bool subscribe)
         {
             if (subscribe)
             {
@@ -407,7 +407,7 @@ namespace Cpts321
         }
 
         // Subscribes or Unsubscribes to given names in the expression, if there is an error, it updates the message
-        private void SubOrUnsubToNames(Cell senderCell, string expression, bool subscribe, ref string message)
+        private void SubOrUnsubToAllVariables(Cell senderCell, string expression, bool subscribe, ref string message)
         {
             List<string> names = this.GetVariables(senderCell, expression);
 
@@ -419,7 +419,7 @@ namespace Cpts321
                 // Names are valid if we reach here, this is the subscription process
                 foreach (string variable in names)
                 {
-                    this.SubToVariable(senderCell, variable, subscribe);
+                    this.SubOrUnsubToSingleVariable(senderCell, variable, subscribe);
                 }
             }
             catch (SelfReferenceException)
@@ -450,10 +450,10 @@ namespace Cpts321
                     if (senderCell.ExpTree.Expression != string.Empty)
                     {
                         // No need to check here if error message occured because these are previously approved names
-                        this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression, false, ref message);
+                        this.SubOrUnsubToAllVariables(senderCell, senderCell.ExpTree.Expression, false, ref message);
                     }
 
-                    this.SubOrUnsubToNames(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true, ref message);
+                    this.SubOrUnsubToAllVariables(senderCell, senderCell.ExpTree.Expression = senderCell.Text.Substring(1), true, ref message);
 
                     // Checks if an error message occured
                     if (message == string.Empty)
