@@ -184,6 +184,19 @@ namespace Cpts321
         }
 
         /// <summary>
+        /// Gets name given a cell.
+        /// </summary>
+        /// <param name="senderCell">senderCell.</param>
+        /// <returns>cell name.</returns>
+        public string GetName(Cell senderCell)
+        {
+            char col = (char)(senderCell.ColIndex + 'A');
+            int row = senderCell.RowIndex + 1;
+
+            return col.ToString() + row.ToString();
+        }
+
+        /// <summary>
         /// Pops and returns previous operation.
         /// </summary>
         /// <param name="relevantStack">relevantStack.</param>
@@ -218,12 +231,8 @@ namespace Cpts321
                 {
                     if (cell.IsNotEmpty())
                     {
-                        int row = cell.RowIndex;
-                        char col = (char)(cell.ColIndex + 'A');
-                        string name = col.ToString() + (row + 1).ToString();
-
                         /* Start of Celll */
-                        outfile.WriteStartElement("Cell", name);
+                        outfile.WriteStartElement("Cell", this.GetName(cell));
 
                         /* Start of Val */
                         outfile.WriteStartElement("Val");
@@ -320,7 +329,7 @@ namespace Cpts321
         {
             if (int.TryParse(name.Substring(1), out int row))
             {
-                int col = (int)name[0] - 'A';
+                int col = Convert.ToInt32(name[0]) - 'A';
 
                 return new NewCell(row - 1, col)
                 {
@@ -359,6 +368,35 @@ namespace Cpts321
             return names;
         }
 
+        // Detects if any cell in the senderCell expression references the senderCell down the line (by looking at their expressions)
+        private bool DetectCircularReference(Cell senderCell, string senderName)
+        {
+            // Check if the current cell has no expression
+            if (senderCell.ExpTree.Expression == string.Empty)
+            {
+                return true;
+            }
+            else
+            {
+                List<string> names = this.GetVariables(senderCell, senderCell.ExpTree.Expression);
+
+                // Go through each variable in the current expression, and then do the same for that variables expression
+                foreach (string name in names)
+                {
+                    if (name == senderName)
+                    {
+                        throw new CircleReferenceException("Cell references a cell that references it.");
+                    }
+                    else
+                    {
+                        return this.DetectCircularReference(this.GetCell(name), senderName);
+                    }
+                }
+
+                return false;
+            }
+        }
+
         // Verifies if variables are a valid entry
         private void VerifyVariables(Cell senderCell, List<string> varList)
         {
@@ -374,12 +412,15 @@ namespace Cpts321
                     // More than 2 numbers or greater than 50
                     throw new VariableOutOfRangeException("Row is greater than 50.");
                 }
-                else if ((int)name[0] - 'A' == senderCell.ColIndex && (int)name[1] - '1' == senderCell.RowIndex)
+                else if ((int)name[0] - 'A' == senderCell.ColIndex && Convert.ToInt32(name[1]) - '1' == senderCell.RowIndex)
                 {
                     // Cell references itself
                     throw new SelfReferenceException("Equation references sender cell.");
                 }
             }
+
+            // Easier to make a new function rather than define entire thing here because in the recusrive calls it would have to do the entire loop above as well
+            this.DetectCircularReference(senderCell, this.GetName(senderCell));
         }
 
         // Subscribes or Unsubscribes to a single variable (subscribe is either true or false)
@@ -416,7 +457,7 @@ namespace Cpts321
                 // Checks if names violate any rules
                 this.VerifyVariables(senderCell, names);
 
-                // Names are valid if we reach here, this is the subscription process
+                // Names are valid if we reach here
                 foreach (string variable in names)
                 {
                     this.SubOrUnsubToSingleVariable(senderCell, variable, subscribe);
@@ -425,6 +466,10 @@ namespace Cpts321
             catch (SelfReferenceException)
             {
                 message = "self reference!";
+            }
+            catch (CircleReferenceException)
+            {
+                message = "circle reference";
             }
             catch
             {

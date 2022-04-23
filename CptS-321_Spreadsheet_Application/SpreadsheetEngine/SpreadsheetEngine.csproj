@@ -44,6 +44,7 @@
     <Compile Include="Add.cs" />
     <Compile Include="BinaryOperator.cs" />
     <Compile Include="Cell.cs" />
+    <Compile Include="CircleReferenceException.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="Divide.cs" />
     <Compile Include="ExpressionTree.cs" />
