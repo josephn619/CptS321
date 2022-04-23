@@ -462,6 +462,8 @@ namespace Cpts321
                 {
                     this.SubOrUnsubToSingleVariable(senderCell, variable, subscribe);
                 }
+
+                message = string.Empty;
             }
             catch (SelfReferenceException)
             {
