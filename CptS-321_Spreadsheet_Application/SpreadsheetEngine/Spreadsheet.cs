@@ -473,6 +473,7 @@ namespace Cpts321
             }
             catch
             {
+                // No specified exception because InvalidColumn and VariableOutOfRange are both the same message
                 message = "bad reference!";
             }
         }
